@@ -1,0 +1,74 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="login-form">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <p class="paper-font-body2">Enter UAA URL and Admin Secret</p>
+    <form is="iron-form" id="restForm" method="post">
+      <p>
+        UAA URL: <input name="uaaUrl" size="120" required value="{{uaaUrl::input}}"
+          placeholder="https://<< your instance id >>.predix-uaa.run.aws-usw02-pr.ice.predix.io">/oauth/token
+      </p>
+      <p>
+        Admin secret: <input name="adminSecret" type="password" required value="{{adminSecret::input}}">
+      </p>
+      <button type="submit">Submit</button>
+    </form>
+    <br/>
+    <textarea rows=20 cols=150>{{restResponse}}</textarea>
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'login-form',
+        properties: {
+          uaaUrl: {
+            type: String,
+            notify: true
+          },
+          adminSecret: {
+            type: String,
+            notify: true
+          },
+          restResponse: {
+            type: String,
+            notify: true
+          },
+          adminAuthBearerToken: {
+            type: String,
+            notify: true
+          }
+        },
+        ready: function() {
+          var self = this;
+          var restForm = this.$.restForm; //document.getElementById('restForm');
+          restForm.addEventListener('iron-form-presubmit', function() {
+            // console.log('iron-form-presubmit event caught');
+            // console.log('url: ' + self.uaaUrl);
+            var authHeader = 'Basic ' + btoa('admin:' + self.adminSecret);
+            this.request.url = self.uaaUrl + '/oauth/token';
+            this.request.headers = {authorization: authHeader};
+            this.request.body = 'grant_type=client_credentials';
+          });
+          restForm.addEventListener('iron-form-response', function(event) {
+            // event.detail as an iron-request
+            console.log(event.detail.response);
+            self.restResponse = JSON.stringify(event.detail.response);
+            self.adminAuthBearerToken = event.detail.response["token_type"] + ' ' + event.detail.response["access_token"];
+          });
+          restForm.addEventListener('iron-form-error', function(event) {
+            self.restResponse = event.detail.error;
+          });
+        }
+      });
+    })();
+  </script>
+
+</dom-module>
