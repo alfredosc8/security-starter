@@ -24,8 +24,8 @@ var historyApiFallback = require('connect-history-api-fallback');
 var packageJson = require('./package.json');
 var crypto = require('crypto');
 var polybuild = require('polybuild');
-var proxy = require('proxy-middleware');
-var url = require('url');
+var proxy = require('http-proxy-middleware');
+var HttpsProxyAgent = require('https-proxy-agent');
 
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
@@ -230,8 +230,22 @@ gulp.task('clean', function (cb) {
 
 // Watch files for changes & reload
 gulp.task('serve', ['styles', 'elements', 'images'], function () {
-  // var proxyOptions = url.parse('http://localhost:3000/secret-api');
-  // proxyOptions.route = '/api';
+  var corporateProxyServer = process.env.http_proxy || process.env.HTTP_PROXY;
+  // console.log("corporateProxyServer: " + corporateProxyServer);
+  var uaaConfig = JSON.parse(fs.readFileSync('./app/uaaConfig.json', 'utf-8'));
+  // console.log('URL: ' + uaaConfig.url);
+  var proxyOptions = {
+    target: uaaConfig.url,
+    changeOrigin: true,
+    logLevel: 'debug',
+    pathRewrite: { '^/api/': '/'}
+    // onProxyReq: function onProxyReq(proxyReq, req, res) {
+    //   console.log('Request headers: ' + JSON.stringify(req.headers));
+    // }
+  };
+  if (corporateProxyServer) {
+    proxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
+  }
   browserSync({
     port: 5000,
     notify: false,
@@ -247,10 +261,10 @@ gulp.task('serve', ['styles', 'elements', 'images'], function () {
     // Run as an https by uncommenting 'https: true'
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
-    // https: true,
+    //https: true,
     server: {
       baseDir: ['.tmp', 'app'],
-      middleware: [ historyApiFallback() ],
+      middleware: [ proxy('/api', proxyOptions), historyApiFallback() ],
       routes: {
         '/bower_components': 'bower_components'
       }

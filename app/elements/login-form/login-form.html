@@ -53,7 +53,7 @@
             // console.log('iron-form-presubmit event caught');
             // console.log('url: ' + self.uaaUrl);
             var authHeader = 'Basic ' + btoa('admin:' + self.adminSecret);
-            this.request.url = self.uaaUrl + '/oauth/token';
+            this.request.url = '/api/oauth/token';
             this.request.headers = {authorization: authHeader};
             this.request.body = 'grant_type=client_credentials';
           });

@@ -90,17 +90,15 @@
         },
         ready: function() {
           var self = this;
-          var restForm = this.$.restForm; //document.getElementById('restForm');
+          var restForm = this.$.restForm;
           restForm.addEventListener('iron-form-presubmit', function() {
-            // console.log('iron-form-presubmit event caught');
-            // console.log('url: ' + self.uaaUrl);
-            // var authHeader = 'Basic ' + btoa('admin:' + self.adminSecret);
-            this.request.url = self.uaaUrl + '/oauth/clients';
+            this.request.url = '/api/oauth/clients';
             this.request.headers = {
               "content-type": "application/json",
               "authorization": self.adminAuthBearerToken
             };
-            this.request.body = 'grant_type=client_credentials';
+            // TODO: Fix this part... weird bug is not showing the first curly bracket!
+            this.request.body = "{" + self.$.clientRequest.value; //textarea input
           });
           restForm.addEventListener('iron-form-response', function(event) {
             // event.detail as an iron-request

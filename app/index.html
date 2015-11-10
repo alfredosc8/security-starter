@@ -123,6 +123,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Content -->
         <div class="content">
+          <iron-ajax auto url="uaaConfig.json" handle-as="json" last-response="{{uaaConfig}}"></iron-ajax>
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
@@ -135,7 +136,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <p class="paper-font-body2">Looking for more Web App layouts? Check out our <a href="https://github.com/PolymerElements/app-layout-templates">layouts</a> collection. You can also <a href="http://polymerelements.github.io/app-layout-templates/">preview</a> them live.</p> -->
               </paper-material>
               <paper-material elevation="1">
-                <login-form uaa-url="{{mainUaaUrl}}" admin-auth-bearer-token="{{bearerToken}}"></login-form>
+                <login-form uaa-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"></login-form>
               </paper-material>
             </section>
 
@@ -144,7 +145,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Next we need to create a client ID.
               </paper-material>
               <paper-material elevation="1">
-                <clientid-form uaa-url="{{mainUaaUrl}}" admin-auth-bearer-token="{{bearerToken}}"><clientid-form>
+                <clientid-form uaa-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"><clientid-form>
               </paper-material>
             </section>
 
