@@ -7,11 +7,10 @@
         display: block;
       }
     </style>
-    <p class="paper-font-body2">Enter UAA URL and Admin Secret</p>
+    <p class="paper-font-body2">Enter UAA Admin Secret</p>
     <form is="iron-form" id="restForm" method="post">
       <p>
-        UAA URL: <input name="uaaUrl" size="120" required value="{{uaaUrl::input}}"
-          placeholder="https://<< your instance id >>.predix-uaa.run.aws-usw02-pr.ice.predix.io">/oauth/token
+        UAA URL: <span>{{tokenUrl}}</span>
       </p>
       <p>
         Admin secret: <input name="adminSecret" type="password" required value="{{adminSecret::input}}">
@@ -19,7 +18,8 @@
       <button type="submit">Submit</button>
     </form>
     <br/>
-    <textarea rows=20 cols=150>{{restResponse}}</textarea>
+    <!-- <textarea rows=20 cols=150>{{restResponse}}</textarea> -->
+    <pretty-json raw-json="{{restResponse}}"></pretty-json>
   </template>
 
   <script>
@@ -31,7 +31,8 @@
         properties: {
           uaaUrl: {
             type: String,
-            notify: true
+            notify: true,
+            observer: 'updateTokenUrl'
           },
           adminSecret: {
             type: String,
@@ -44,11 +45,17 @@
           adminAuthBearerToken: {
             type: String,
             notify: true
+          },
+          tokenUrl: {
+            type: String,
+            notify: true
           }
         },
+
         ready: function() {
           var self = this;
-          var restForm = this.$.restForm; //document.getElementById('restForm');
+          var restForm = this.$.restForm;
+          // this.tokenUrl = this.appendToUaaUrl(this.uaaUrl);
           restForm.addEventListener('iron-form-presubmit', function() {
             // console.log('iron-form-presubmit event caught');
             // console.log('url: ' + self.uaaUrl);
@@ -66,6 +73,14 @@
           restForm.addEventListener('iron-form-error', function(event) {
             self.restResponse = event.detail.error;
           });
+        },
+
+        updateTokenUrl: function(url) {
+          if (url && url.indexOf('http') > -1) {
+            this.tokenUrl = url + '/oauth/token';
+          } else {
+            this.tokenUrl = url;
+          }
         }
       });
     })();
