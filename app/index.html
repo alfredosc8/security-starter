@@ -84,6 +84,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="lock-outline"></iron-icon>
             <span>Client ID</span>
           </a>
+          <a data-route="users" href="/users" on-click="onDataRouteClick">
+            <iron-icon icon="lock-outline"></iron-icon>
+            <span>User</span>
+          </a>
 
           <!-- <a data-route="users" href="/users" on-click="onDataRouteClick">
             <iron-icon icon="info"></iron-icon>
@@ -145,33 +149,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Next we need to create a client ID.
               </paper-material>
               <paper-material elevation="1">
-                <clientid-form uaa-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"><clientid-form>
+                <clientid-form uaa-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"></clientid-form>
               </paper-material>
             </section>
 
-            <section data-route="users">
-              <paper-material elevation="1">
-                <h2 class="page-title">Users</h2>
-                <p>This is the users section</p>
-                <a href="/users/Greg">Greg</a>
-              </paper-material>
-            </section>
+              <section data-route="users">
+                <paper-material elevation="1">
+                  Create Users in Uaa
+                </paper-material>
+                <paper-material elevation="1">
+                  <users-form uaa-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"></users-form>
+                </paper-material>
+              </section>
 
-            <section data-route="user-info">
-              <paper-material elevation="1">
-                <h2 class="page-title">
-                User:<span>{{params.name}}</span>
-                </h2>
-                <div>This is <span>{{params.name}}</span>'s section</div>
-              </paper-material>
-            </section>
-
-            <section data-route="contact">
-              <paper-material elevation="1">
-                <h2 class="page-title">Contact</h2>
-                <p>This is the contact section</p>
-              </paper-material>
-            </section>
 
           </iron-pages>
         </div>

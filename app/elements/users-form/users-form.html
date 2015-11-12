@@ -1,0 +1,103 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="users-form">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <p class="paper-font-body2">Enter UAA URL and Admin Secret</p>
+    <form is="iron-form" id="restForm" method="post">
+      <p>
+        UAA URL: <input name="uaaUrl" size="120" required value="{{uaaUrl::input}}"
+          placeholder="https://<< your instance id >>.predix-uaa.run.aws-usw02-pr.ice.predix.io">/Users
+      </p>
+      <p>
+        UserName : <input name="username" required value="{{userName::input}}">
+      </p>
+      <p>
+        Password: <input name="userPassword" type="password" required value="{{userPassword::input}}">
+      </p>
+      <p>
+        Email: <input name="email" required value="{{email::input}}">
+      </p>
+      <p>Request</p>
+      <textarea id="clientRequest" rows=30 cols=50>
+        {
+          "userName": "{{userName}}",
+          "password": "{{userPassword}}",
+          "emails": [
+            {
+              "value": "rmd@user-test.com"
+            }
+
+          ]
+        }
+      </textarea>
+      <br/>
+      <button type="submit">Submit</button>
+    </form>
+    <br/>
+    <p>Response</p>
+    <textarea rows=20 cols=150>{{restResponse}}</textarea>
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'users-form',
+        properties: {
+          uaaUrl: {
+            type: String,
+            notify: true
+          },
+          userName: {
+            type: String,
+            notify: true
+          },
+          userPassword: {
+            type: String,
+            notify: true
+          },
+          email: {
+            type: String,
+            notify: true
+          },
+          restResponse: {
+            type: String,
+            notify: true
+          },
+          adminAuthBearerToken: {
+            type: String,
+            notify: true
+          }
+        },
+        ready: function() {
+          var self = this;
+          var restForm = this.$.restForm;
+          restForm.addEventListener('iron-form-presubmit', function() {
+            this.request.url = '/Users';
+            this.request.headers = {
+              "content-type": "application/json",
+              "authorization": self.adminAuthBearerToken
+            };
+            // TODO: Fix this part... weird bug is not showing the first curly bracket!
+            this.request.body = "{" + self.$.clientRequest.value; //textarea input
+          });
+          restForm.addEventListener('iron-form-response', function(event) {
+            // event.detail as an iron-request
+            console.log(event.detail.response);
+            self.restResponse = JSON.stringify(event.detail.response);
+          });
+          restForm.addEventListener('iron-form-error', function(event) {
+            self.restResponse = event.detail.error;
+          });
+        }
+      });
+    })();
+  </script>
+
+</dom-module>
