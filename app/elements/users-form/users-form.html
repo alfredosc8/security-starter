@@ -79,7 +79,7 @@
           var self = this;
           var restForm = this.$.restForm;
           restForm.addEventListener('iron-form-presubmit', function() {
-            this.request.url = '/Users';
+            this.request.url = '/api/Users';
             this.request.headers = {
               "content-type": "application/json",
               "authorization": self.adminAuthBearerToken
