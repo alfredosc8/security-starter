@@ -11,7 +11,7 @@
     <p class="paper-font-body2">Enter a new client ID and admin secret</p>
     <form is="iron-form" id="restForm" method="post">
       <p>
-        UAA URL: <span>{{uaaUrl}}</span>/oauth/clients
+        UAA URL: <span>{{baseUrl}}</span>/oauth/clients
       </p>
       <p>
         New client ID: <input name="clientId" required value="{{clientId::input}}">
@@ -24,8 +24,7 @@
       <br/>
       <button type="submit">Submit</button>
     </form>
-    <br/>
-    <p>Response</p>
+    <p>{{error}}</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
   </template>
 
@@ -36,10 +35,6 @@
       Polymer({
         is: 'clientid-form',
         properties: {
-          uaaUrl: {
-            type: String,
-            notify: true
-          },
           clientId: {
             type: String,
             notify: true,
@@ -49,50 +44,32 @@
             type: String,
             notify: true,
             observer: 'updateClientSecret'
-          },
-          restRequest: {
-            type: String,
-            notify: true
-          },
-          restResponse: {
-            type: String,
-            notify: true
-          },
-          adminAuthBearerToken: {
-            type: String,
-            notify: true
           }
         },
 
         restRequestObject: {
-          "client_id": "",
-          "client_secret": "",
-          "scope": [
-              "uaa.none",
-              "openid",
-              "acs.policies.read",
-              "acs.policies.write",
-              "acs.attributes.read",
-              "acs.attributes.write"
-          ],
-          "authorized_grant_types": [
-              "authorization_code",
-              "client_credentials",
-              "refresh_token",
-              "password"
-          ],
-          "authorities": [
-              "openid",
-              "acs.policies.read",
-              "acs.policies.write",
-              "acs.attributes.read",
-              "acs.attributes.write",
-              "uaa.resource",
-              "uaa.none"
-          ],
-          "autoapprove": [
-              "openid"
-          ]
+            "client_id": "",
+            "client_secret": "",
+            "scope": [
+                "uaa.none",
+                "openid",
+                "security-starter-sample"
+            ],
+            "authorized_grant_types": [
+                "authorization_code",
+                "client_credentials",
+                "refresh_token",
+                "password"
+            ],
+            "authorities": [
+                "openid",
+                "uaa.resource",
+                "uaa.none",
+                "security-starter-sample"
+            ],
+            "autoapprove": [
+                "openid"
+            ]
         },
 
         updateClientId: function(newId) {
@@ -122,15 +99,9 @@
             };
             this.request.body = self.$.clientRequest.value; //textarea input
           });
-          restForm.addEventListener('iron-form-response', function(event) {
-            // event.detail as an iron-request
-            console.log(event.detail.response);
-            self.restResponse = JSON.stringify(event.detail.response);
-          });
-          restForm.addEventListener('iron-form-error', function(event) {
-            self.restResponse = event.detail.error;
-          });
-        }
+        },
+
+        behaviors: [RestFormBehavior]
       });
     })();
   </script>

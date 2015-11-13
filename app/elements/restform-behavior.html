@@ -1,0 +1,42 @@
+<script>
+  RestFormBehavior = {
+    properties: {
+      baseUrl: {
+        type: String,
+        notify: true
+      },
+      adminAuthBearerToken: {
+        type: String,
+        notify: true
+      },
+      error: {
+        type: String,
+        notify: true
+      },
+      restRequest: {
+        type: String,
+        notify: true
+      },
+      restResponse: {
+        type: String,
+        notify: true
+      }
+    },
+
+    listeners: {
+      'iron-form-error': '_handleError',
+      'iron-form-response': '_handleResponse'
+    },
+
+    _handleError: function(event) {
+      this.error = event.detail.error.message;
+      this.restResponse = event.detail.request.parseResponse();
+    },
+
+    _handleResponse: function(event) {
+      // event.detail as an iron-request
+      this.error = null;
+      this.restResponse = JSON.stringify(event.detail.response);
+    }
+  };
+</script>

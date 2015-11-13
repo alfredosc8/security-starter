@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../restform-behavior.html">
 
 <dom-module id="login-form">
   <template>
@@ -17,8 +18,7 @@
       </p>
       <button type="submit">Submit</button>
     </form>
-    <br/>
-    <!-- <textarea rows=20 cols=150>{{restResponse}}</textarea> -->
+    <p>{{error}}</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
   </template>
 
@@ -38,14 +38,6 @@
             type: String,
             notify: true
           },
-          restResponse: {
-            type: String,
-            notify: true
-          },
-          adminAuthBearerToken: {
-            type: String,
-            notify: true
-          },
           tokenUrl: {
             type: String,
             notify: true
@@ -55,23 +47,17 @@
         ready: function() {
           var self = this;
           var restForm = this.$.restForm;
-          // this.tokenUrl = this.appendToUaaUrl(this.uaaUrl);
           restForm.addEventListener('iron-form-presubmit', function() {
             // console.log('iron-form-presubmit event caught');
-            // console.log('url: ' + self.uaaUrl);
             var authHeader = 'Basic ' + btoa('admin:' + self.adminSecret);
             this.request.url = '/api/oauth/token';
             this.request.headers = {authorization: authHeader};
             this.request.body = 'grant_type=client_credentials';
           });
           restForm.addEventListener('iron-form-response', function(event) {
-            // event.detail as an iron-request
-            console.log(event.detail.response);
-            self.restResponse = JSON.stringify(event.detail.response);
+            // self.restResponse = JSON.stringify(event.detail.response);
+            // save token in memory for other calls:
             self.adminAuthBearerToken = event.detail.response["token_type"] + ' ' + event.detail.response["access_token"];
-          });
-          restForm.addEventListener('iron-form-error', function(event) {
-            self.restResponse = event.detail.error;
           });
         },
 
@@ -81,7 +67,9 @@
           } else {
             this.tokenUrl = url;
           }
-        }
+        },
+
+        behaviors: [RestFormBehavior]
       });
     })();
   </script>

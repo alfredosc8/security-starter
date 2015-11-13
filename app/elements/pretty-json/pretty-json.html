@@ -27,17 +27,17 @@
                 observer: 'rawJsonUpdated'
               }
             },
-            ready:function(){
-              console.log('pretty-json ready');
-                // var json = JSON.parse(this.innerHTML);
-                // console.log(json);
-                // this.append(json);
-            },
             rawJsonUpdated: function(raw) {
               console.log('raw json: ' + raw);
+              var parsed = raw;
               if (raw && raw.length > 0) {
-                this.append(JSON.parse(raw));
+                try {
+                  parsed = JSON.parse(raw);
+                } catch (parseError) {
+                  // swallow this error, just display the raw string instead.
+                }
               }
+              this.append(parsed);
             },
             append: function(JSONobject) {
                 Polymer.dom(this.$.output).innerHTML = this.highlight(JSONobject);
