@@ -91,7 +91,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="group-work"></iron-icon>
             <span>Create Group</span>
           </a>
-          <a data-route="group" href="/addToGroup" on-click="onDataRouteClick">
+          <a data-route="addtogroup" href="/addToGroup" on-click="onDataRouteClick">
             <iron-icon icon="add-circle-outline"></iron-icon>
             <span>Add To Group</span>
           </a>
@@ -155,19 +155,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Next we need to create a client ID.
               </paper-material>
               <paper-material elevation="1">
-                <clientid-form uaa-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"></clientid-form>
+                <clientid-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"></clientid-form>
               </paper-material>
             </section>
 
-              <section data-route="users">
-                <paper-material elevation="1">
-                  Create Users in Uaa
-                </paper-material>
-                <paper-material elevation="1">
-                  <users-form uaa-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"></users-form>
-                </paper-material>
-              </section>
+            <section data-route="users">
+              <paper-material elevation="1">
+                Create users in UAA.
+              </paper-material>
+              <paper-material elevation="1">
+                <users-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}" user-name="{{newUserName}}"></users-form>
+              </paper-material>
+            </section>
 
+            <section data-route="group">
+              <paper-material elevation="1">
+                Create a group in UAA.
+              </paper-material>
+              <paper-material elevation="1">
+                <group-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}" group-name="{{newGroupName}}"></group-form>
+              </paper-material>
+            </section>
+
+            <section data-route="addtogroup">
+              <paper-material elevation="1">
+                Add user to group.
+              </paper-material>
+              <paper-material elevation="1">
+                <add-to-group-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}" group-name="{{newGroupName}}" user-name="{{newUserName}}"></add-to-group-form>
+              </paper-material>
+            </section>
 
           </iron-pages>
         </div>

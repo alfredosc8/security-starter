@@ -1,0 +1,72 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../restform-behavior.html">
+
+<dom-module id="group-form">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <!-- <span><iron-icon icon="error-outline"></iron-icon> First login as admin before completing this step.</span> -->
+    <p class="paper-font-body2">Enter a new group name.</p>
+    <form is="iron-form" id="restForm" method="post">
+      <p>
+        UAA URL: <span>{{baseUrl}}</span>/Groups
+      </p>
+      <p>
+        New group name: <input required value="{{groupName::input}}">
+      </p>
+      <p>Request</p>
+      <textarea id="clientRequest" rows=10 cols=100>{{restRequest}}</textarea>
+      <br/>
+      <button type="submit">Submit</button>
+    </form>
+    <p>{{error}}</p>
+    <pretty-json raw-json="{{restResponse}}"></pretty-json>
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'group-form',
+        properties: {
+          groupName: {
+            type: String,
+            notify: true,
+            value: 'security-starter-sample',
+            observer: 'updateGroupName'
+          }
+        },
+
+        restRequestObject: {"displayName": ""},
+
+        updateGroupName: function(newGroup) {
+          this.debounce('updateGroup', function() {
+            this.restRequestObject.displayName = newGroup;
+            this.restRequest = JSON.stringify(this.restRequestObject);
+          }, 300);
+        },
+
+        ready: function() {
+          var self = this;
+          this.restRequest = JSON.stringify(this.restRequestObject);
+          var restForm = this.$.restForm;
+          restForm.addEventListener('iron-form-presubmit', function() {
+            this.request.url = '/api/Groups';
+            this.request.headers = {
+              "content-type": "application/json",
+              "authorization": self.adminAuthBearerToken || ""
+            };
+            this.request.body = self.$.clientRequest.value; //textarea input
+          });
+        },
+
+        behaviors: [RestFormBehavior]
+      });
+    })();
+  </script>
+
+</dom-module>
