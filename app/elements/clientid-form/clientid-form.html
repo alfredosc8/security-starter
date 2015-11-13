@@ -7,11 +7,10 @@
         display: block;
       }
     </style>
-    <p class="paper-font-body2">Enter UAA URL and Admin Secret</p>
+    <p class="paper-font-body2">Enter a new client ID and admin secret</p>
     <form is="iron-form" id="restForm" method="post">
       <p>
-        UAA URL: <input name="uaaUrl" size="120" required value="{{uaaUrl::input}}"
-          placeholder="https://<< your instance id >>.predix-uaa.run.aws-usw02-pr.ice.predix.io">/oauth/clients
+        UAA URL: <span>{{uaaUrl}}</span>/oauth/clients
       </p>
       <p>
         New client ID: <input name="clientId" required value="{{clientId::input}}">
@@ -20,44 +19,13 @@
         New client secret: <input name="clientSecret" type="password" required value="{{clientSecret::input}}">
       </p>
       <p>Request</p>
-      <textarea id="clientRequest" rows=30 cols=100>
-        {
-            "client_id": "{{clientId}}",
-            "client_secret": "{{clientSecret}}",
-            "scope": [
-                "uaa.none",
-                "openid",
-                "acs.policies.read",
-                "acs.policies.write",
-                "acs.attributes.read",
-                "acs.attributes.write"
-            ],
-            "authorized_grant_types": [
-                "authorization_code",
-                "client_credentials",
-                "refresh_token",
-                "password"
-            ],
-            "authorities": [
-                "openid",
-                "acs.policies.read",
-                "acs.policies.write",
-                "acs.attributes.read",
-                "acs.attributes.write",
-                "uaa.resource",
-                "uaa.none"
-            ],
-            "autoapprove": [
-                "openid"
-            ]
-        }
-      </textarea>
+      <textarea id="clientRequest" rows=10 cols=100>{{restRequest}}</textarea>
       <br/>
       <button type="submit">Submit</button>
     </form>
     <br/>
     <p>Response</p>
-    <textarea rows=20 cols=150>{{restResponse}}</textarea>
+    <pretty-json raw-json="{{restResponse}}"></pretty-json>
   </template>
 
   <script>
@@ -73,9 +41,15 @@
           },
           clientId: {
             type: String,
-            notify: true
+            notify: true,
+            observer: 'updateClientId'
           },
           clientSecret: {
+            type: String,
+            notify: true,
+            observer: 'updateClientSecret'
+          },
+          restRequest: {
             type: String,
             notify: true
           },
@@ -88,8 +62,56 @@
             notify: true
           }
         },
+
+        restRequestObject: {
+          "client_id": "",
+          "client_secret": "",
+          "scope": [
+              "uaa.none",
+              "openid",
+              "acs.policies.read",
+              "acs.policies.write",
+              "acs.attributes.read",
+              "acs.attributes.write"
+          ],
+          "authorized_grant_types": [
+              "authorization_code",
+              "client_credentials",
+              "refresh_token",
+              "password"
+          ],
+          "authorities": [
+              "openid",
+              "acs.policies.read",
+              "acs.policies.write",
+              "acs.attributes.read",
+              "acs.attributes.write",
+              "uaa.resource",
+              "uaa.none"
+          ],
+          "autoapprove": [
+              "openid"
+          ]
+        },
+
+        updateClientId: function(newId) {
+          this.debounce('updateId', function() {
+            this.restRequestObject.client_id = newId;
+            this.restRequest = JSON.stringify(this.restRequestObject);
+          }, 300);
+
+        },
+
+        updateClientSecret: function(newSecret) {
+          this.debounce('updateSecret', function() {
+            this.restRequestObject.client_secret = newSecret;
+            this.restRequest = JSON.stringify(this.restRequestObject);
+          }, 300);
+        },
+
         ready: function() {
           var self = this;
+          this.restRequest = JSON.stringify(this.restRequestObject);
           var restForm = this.$.restForm;
           restForm.addEventListener('iron-form-presubmit', function() {
             this.request.url = '/api/oauth/clients';
@@ -98,7 +120,7 @@
               "authorization": self.adminAuthBearerToken
             };
             // TODO: Fix this part... weird bug is not showing the first curly bracket!
-            this.request.body = "{" + self.$.clientRequest.value; //textarea input
+            this.request.body = self.$.clientRequest.value; //textarea input
           });
           restForm.addEventListener('iron-form-response', function(event) {
             // event.detail as an iron-request
