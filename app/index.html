@@ -75,24 +75,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Drawer Content -->
         <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
           <a data-route="home" href="/" on-click="onDataRouteClick">
-            <!-- <iron-icon icon="lock-outline"></iron-icon> -->
-            <iron-icon icon="home"></iron-icon>
-            <span>Home</span>
+            <iron-icon icon="lock-outline"></iron-icon>
+            <span>Login</span>
           </a>
 
           <a data-route="clientid" href="/clientid" on-click="onDataRouteClick">
-            <iron-icon icon="lock-outline"></iron-icon>
-            <span>Client ID</span>
+            <iron-icon icon="create"></iron-icon>
+            <span>Create Client ID</span>
           </a>
           <a data-route="users" href="/users" on-click="onDataRouteClick">
-            <iron-icon icon="lock-outline"></iron-icon>
-            <span>User</span>
+            <iron-icon icon="perm-identity"></iron-icon>
+            <span>Create User</span>
           </a>
-
-          <!-- <a data-route="users" href="/users" on-click="onDataRouteClick">
-            <iron-icon icon="info"></iron-icon>
-            <span>Users</span>
-          </a> -->
+          <a data-route="group" href="/group" on-click="onDataRouteClick">
+            <iron-icon icon="group-work"></iron-icon>
+            <span>Create Group</span>
+          </a>
+          <a data-route="group" href="/addToGroup" on-click="onDataRouteClick">
+            <iron-icon icon="add-circle-outline"></iron-icon>
+            <span>Add To Group</span>
+          </a>
+          <a data-route="usertoken" href="/userToken" on-click="onDataRouteClick">
+            <iron-icon icon="done"></iron-icon>
+            <span>Get User Token</span>
+          </a>
 
           <!-- <a data-route="contact" href="/contact" on-click="onDataRouteClick">
             <iron-icon icon="mail"></iron-icon>

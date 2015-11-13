@@ -110,7 +110,7 @@
             this.request.url = '/api/Users';
             this.request.headers = {
               "content-type": "application/json",
-              "authorization": self.adminAuthBearerToken
+              "authorization": self.adminAuthBearerToken || ""
             };
             this.request.body =  self.$.clientRequest.value; //textarea input
           });
