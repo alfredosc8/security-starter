@@ -1,14 +1,29 @@
 ## Predix Security Starter Kit
-This project is based on the Polymer Starter Kit.
+This project is based on the Polymer Starter Kit.  See the [prerequisites](#prerequisites-for-everyone) below.  In addition, you will need the Cloud Foundry CLI tool, and you'll need to login with your Predix credentials.
 
 ### Getting Started
+First you need to run a few commands to create your instance of Predix UAA and find its URL.  Don't forget your new admin secret!
+```
+cf create-service predix-uaa beta <<new-uaa-instance-name>> -c '{"adminClientSecret": "<<new-admin-secret>>"}'
+git clone https://github.com/PredixDev/security-starter-node-service.git
+cd security-starter-node-service
+cf push <<new-sample-service-name>>
+cf bind-service <<new-sample-service-name>> <<new-uaa-instance-name>>
+cf env <<new-sample-service-name>>
+```
+Check the output of that last command, for the "predix-uaa" service, and copy the "uri" for that service, from the "credentials" object.
+Open up app/uaaConfig.json and enter the URL of the new UAA service instance.
+
+Now you're ready to start running this application locally with these commands:
 ```
 npm install
 bower install
 gulp serve
 ```
 
-_Below here is old, original ReadMe, from the polymer starter kit._
+_Below here is old, original ReadMe, from the Polymer Starter Kit.  Still relevant for getting started and background._
+
+---
 
 ## Polymer Starter Kit
 
