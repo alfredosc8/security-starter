@@ -20,6 +20,11 @@
       restResponse: {
         type: String,
         notify: true
+      },
+      loading: {
+        type: Boolean,
+        value: false,
+        notify: true
       }
     },
 
@@ -31,12 +36,14 @@
     _handleError: function(event) {
       this.error = event.detail.error.message;
       this.restResponse = event.detail.request.parseResponse();
+      this.loading = false;
     },
 
     _handleResponse: function(event) {
       // event.detail as an iron-request
       this.error = null;
       this.restResponse = JSON.stringify(event.detail.response);
+      this.loading = false;
     }
   };
 </script>

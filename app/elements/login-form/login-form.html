@@ -21,6 +21,9 @@
     </form>
     <p>{{error}}</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
+    <div hidden$="{{!loading}}">
+      <paper-progress indeterminate style="width: 100%"></paper-progress>
+    </div>
     <tutorial-overlay id="command">
       curl '{{tokenUrl}}' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'accept: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' -H 'Connection: keep-alive' --data 'grant_type=client_credentials'
     </tutorial-overlay>
@@ -64,6 +67,8 @@
             this.request.url = '/api/oauth/token';
             this.request.headers = {authorization: self.authHeader};
             this.request.body = 'grant_type=client_credentials';
+            self.loading = true;
+            self.restResponse = '';
           });
           restForm.addEventListener('iron-form-response', function(event) {
             // self.restResponse = JSON.stringify(event.detail.response);
