@@ -243,8 +243,14 @@ gulp.task('serve', ['styles', 'elements', 'images'], function () {
     //   console.log('Request headers: ' + JSON.stringify(req.headers));
     // }
   };
+  // var githubProxyOptions = {
+  //   target: 'https://github.com',
+  //   changeOrigin: true,
+  //   pathRewrite: { '^/github/': '/'}
+  // };
   if (corporateProxyServer) {
     proxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
+    // githubProxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
   }
   browserSync({
     port: 5000,

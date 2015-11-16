@@ -8,7 +8,7 @@
         display: block;
       }
     </style>
-    <p class="paper-font-body2">Enter UAA Admin Secret</p>
+    <p class="paper-font-body2">Enter UAA Admin Secret. <paper-icon-button id="showDetailsButton" icon="help-outline"></paper-icon-button></p>
     <form is="iron-form" id="restForm" method="post">
       <p>
         UAA URL: <span>{{tokenUrl}}</span>
@@ -16,10 +16,16 @@
       <p>
         Admin secret: <input name="adminSecret" type="password" required value="{{adminSecret::input}}">
       </p>
+      <button id="showCommandButton" data-dialog="command">Curl command</button>
       <button type="submit">Submit</button>
     </form>
     <p>{{error}}</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
+    <tutorial-overlay id="command">
+      curl '{{tokenUrl}}' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'accept: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' -H 'Connection: keep-alive' --data 'grant_type=client_credentials'
+    </tutorial-overlay>
+    <!-- <tutorial-overlay id="details" markdown-url="/github/PredixDev/security-starter/README.md"></tutorial-overlay> -->
+    <tutorial-overlay id="details">More descriptive text here</tutorial-overlay>
   </template>
 
   <script>
@@ -41,6 +47,11 @@
           tokenUrl: {
             type: String,
             notify: true
+          },
+          authHeader: {
+            type: String,
+            notify: true,
+            value: 'Enter admin secret'
           }
         },
 
@@ -49,15 +60,29 @@
           var restForm = this.$.restForm;
           restForm.addEventListener('iron-form-presubmit', function() {
             // console.log('iron-form-presubmit event caught');
-            var authHeader = 'Basic ' + btoa('admin:' + self.adminSecret);
+            self.authHeader = 'Basic ' + btoa('admin:' + self.adminSecret);
             this.request.url = '/api/oauth/token';
-            this.request.headers = {authorization: authHeader};
+            this.request.headers = {authorization: self.authHeader};
             this.request.body = 'grant_type=client_credentials';
           });
           restForm.addEventListener('iron-form-response', function(event) {
             // self.restResponse = JSON.stringify(event.detail.response);
             // save token in memory for other calls:
             self.adminAuthBearerToken = event.detail.response["token_type"] + ' ' + event.detail.response["access_token"];
+          });
+          this.$.showCommandButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            var id = e.target.getAttribute('data-dialog');
+            var dialog = document.getElementById(id);
+            if (dialog) {
+              dialog.open();
+            }
+          });
+          this.$.showDetailsButton.addEventListener('click', function(e) {
+            var detailsOverlay = document.getElementById('details');
+            if (details) {
+              details.open();
+            }
           });
         },
 

@@ -1,0 +1,64 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+
+<dom-module id="tutorial-overlay">
+
+  <style>
+
+    :host {
+      background: white;
+      color: black;
+      padding: 24px;
+      box-shadow: rgba(0, 0, 0, 0.24) -2.3408942051048403px 5.524510324047423px 12.090680100755666px 0px, rgba(0, 0, 0, 0.12) 0px 0px 12px 0px;
+    }
+
+  </style>
+
+  <template>
+    <iron-ajax id="getMdEl" url="{{markdownUrl}}" last-response="{{remoteMd}}" method="GET"></iron-ajax>
+    <content></content>
+    <marked-element id="md" markdown={{remoteMd}}></marked-element>
+  </template>
+
+</dom-module>
+
+<script>
+
+(function() {
+
+  Polymer({
+
+    is: 'tutorial-overlay',
+
+    properties: {
+      markdownUrl: {
+        type: String,
+        notify: true
+      }
+    },
+
+    ready: function() {
+      if (this.markdownUrl && this.markdownUrl.length > 0) {
+        console.log('fetching markdown from: ' + this.markdownUrl);
+        var getMdEl = this.$.getMdEl;
+        // console.log('md el: ' + getMdEl);
+        getMdEl.addEventListener('response', function(event) {
+          document.getElementById('md').markdown = event.detail.response;
+          document.getElementById('md').render();
+        });
+        // getMdEl.url = this.markdownUrl;
+        getMdEl.generateRequest();
+      }
+
+    },
+
+    behaviors: [
+      Polymer.IronOverlayBehavior
+    ]
+
+  });
+
+})();
+
+</script>
