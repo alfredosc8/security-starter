@@ -96,8 +96,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Add To Group</span>
           </a>
           <a data-route="usertoken" href="/userToken" on-click="onDataRouteClick">
+            <iron-icon icon="lock"></iron-icon>
+            <span>Login as User</span>
+          </a>
+          <a data-route="checktoken" href="checkToken" on-click="onDataRouteClick">
             <iron-icon icon="done"></iron-icon>
-            <span>Get User Token</span>
+            <span>Check Token</span>
           </a>
 
           <!-- <a data-route="contact" href="/contact" on-click="onDataRouteClick">
@@ -155,7 +159,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Next we need to create a client ID.
               </paper-material>
               <paper-material elevation="1">
-                <clientid-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"></clientid-form>
+                <clientid-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}"></clientid-form>
               </paper-material>
             </section>
 
@@ -183,6 +187,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
               <paper-material elevation="1">
                 <add-to-group-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}" group-name="{{newGroupName}}" user-name="{{newUserName}}"></add-to-group-form>
+              </paper-material>
+            </section>
+
+            <section data-route="usertoken">
+              <paper-material elevation="1">
+                Log in as the newly created user.
+              </paper-material>
+              <paper-material elevation="1">
+                <user-token-form base-url="{{uaaConfig.url}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" user-token="{{newUserToken}}"></user-token-form>
+              </paper-material>
+            </section>
+
+            <section data-route="checktoken">
+              <paper-material elevation="1">
+                Check if token is valid.
+              </paper-material>
+              <paper-material elevation="1">
+                <check-token-form base-url="{{uaaConfig.url}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" user-token={{newUserToken}}></check-token-form>
               </paper-material>
             </section>
 

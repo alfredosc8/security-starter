@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../pretty-json/pretty-json.html">
 
 <dom-module id="tutorial-overlay">
 
@@ -19,6 +20,7 @@
     <iron-ajax id="getMdEl" url="{{markdownUrl}}" last-response="{{remoteMd}}" method="GET"></iron-ajax>
     <content></content>
     <marked-element id="md" markdown={{remoteMd}}></marked-element>
+    <pretty-json raw-json="{{rawJson}}"></pretty-json>
   </template>
 
 </dom-module>
@@ -34,6 +36,10 @@
     properties: {
       markdownUrl: {
         type: String,
+        notify: true
+      },
+      rawJson: {
+        type: Object,
         notify: true
       }
     },

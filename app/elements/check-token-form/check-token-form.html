@@ -1,0 +1,94 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../restform-behavior.html">
+
+<dom-module id="check-token-form">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <form is="iron-form" id="restForm" method="post">
+      <p>
+        UAA URL: <span>{{baseUrl}}</span>/oauth/token
+      </p>
+      <p>Request</p>
+      <textarea id="checkTokenRequest" rows=10 cols=100>{{userToken}}</textarea>
+      <br/>
+      <button id="decodeTokenButton">Decode Token</button>
+      <button type="submit">Submit</button>
+    </form>
+    <p>{{error}}</p>
+    <pretty-json raw-json="{{restResponse}}"></pretty-json>
+    <div hidden$="{{!loading}}">
+      <paper-progress indeterminate style="width: 100%"></paper-progress>
+    </div>
+    <tutorial-overlay id="decoded"></tutorial-overlay>
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'check-token-form',
+        properties: {
+          userToken: {
+            type: String,
+            notify: true
+          },
+          clientId: {
+            type: String,
+            notify: true
+          },
+          clientSecret: {
+            type: String,
+            notify: true
+          },
+          decodedToken: {
+            type: String,
+            notify: true
+          }
+        },
+
+        ready: function() {
+          var self = this;
+          this.restRequest = JSON.stringify(this.restRequestObject);
+          var restForm = this.$.restForm;
+          restForm.addEventListener('iron-form-presubmit', function() {
+            this.request.url = '/api/check_token';
+            var authHeader = 'Basic ' + btoa(self.clientId + ':' + self.clientSecret);
+            this.request.headers = {
+              "content-type": "application/x-www-form-urlencoded",
+              "authorization": authHeader
+            };
+            this.request.body.token = self.$.checkTokenRequest.value; //textarea input
+            self.loading = true;
+          });
+          this.$.decodeTokenButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            // var id = e.target.getAttribute('data-dialog');
+            var dialog = document.getElementById('decoded');
+            if (dialog) {
+              var json = self.userToken;
+              var parts = self.userToken.split('.');
+              if (parts.length === 3) {
+                json = {
+                  header: JSON.parse(atob(parts[0])),
+                  payload: JSON.parse(atob(parts[1]))
+                  // signature: atob(parts[2])
+                }
+              }
+
+              dialog.rawJson = json;
+              dialog.open();
+            }
+          });
+        },
+
+        behaviors: [RestFormBehavior]
+      });
+    })();
+  </script>
+
+</dom-module>

@@ -47,6 +47,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.route = 'usertoken';
     });
 
+    page('/checkToken', scrollToTop, function() {
+      app.route = 'checktoken';
+    });
+
     // add #! before urls
     page({
       hashbang: true
