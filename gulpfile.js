@@ -59,15 +59,15 @@ var jshintTask = function (src) {
     .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
 };
 
-var imageOptimizeTask = function (src, dest) {
-  return gulp.src(src)
-    .pipe($.cache($.imagemin({
-      progressive: true,
-      interlaced: true
-    })))
-    .pipe(gulp.dest(dest))
-    .pipe($.size({title: 'images'}));
-};
+// var imageOptimizeTask = function (src, dest) {
+//   return gulp.src(src)
+//     .pipe($.cache($.imagemin({
+//       progressive: true,
+//       interlaced: true
+//     })))
+//     .pipe(gulp.dest(dest))
+//     .pipe($.size({title: 'images'}));
+// };
 
 var optimizeHtmlTask = function (src, dest) {
   var assets = $.useref.assets({searchPath: ['.tmp', 'app', 'dist']});
@@ -118,9 +118,9 @@ gulp.task('jshint', function () {
 });
 
 // Optimize images
-gulp.task('images', function () {
-  return imageOptimizeTask('app/images/**/*', 'dist/images');
-});
+// gulp.task('images', function () {
+//   return imageOptimizeTask('app/images/**/*', 'dist/images');
+// });
 
 // Copy all files at the root level (app)
 gulp.task('copy', function () {
@@ -229,7 +229,7 @@ gulp.task('clean', function (cb) {
 });
 
 // Watch files for changes & reload
-gulp.task('serve', ['styles', 'elements', 'images'], function () {
+gulp.task('serve', ['styles', 'elements'], function () {
   var corporateProxyServer = process.env.http_proxy || process.env.HTTP_PROXY;
   // console.log("corporateProxyServer: " + corporateProxyServer);
   var uaaConfig = JSON.parse(fs.readFileSync('./app/uaaConfig.json', 'utf-8'));
@@ -313,14 +313,14 @@ gulp.task('default', ['clean'], function (cb) {
   runSequence(
     ['copy', 'styles'],
     'elements',
-    ['jshint', 'images', 'fonts', 'html'],
+    ['jshint', 'fonts', 'html'],
     'vulcanize','rename-index', 'remove-old-build-index', // 'cache-config',
     cb);
 });
 
 // Load tasks for web-component-tester
 // Adds tasks for `gulp test:local` and `gulp test:remote`
-require('web-component-tester').gulp.init(gulp);
+// require('web-component-tester').gulp.init(gulp);
 
 // Load custom tasks from the `tasks` directory
 try { require('require-dir')('tasks'); } catch (err) {}
