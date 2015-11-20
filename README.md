@@ -1,6 +1,6 @@
 ## Predix Security Starter Kit
 
-### Prerequisite
+### Prerequisites
 
 - Node.js, used to run JavaScript tools from the command line.
 - npm, the node package manager, installed with Node.js and used to install Node.js packages.
@@ -26,7 +26,10 @@ npm install -g gulp bower
 ```
 
 This lets you run `gulp` and `bower` from the command line.
-This project is based on the Polymer Starter Kit.  See the [prerequisites](#prerequisites-for-everyone) below.  In addition, you will need the Cloud Foundry CLI tool, and you'll need to login with your Predix credentials.
+
+4) In addition, you will need the Cloud Foundry CLI tool:
+<https://github.com/cloudfoundry/cli/releases/tag/v6.12.2>
+Then you'll need to login with your Predix credentials.
 
 ### Getting Started
 First you need to run a few commands to create your instance of Predix UAA and find its URL.  Don't forget your new admin secret!
