@@ -243,14 +243,14 @@ gulp.task('serve', ['styles', 'elements'], function () {
     //   console.log('Request headers: ' + JSON.stringify(req.headers));
     // }
   };
-  // var githubProxyOptions = {
-  //   target: 'https://github.com',
-  //   changeOrigin: true,
-  //   pathRewrite: { '^/github/': '/'}
-  // };
+  var githubProxyOptions = {
+    target: 'https://raw.githubusercontent.com',
+    changeOrigin: true,
+    pathRewrite: { '^/github/': '/'}
+  };
   if (corporateProxyServer) {
     proxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
-    // githubProxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
+    githubProxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
   }
   browserSync({
     port: 5000,
@@ -270,7 +270,7 @@ gulp.task('serve', ['styles', 'elements'], function () {
     //https: true,
     server: {
       baseDir: ['.tmp', 'app'],
-      middleware: [ proxy('/api', proxyOptions), historyApiFallback() ],
+      middleware: [ proxy('/api', proxyOptions), proxy('/github', githubProxyOptions), historyApiFallback() ],
       routes: {
         '/bower_components': 'bower_components'
       }
