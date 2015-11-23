@@ -16,3 +16,26 @@ body {
 .scrollable {
   overflow: auto;
 }
+
+.starter-button {
+  text-transform: none;
+}
+
+.starter-button-primary {
+  background-color: #00A800;
+  color: white;
+}
+
+.starter-learn-img {
+  vertical-align: bottom;
+  width: 40px;
+  height: 40px;
+}
+
+.starter-inputs {
+  border-spacing: 0;
+}
+
+.starter-inputs td {
+  padding-bottom: 1em;
+}

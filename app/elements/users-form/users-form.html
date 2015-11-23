@@ -13,15 +13,11 @@
       <p>
         UAA URL: <span>{{baseUrl}}</span>/Users
       </p>
-      <p>
-        UserName : <input name="username" required value="{{userName::input}}">
-      </p>
-      <p>
-        Password: <input name="userPassword" type="password" required value="{{userPassword::input}}">
-      </p>
-      <p>
-        Email: <input name="email" required value="{{email::input}}">
-      </p>
+      <table class="starter-inputs">
+        <tr><td>Username:</td><td><input name="username" required value="{{userName::input}}"></td></tr>
+        <tr><td>Password:</td><td><input name="userPassword" type="password" required value="{{userPassword::input}}"></td></tr>
+        <tr><td>Email:</td><td><input name="email" required value="{{email::input}}"></td></tr>
+      </table>
       <p>Request</p>
         <textarea id="clientRequest" rows=10 cols=100>{{restRequest}}</textarea>
       <br/>

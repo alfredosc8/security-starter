@@ -33,6 +33,15 @@
       'iron-form-response': '_handleResponse'
     },
 
+    _commandButtonListener: function(e) {
+      e.preventDefault();
+      var id = e.target.getAttribute('data-dialog');
+      var dialog = document.getElementById(id);
+      if (dialog) {
+        dialog.open();
+      }
+    },
+
     _handleError: function(event) {
       this.error = event.detail.error.message;
       this.restResponse = event.detail.request.parseResponse();
