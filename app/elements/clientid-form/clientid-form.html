@@ -35,8 +35,6 @@
     <tutorial-overlay id="clientIdCommand">
       curl '{{baseUrl}}/oauth/clients' -H 'Pragma: no-cache' -H 'content-type: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{adminAuthBearerToken}}' --data-binary '{{restRequest}}'
     </tutorial-overlay>
-    <!-- curl '{{tokenUrl}}' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'accept: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' -H 'Connection: keep-alive' --data 'grant_type=client_credentials' -->
-
     <tutorial-overlay id="clientIdDetails" class="scrollable" markdown-url="/github/PredixDev/predix-tutorials/master/security.md#create-client-id"></tutorial-overlay>
   </template>
 
@@ -104,6 +102,8 @@
           this.restRequest = JSON.stringify(this.restRequestObject);
           var restForm = this.$.restForm;
           restForm.addEventListener('iron-form-presubmit', function() {
+            self.loading = true;
+            self.restResponse = '';
             this.request.url = '/api/oauth/clients';
             this.request.headers = {
               "content-type": "application/json",
