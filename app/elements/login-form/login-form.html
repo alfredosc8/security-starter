@@ -8,7 +8,7 @@
         display: block;
       }
     </style>
-    <p>Enter UAA Admin Secret. <paper-button noink id="showDetailsButton" icon="help-outline"><img alt="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img></paper-button></p>
+    <p>Enter UAA Admin Secret. <paper-button noink id="showDetailsButton" data-dialog="details"><img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img></paper-button></p>
     <form is="iron-form" id="restForm" method="post">
       <p>
         UAA URL: <span>{{tokenUrl}}</span>
@@ -74,16 +74,11 @@
             // save token in memory for other calls:
             self.adminAuthBearerToken = event.detail.response["token_type"] + ' ' + event.detail.response["access_token"];
           });
-          this.$.showCommandButton.addEventListener('click', this._commandButtonListener);
+          this.$.showCommandButton.addEventListener('click', this._overlayButtonListener);
           this.$.submitAdminLogin.addEventListener('click', function() {
             restForm.submit();
           });
-          this.$.showDetailsButton.addEventListener('click', function(e) {
-            var detailsOverlay = document.getElementById('details');
-            if (details) {
-              details.open();
-            }
-          });
+          this.$.showDetailsButton.addEventListener('click', this._overlayButtonListener);
         },
 
         updateTokenUrl: function(url) {

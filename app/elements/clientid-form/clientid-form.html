@@ -8,8 +8,11 @@
         display: block;
       }
     </style>
-    <!-- <span><iron-icon icon="error-outline"></iron-icon> First login as admin before completing this step.</span> -->
-    <p class="paper-font-body2">Enter a new client ID and admin secret</p>
+    <p>Enter a new client ID and admin secret.
+      <paper-button noink id="clientIdDetailsButton" data-dialog="clientIdDetails">
+        <img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img>
+      </paper-button>
+    </p>
     <form is="iron-form" id="restForm" method="post">
       <p>
         UAA URL: <span>{{baseUrl}}</span>/oauth/clients
@@ -21,10 +24,20 @@
       <p>Request</p>
       <textarea id="clientRequest" rows=10 cols=100>{{restRequest}}</textarea>
       <br/>
-      <button type="submit">Submit</button>
+      <paper-button raised noink class="starter-button" id="clientIdCommandButton" data-dialog="clientIdCommand">Curl command</paper-button>
+      <paper-button raised noink class="starter-button starter-button-primary" id="addClientIdButton">Submit</paper-button>
     </form>
     <p>{{error}}</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
+    <div hidden$="{{!loading}}">
+      <paper-progress indeterminate style="width: 100%"></paper-progress>
+    </div>
+    <tutorial-overlay id="clientIdCommand">
+      curl '{{baseUrl}}/oauth/clients' -H 'Pragma: no-cache' -H 'content-type: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{adminAuthBearerToken}}' --data-binary '{{restRequest}}'
+    </tutorial-overlay>
+    <!-- curl '{{tokenUrl}}' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'accept: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' -H 'Connection: keep-alive' --data 'grant_type=client_credentials' -->
+
+    <tutorial-overlay id="clientIdDetails" class="scrollable" markdown-url="/github/PredixDev/predix-tutorials/master/security.md#create-client-id"></tutorial-overlay>
   </template>
 
   <script>
@@ -98,6 +111,11 @@
             };
             this.request.body = self.$.clientRequest.value; //textarea input
           });
+          this.$.addClientIdButton.addEventListener('click', function() {
+            restForm.submit();
+          });
+          this.$.clientIdCommandButton.addEventListener('click', this._overlayButtonListener);
+          this.$.clientIdDetailsButton.addEventListener('click', this._overlayButtonListener);
         },
 
         behaviors: [RestFormBehavior]

@@ -30,6 +30,7 @@ body {
   vertical-align: bottom;
   width: 40px;
   height: 40px;
+  pointer-events: none;
 }
 
 .starter-inputs {

@@ -7,7 +7,8 @@
       },
       adminAuthBearerToken: {
         type: String,
-        notify: true
+        notify: true,
+        value: 'First login as Admin.'
       },
       error: {
         type: String,
@@ -33,9 +34,10 @@
       'iron-form-response': '_handleResponse'
     },
 
-    _commandButtonListener: function(e) {
+    _overlayButtonListener: function(e) {
       e.preventDefault();
       var id = e.target.getAttribute('data-dialog');
+      // console.log('dialog id: ' + id);
       var dialog = document.getElementById(id);
       if (dialog) {
         dialog.open();
