@@ -195,7 +195,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Log in as the newly created user.
               </paper-material>
               <paper-material elevation="1">
-                <user-token-form base-url="{{uaaConfig.url}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" user-token="{{newUserToken}}"></user-token-form>
+                <user-token-form
+                  base-url="{{uaaConfig.url}}"
+                  client-id="{{newClientId}}"
+                  client-secret="{{newClientSecret}}"
+                  user-token="{{newUserToken}}"
+                  user-name="{{newUserName}}"></user-token-form>
               </paper-material>
             </section>
 

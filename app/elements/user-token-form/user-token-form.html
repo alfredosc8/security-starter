@@ -10,32 +10,32 @@
     </style>
     <!-- <p class="paper-font-body2"></p> -->
     <form is="iron-form" id="restForm" method="post">
+      <p>Client ID and secret shown for demonstration only. In your app, these should never be sent to the browser.
+      <paper-button noink id="userLoginDetailsButton" data-dialog="userLoginDetails">
+        <img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img>
+      </paper-button>
+      </p>
       <p>
         UAA URL: <span>{{baseUrl}}</span>/ouath/token
       </p>
-      <p>
-        Client ID: <input name="clientId" required value="{{clientId::input}}">
-      </p>
-      <p>
-        Client Secret: <input name="clientSecret" required type="password" value="{{clientSecret::input}}">
-      </p>
-      <p>
-        User name: <input name="username" required value="{{userName::input}}">
-      </p>
-      <p>
-        Password: <input name="password" type="password" required>
-      </p>
-      <button id="showCommandButton" data-dialog="user-token-command">Curl command</button>
-      <button type="submit">Submit</button>
+      <table class="starter-inputs">
+        <tr><td>Client ID:</td><td><input name="clientId" required value="{{clientId::input}}"></td></tr>
+        <tr><td>Client Secret:</td><td><input name="clientSecret" required type="password" value="{{clientSecret::input}}"></td></tr>
+        <tr><td>User name:</td><td><input name="username" required value="{{userName::input}}"></td></tr>
+        <tr><td>Password:</td><td><input name="password" type="password" value="{{userPwd::input}}" required></td></tr>
+      </table>
+      <paper-button raised noink class="starter-button" id="userLoginCommandButton" data-dialog="userLoginCommand">Curl command</paper-button>
+      <paper-button raised noink class="starter-button starter-button-primary" id="userLoginButton">Submit</paper-button>
     </form>
     <p>{{error}}</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
     <div hidden$="{{!loading}}">
       <paper-progress indeterminate style="width: 100%"></paper-progress>
     </div>
-    <tutorial-overlay id="user-token-command">
-      curl command here...
+    <tutorial-overlay id="userLoginCommand">
+      curl '{{baseUrl}}/oauth/token' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' --data 'username={{userName}}&password={{userPwd}}&grant_type=password'
     </tutorial-overlay>
+    <tutorial-overlay id="userLoginDetails" class="scrollable" markdown-url="/github/PredixDev/predix-tutorials/master/security.md#login-as-user"></tutorial-overlay>
   </template>
 
   <script>
@@ -59,11 +59,13 @@
           },
           clientId: {
             type: String,
-            notify: true
+            notify: true,
+            observer: 'updateAuthHeader'
           },
           clientSecret: {
             type: String,
-            notify: true
+            notify: true,
+            observer: 'updateAuthHeader'
           },
           userToken: {
             type: String,
@@ -75,27 +77,29 @@
           var self = this;
           var restForm = this.$.restForm;
           restForm.addEventListener('iron-form-presubmit', function() {
-            // var authHeader = 'Basic ' + btoa(self.clientId + ':' + self.clientSecret);
-            var authHeader = 'Basic ' + btoa(this.request.body.clientId + ':' + this.request.body.clientSecret);
             this.request.url = '/api/oauth/token';
-            this.request.headers = {authorization: authHeader};
+            this.request.headers = {authorization: self.authHeader};
             this.request.body.grant_type = 'password';
             delete this.request.body.clientId;
             delete this.request.body.clientSecret;
             self.loading = true;
             self.restResponse = '';
+            self.error = '';
           });
           restForm.addEventListener('iron-form-response', function(event) {
             self.userToken = event.detail.response["access_token"];
           });
-          this.$.showCommandButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            var id = e.target.getAttribute('data-dialog');
-            var dialog = document.getElementById(id);
-            if (dialog) {
-              dialog.open();
-            }
+          this.$.userLoginButton.addEventListener('click', function() {
+            restForm.submit();
           });
+          this.$.userLoginCommandButton.addEventListener('click', this._overlayButtonListener);
+          this.$.userLoginDetailsButton.addEventListener('click', this._overlayButtonListener);
+        },
+
+        updateAuthHeader: function() {
+          this.debounce('updateAuth', function() {
+            this.authHeader = 'Basic ' + btoa(this.clientId + ':' + this.clientSecret);
+          }, 300);
         },
 
         behaviors: [RestFormBehavior]

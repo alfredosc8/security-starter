@@ -8,15 +8,21 @@
         display: block;
       }
     </style>
+    <p>Your microservice should call the check token API to verify the token is valid.
+      <paper-button noink id="checkTokenDetailsButton" data-dialog="checkTokenDetails">
+        <img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img>
+      </paper-button>
+    </p>
     <form is="iron-form" id="restForm" method="post">
       <p>
-        UAA URL: <span>{{baseUrl}}</span>/oauth/token
+        UAA URL: <span>{{baseUrl}}</span>/check_token
       </p>
       <p>Request</p>
       <textarea id="checkTokenRequest" rows=10 cols=100>{{userToken}}</textarea>
       <br/>
-      <button id="decodeTokenButton">Decode Token</button>
-      <button type="submit">Submit</button>
+      <paper-button raised noink class="starter-button" id="decodeTokenButton">Decode Token</paper-button>
+      <paper-button raised noink class="starter-button" id="checkTokenCommandButton" data-dialog="checkTokenCommand">Curl command</paper-button>
+      <paper-button raised noink class="starter-button starter-button-primary" id="checkTokenButton">Submit</paper-button>
     </form>
     <p>{{error}}</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
@@ -24,6 +30,10 @@
       <paper-progress indeterminate style="width: 100%"></paper-progress>
     </div>
     <tutorial-overlay id="decoded"></tutorial-overlay>
+    <tutorial-overlay id="checkTokenCommand">
+      curl '{{baseUrl}}/check_token' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'accept: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' --data 'token={{userToken}}'
+    </tutorial-overlay>
+    <tutorial-overlay id="checkTokenDetails" class="scrollable" markdown-url="/github/PredixDev/predix-tutorials/master/security.md#check-token"></tutorial-overlay>
   </template>
 
   <script>
@@ -39,11 +49,13 @@
           },
           clientId: {
             type: String,
-            notify: true
+            notify: true,
+            observer: 'updateAuthHeader'
           },
           clientSecret: {
             type: String,
-            notify: true
+            notify: true,
+            observer: 'updateAuthHeader'
           },
           decodedToken: {
             type: String,
@@ -57,14 +69,22 @@
           var restForm = this.$.restForm;
           restForm.addEventListener('iron-form-presubmit', function() {
             this.request.url = '/api/check_token';
-            var authHeader = 'Basic ' + btoa(self.clientId + ':' + self.clientSecret);
             this.request.headers = {
               "content-type": "application/x-www-form-urlencoded",
-              "authorization": authHeader
+              "authorization": self.authHeader
             };
             this.request.body.token = self.$.checkTokenRequest.value; //textarea input
             self.loading = true;
+            self.restResponse = '';
+            self.error = '';
           });
+
+          this.$.checkTokenButton.addEventListener('click', function() {
+            restForm.submit();
+          });
+          this.$.checkTokenCommandButton.addEventListener('click', this._overlayButtonListener);
+          this.$.checkTokenDetailsButton.addEventListener('click', this._overlayButtonListener);
+
           this.$.decodeTokenButton.addEventListener('click', function(e) {
             e.preventDefault();
             // var id = e.target.getAttribute('data-dialog');
@@ -79,11 +99,16 @@
                   // signature: atob(parts[2])
                 }
               }
-
               dialog.rawJson = json;
               dialog.open();
             }
           });
+        },
+
+        updateAuthHeader: function() {
+          this.debounce('updateAuth', function() {
+            this.authHeader = 'Basic ' + btoa(this.clientId + ':' + this.clientSecret);
+          }, 300);
         },
 
         behaviors: [RestFormBehavior]

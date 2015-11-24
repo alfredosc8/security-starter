@@ -8,7 +8,7 @@
         display: block;
       }
     </style>
-    <p class="paper-font-body2">Enter new user info.
+    <p>Enter new user info.
       <paper-button noink id="userDetailsButton" data-dialog="userDetails">
         <img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img>
       </paper-button>
@@ -99,6 +99,7 @@
           restForm.addEventListener('iron-form-presubmit', function() {
             self.loading = true;
             self.restResponse = '';
+            self.error = '';
             this.request.url = '/api/Users';
             this.request.headers = {
               "content-type": "application/json",

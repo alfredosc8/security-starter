@@ -104,6 +104,7 @@
           restForm.addEventListener('iron-form-presubmit', function() {
             self.loading = true;
             self.restResponse = '';
+            self.error = '';
             this.request.url = '/api/oauth/clients';
             this.request.headers = {
               "content-type": "application/json",
