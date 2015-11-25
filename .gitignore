@@ -1,5 +1,5 @@
 node_modules
-dist
+dist/bower_components
 bower_components
 .tmp
 app/uaaConfig.json
