@@ -87,7 +87,6 @@
 
           this.$.decodeTokenButton.addEventListener('click', function(e) {
             e.preventDefault();
-            // var id = e.target.getAttribute('data-dialog');
             var dialog = document.getElementById('decoded');
             if (dialog) {
               var json = self.userToken;
@@ -97,7 +96,7 @@
                   header: JSON.parse(atob(parts[0])),
                   payload: JSON.parse(atob(parts[1]))
                   // signature: atob(parts[2])
-                }
+                };
               }
               dialog.rawJson = json;
               dialog.open();

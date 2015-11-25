@@ -28,7 +28,7 @@
 <script>
 
 (function() {
-
+/* globals marked: true */
   Polymer({
 
     is: 'tutorial-overlay',
@@ -55,7 +55,7 @@
         // console.log('md el: ' + getMdEl);
         getMdEl.addEventListener('response', function(event) {
 
-          var frag = document.createDocumentFragment()
+          var frag = document.createDocumentFragment(),
             sectionFrag = document.createDocumentFragment();
           var div = document.createElement('div');
           div.innerHTML = marked(event.detail.response);
@@ -77,8 +77,9 @@
                 // console.log(headingLevel);
               } else if (el.tagName && /[Hh]\d/.test(el.tagName)) { // we found a header tag
                 // console.log('tagName: ' + el.tagName);
-                if (parseInt(el.tagName.charAt(1)) <= headingLevel)
-                inSection = false;
+                if (parseInt(el.tagName.charAt(1)) <= headingLevel) {
+                  inSection = false;
+                }
               }
 
               if (inSection) {
