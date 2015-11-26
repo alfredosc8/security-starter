@@ -13,6 +13,9 @@ body {
   color: #333;
 }
 
+textarea {
+  font-size: 1em;
+}
 .scrollable {
   overflow: auto;
 }
