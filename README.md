@@ -5,7 +5,6 @@
 - Node.js, used to run JavaScript tools from the command line.
 - npm, the node package manager, installed with Node.js and used to install Node.js packages.
 - gulp, a Node.js-based build tool.
-- bower, a Node.js-based package manager used to install front-end packages
 
 **To install dependencies:**
 
@@ -19,13 +18,13 @@ The version should be at or above 0.12.x.
 
 2)  If you don't have Node.js installed, or you have a lower version, go to [nodejs.org](https://nodejs.org) and click on the big green Install button.
 
-3)  Install `gulp` and `bower` globally.
+3)  Install `gulp` globally.
 
 ```sh
-npm install -g gulp bower
+npm install -g gulp
 ```
 
-This lets you run `gulp` and `bower` from the command line.
+This lets you run `gulp` from the command line.
 
 4) In addition, you will need the Cloud Foundry CLI tool:
 <https://github.com/cloudfoundry/cli/releases/tag/v6.12.2>
@@ -35,18 +34,36 @@ Then you'll need to login with your Predix credentials.
 First you need to run a few commands to create your instance of Predix UAA and find its URL.  Don't forget your new admin secret!
 ```
 cf create-service predix-uaa beta <<new-uaa-instance-name>> -c '{"adminClientSecret": "<<new-admin-secret>>"}'
-git clone https://github.com/PredixDev/security-starter-node-service.git
-cd security-starter-node-service
-cf push <<new-sample-service-name>>
-cf bind-service <<new-sample-service-name>> <<new-uaa-instance-name>>
-cf env <<new-sample-service-name>>
+git clone https://github.com/PredixDev/pdk-security-starter-nodejs.git
+cd pdk-security-starter-nodejs
+cf push <<new-sample-app-name>>
+cf bind-service <<new-sample-app-name>> <<new-uaa-instance-name>>
+cf env <<new-sample-app-name>>
 ```
 Check the output of that last command, for the "predix-uaa" service, and copy the "uri" for that service, from the "credentials" object.
 Open up app/uaaConfig.json and enter the URL of the new UAA service instance.
 
 Now you're ready to start running this application locally with these commands:
 ```
+npm install --production
+gulp
+```
+
+### Developers
+If you want to contribute to this security-starter application, there are a few extra setup steps.  (The setup above has been simplified to ease installation for customers.)
+
+1) If you don't have bower installed globally, you'll need that:
+```
+npm install -g bower
+```
+
+2) Install dev dependencies:
+```
 npm install
 bower install
-gulp serve
+```
+
+3) Run using the "full" gulpfile:
+```
+gulp serve --gulpfile dev-gulpfile.js
 ```
