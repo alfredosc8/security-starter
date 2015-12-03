@@ -51,6 +51,7 @@ gulp
 
 ### Developers
 If you want to contribute to this security-starter application, there are a few extra setup steps.  (The setup above has been simplified to ease installation for customers.)
+We're also committing the "dist" directory to Github, just to make it easier for customers to run the app.
 
 1) If you don't have bower installed globally, you'll need that:
 ```
@@ -66,4 +67,9 @@ bower install
 3) Run using the "full" gulpfile:
 ```
 gulp serve --gulpfile dev-gulpfile.js
+```
+
+4) Run the default "dist" task, so we can check the "dist" directory into Github.
+```
+gulp --gulpfile dev-gulpfile.js
 ```
