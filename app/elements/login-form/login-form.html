@@ -16,10 +16,11 @@
       <p>
         Admin secret: <input name="adminSecret" type="password" required value="{{adminSecret::input}}">
       </p>
-      <paper-button raised noink class="starter-button" id="showCommandButton" data-dialog="command">Curl command</paper-button>
+      <paper-button raised noink class="starter-button" id="showCommandButton" data-dialog="command">See curl command </paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="submitAdminLogin">Submit</paper-button>
     </form>
     <p>{{error}}</p>
+    <p hidden$="{{!success}}">Success!  Here is the Admin token generated.  Tokens are used in Oauth Security to perform commands, such as Create Client Id.</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
     <div hidden$="{{!loading}}">
       <paper-progress indeterminate style="width: 100%"></paper-progress>
@@ -66,12 +67,9 @@
             this.request.url = '/api/oauth/token';
             this.request.headers = {authorization: self.authHeader};
             this.request.body = 'grant_type=client_credentials';
-            self.loading = true;
-            self.restResponse = '';
-            self.error = '';
+            self._reset();
           });
           restForm.addEventListener('iron-form-response', function(event) {
-            // self.restResponse = JSON.stringify(event.detail.response);
             // save token in memory for other calls:
             self.adminAuthBearerToken = event.detail.response["token_type"] + ' ' + event.detail.response["access_token"];
           });
