@@ -14,6 +14,11 @@
         type: String,
         notify: true
       },
+      success: {
+        type: Boolean,
+        value: false,
+        notify: true
+      },
       restRequest: {
         type: String,
         notify: true
@@ -48,6 +53,7 @@
       this.error = event.detail.error.message;
       this.restResponse = event.detail.request.parseResponse();
       this.loading = false;
+      this.success = false;
     },
 
     _handleResponse: function(event) {
@@ -55,6 +61,14 @@
       this.error = null;
       this.restResponse = JSON.stringify(event.detail.response);
       this.loading = false;
+      this.success = true;
+    },
+
+    _reset: function() {
+      this.loading = true;
+      this.restResponse = '';
+      this.error = '';
+      this.success = false;
     }
   };
 </script>

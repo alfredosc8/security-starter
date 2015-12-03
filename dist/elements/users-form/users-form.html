@@ -8,7 +8,7 @@
         display: block;
       }
     </style>
-    <p>Enter new user info.
+    <p>Create a new user for your application.
       <paper-button noink id="userDetailsButton" data-dialog="userDetails">
         <img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img>
       </paper-button>
@@ -25,10 +25,11 @@
       <p>Request</p>
         <textarea id="clientRequest" rows=10 cols=100>{{restRequest}}</textarea>
       <br/>
-      <paper-button raised noink class="starter-button" id="userCommandButton" data-dialog="userCommand">Curl command</paper-button>
+      <paper-button raised noink class="starter-button" id="userCommandButton" data-dialog="userCommand">See curl command</paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="addUserButton">Submit</paper-button>
     </form>
     <p>{{error}}</p>
+    <p hidden$="{{!success}}">Success!  Here is the response from UAA.  Notice the User is not a member of any Groups yet which will be needed later to access Services directly.</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
     <div hidden$="{{!loading}}">
       <paper-progress indeterminate style="width: 100%"></paper-progress>
