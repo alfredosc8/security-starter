@@ -84,7 +84,7 @@
           if (url && url.indexOf('http') > -1) {
             this.tokenUrl = url + '/oauth/token';
           } else {
-            this.tokenUrl = url;
+            this.tokenUrl = 'Please update the URL for your UAA instance in dist/uaaConfig.json.';
           }
         },
 
