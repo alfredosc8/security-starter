@@ -21,7 +21,7 @@ var HttpsProxyAgent = require('https-proxy-agent');
 gulp.task('default', function () {
   var corporateProxyServer = process.env.http_proxy || process.env.HTTP_PROXY;
   // console.log("corporateProxyServer: " + corporateProxyServer);
-  var uaaConfig = JSON.parse(fs.readFileSync('./app/uaaConfig.json', 'utf-8'));
+  var uaaConfig = JSON.parse(fs.readFileSync('./dist/uaaConfig.json', 'utf-8'));
   // console.log('URL: ' + uaaConfig.url);
   var proxyOptions = {
     target: uaaConfig.url,
