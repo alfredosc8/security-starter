@@ -509,7 +509,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <tutorial-overlay id="command">
       curl '{{tokenUrl}}' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'accept: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' -H 'Connection: keep-alive' --data 'grant_type=client_credentials'
     </tutorial-overlay>
-    <tutorial-overlay id="details" class="scrollable" markdown-url="/github/PredixDev/predix-tutorials/master/security.md#login-as-admin"></tutorial-overlay>
+    <tutorial-overlay id="details" class="scrollable" markdown-url="/security.md#login-as-admin"></tutorial-overlay>
   </template>
 
   </dom-module>
@@ -544,7 +544,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <tutorial-overlay id="clientIdCommand">
       curl '{{baseUrl}}/oauth/clients' -H 'Pragma: no-cache' -H 'content-type: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{adminAuthBearerToken}}' --data-binary '{{restRequest}}'
     </tutorial-overlay>
-    <tutorial-overlay id="clientIdDetails" class="scrollable" markdown-url="/github/PredixDev/predix-tutorials/master/security.md#create-client-id"></tutorial-overlay>
+    <tutorial-overlay id="clientIdDetails" class="scrollable" markdown-url="/security.md#create-client-id"></tutorial-overlay>
   </template>
 
   </dom-module>
@@ -580,7 +580,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <tutorial-overlay id="userCommand">
       curl '{{baseUrl}}/Users' -H 'Pragma: no-cache' -H 'content-type: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{adminAuthBearerToken}}' --data-binary '{{restRequest}}'
     </tutorial-overlay>
-    <tutorial-overlay id="userDetails" class="scrollable" markdown-url="/github/PredixDev/predix-tutorials/master/security.md#create-user"></tutorial-overlay>
+    <tutorial-overlay id="userDetails" class="scrollable" markdown-url="/security.md#create-user"></tutorial-overlay>
   </template>
 
   </dom-module>
@@ -662,7 +662,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <tutorial-overlay id="userLoginCommand">
       curl '{{baseUrl}}/oauth/token' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' --data 'username={{userName}}&amp;password={{userPwd}}&amp;grant_type=password'
     </tutorial-overlay>
-    <tutorial-overlay id="userLoginDetails" class="scrollable" markdown-url="/github/PredixDev/predix-tutorials/master/security.md#login-as-user"></tutorial-overlay>
+    <tutorial-overlay id="userLoginDetails" class="scrollable" markdown-url="/security.md#login-as-user"></tutorial-overlay>
   </template>
 
   </dom-module>
@@ -694,7 +694,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <tutorial-overlay id="checkTokenCommand">
       curl '{{baseUrl}}/check_token' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'accept: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' --data 'token={{userToken}}'
     </tutorial-overlay>
-    <tutorial-overlay id="checkTokenDetails" class="scrollable" markdown-url="/github/PredixDev/predix-tutorials/master/security.md#check-token"></tutorial-overlay>
+    <tutorial-overlay id="checkTokenDetails" class="scrollable" markdown-url="/security.md#check-token"></tutorial-overlay>
   </template>
 
   </dom-module>
