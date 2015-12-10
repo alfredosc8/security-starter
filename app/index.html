@@ -146,29 +146,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-material elevation="1">
                 <h3>Getting Started</h3>
                 <p>
-                  This utility helps you configure your instance of Predix UAA, without the need to install any extra tools.
-                  For first time users, just follow each step in the menu in order.
+                  This utility helps you configure your instance of Predix UAA without extra tools.
+                  First-time users can follow the steps in the menu in order.
+                  Before you can begin, you need to update the URL for your UAA instance in dist/uaaConfig.json,
+                  then restart this utility with the "gulp" command.
                 </p>
                 <p>
-                  First, set up the basics needed to create a secure microservice, including a Client ID and User.
-                  Next, set up groups and scopes so your microservice can work with Predix platform services.
+                  First, set up the basics to create a secure microservice, including a Client ID and User.
+                  Next, set up groups and scopes, so your microservice can work with Predix platform services.
                 </p>
                 <p>
                   This utility calls some of the REST API exposed by your instance of Predix UAA.
-                  The <a href="https://github.com/cloudfoundry/cf-uaac" target="_blank">UAAC command line tool</a> is a Ruby application, that calls the same REST API, and allows for more advanced configuration.
+                  The <a href="https://github.com/cloudfoundry/cf-uaac" target="_blank">UAAC command line tool</a> is a Ruby application that calls the same REST API, and allows for more advanced configuration.
                 </p>
                 <p>
-                  For more information on OAuth in general, <a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2" target="_blank">click here.</a>
-                </p>
-                <p>
-                  <a href="/loginAsAdmin">Let's go.</a>
+                  For more information on OAuth, read <a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2" target="_blank">An Introduction to OAuth2.</a>
                 </p>
               </paper-material>
             </section>
 
             <section data-route="loginasadmin">
               <paper-material elevation="1">
-                <p>First you need to login as admin for your UAA instance.</p>
+                <p>First, login as admin for your UAA instance.</p>
               </paper-material>
               <paper-material elevation="1">
                 <login-form uaa-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"></login-form>
@@ -177,7 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="clientid">
               <paper-material elevation="1">
-                Next we need to create a client ID.
+                Next, create a client ID.
               </paper-material>
               <paper-material elevation="1">
                 <clientid-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}"></clientid-form>
