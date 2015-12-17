@@ -13,6 +13,15 @@ body {
   color: #333;
 }
 
+/*
+Temporary fix for Polymer bug:
+https://github.com/PolymerElements/paper-menu/issues/31
+*/
+.paper-menu span,
+.paper-menu iron-icon {
+    pointer-events: none;
+}
+
 textarea {
   font-size: 1em;
 }

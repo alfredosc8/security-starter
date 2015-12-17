@@ -14,19 +14,11 @@
 node --version
 ```
 
-The version should be at or above 0.12.x.
+The version should be at or above 0.10.x.
 
 2)  If you don't have Node.js installed, or you have a lower version, go to [nodejs.org](https://nodejs.org) and click on the big green Install button.
 
-3)  Install `gulp` globally.
-
-```sh
-npm install -g gulp
-```
-
-This lets you run `gulp` from the command line.
-
-4) In addition, you will need the Cloud Foundry CLI tool:
+3) In addition, you will need the Cloud Foundry CLI tool:
 <https://github.com/cloudfoundry/cli/releases/tag/v6.12.2>
 Then you'll need to login with your Predix credentials.
 
@@ -46,7 +38,7 @@ Open up app/uaaConfig.json and enter the URL of the new UAA service instance.
 Now you're ready to start running this application locally with these commands:
 ```
 npm install --production
-gulp
+npm start
 ```
 
 ### Developers
