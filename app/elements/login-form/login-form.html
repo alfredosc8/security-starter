@@ -11,7 +11,7 @@
     <p>Enter your UAA Admin Secret. <paper-button noink id="showDetailsButton" data-dialog="details"><img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img></paper-button></p>
     <form is="iron-form" id="restForm" method="post">
       <p>
-        UAA URL: <span>{{tokenUrl}}</span>
+        UAA URL: <input name="uaaUrlInput" required>{{uaaUrl}}</span>
       </p>
       <p>
         Admin secret: <input name="adminSecret" type="password" required value="{{adminSecret::input}}">
@@ -83,9 +83,11 @@
         updateTokenUrl: function(url) {
           if (url && url.indexOf('http') > -1) {
             this.tokenUrl = url + '/oauth/token';
-          } else {
-            this.tokenUrl = 'Please update the URL for your UAA instance in dist/uaaConfig.json.';
           }
+          // TODO: Fix this form, to accept URL properly.
+        //   else {
+        //     this.tokenUrl = 'Please update the URL for your UAA instance in dist/uaaConfig.json.';
+        //   }
         },
 
         behaviors: [RestFormBehavior]

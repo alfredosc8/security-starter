@@ -11,79 +11,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 // Include Gulp & tools we'll use
 var gulp = require('gulp');
-var browserSync = require('browser-sync');
+// var browserSync = require('browser-sync');
 var fs = require('fs');
 var historyApiFallback = require('connect-history-api-fallback');
 var proxy = require('http-proxy-middleware');
 var HttpsProxyAgent = require('https-proxy-agent');
+var secureApp = require('./server/security-app.js');
 
 // Serve files from dist directory.
 gulp.task('default', function () {
   var corporateProxyServer = process.env.http_proxy || process.env.HTTP_PROXY;
   // console.log("corporateProxyServer: " + corporateProxyServer);
   var uaaConfig = JSON.parse(fs.readFileSync('./dist/uaaConfig.json', 'utf-8'));
-  // console.log('URL: ' + uaaConfig.url);
+  console.log('UAA URL from config file: ' + uaaConfig.url);
   var proxyOptions = {
     target: uaaConfig.url,
     changeOrigin: true,
     logLevel: 'debug',
     pathRewrite: { '^/api/': '/'}
     // onProxyReq: function onProxyReq(proxyReq, req, res) {
-    //   console.log('Request headers: ' + JSON.stringify(req.headers));
+    //   console.log('UAA URL from form: ' + secureApp.uaaUrl);
     // }
   };
-  var githubProxyOptions = {
-    target: 'https://raw.githubusercontent.com',
-    changeOrigin: true,
-    pathRewrite: { '^/github/': '/'}
-  };
+
   if (corporateProxyServer) {
     proxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
-    githubProxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
   }
-  browserSync({
-    port: 5000,
-    notify: false,
-    logPrefix: 'PSK',
-    // snippetOptions: {
-    //   rule: {
-    //     match: '<span id="browser-sync-binding"></span>',
-    //     fn: function (snippet) {
-    //       return snippet;
-    //     }
-    //   }
-    // },
-    // Run as an https by uncommenting 'https: true'
-    // Note: this uses an unsigned certificate which on first access
-    //       will present a certificate warning in the browser.
-    //https: true,
-    server: {
-      baseDir: ['dist'],
-      middleware: [ proxy('/api', proxyOptions), proxy('/github', githubProxyOptions), historyApiFallback() ]
-    }
-  });
+  // browserSync({
+  //   port: 5000,
+  //   notify: false,
+  //   logPrefix: 'PSK',
+  //   server: {
+  //     baseDir: ['dist'],
+  //     middleware: [ proxy('/api', proxyOptions), proxy('/github', githubProxyOptions), historyApiFallback() ]
+  //   }
+  // });
 
+  // secureApp.use(proxy('/api', proxyOptions));
+  secureApp.use(historyApiFallback());
+  secureApp.listen(5000);
 });
-
-// // Build and serve the output from the dist build
-// gulp.task('serve:dist', ['default'], function () {
-//   browserSync({
-//     port: 5001,
-//     notify: false,
-//     logPrefix: 'PSK',
-//     snippetOptions: {
-//       rule: {
-//         match: '<span id="browser-sync-binding"></span>',
-//         fn: function (snippet) {
-//           return snippet;
-//         }
-//       }
-//     },
-//     // Run as an https by uncommenting 'https: true'
-//     // Note: this uses an unsigned certificate which on first access
-//     //       will present a certificate warning in the browser.
-//     // https: true,
-//     server: 'dist',
-//     middleware: [ historyApiFallback() ]
-//   });
-// });
