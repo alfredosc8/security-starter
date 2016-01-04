@@ -60,6 +60,7 @@ app.use('/api', expressProxy(function(req) {
 	console.log('UAA URL from session: ' + req.session.uaaUrl);
 	return req.session.uaaUrl || 'no url found in session';
 }, {
+	https: true,
 	forwardPath: function (req) {
 	  console.log("Forwarding request: " + req.originalUrl);
 	  var forwardPath = require('url').parse(req.url).path;
