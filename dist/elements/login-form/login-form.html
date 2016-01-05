@@ -8,14 +8,12 @@
         display: block;
       }
     </style>
-    <p>Enter your UAA Admin Secret. <paper-button noink id="showDetailsButton" data-dialog="details"><img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img></paper-button></p>
+    <p>Enter your UAA URL and admin secret. <paper-button noink id="showDetailsButton" data-dialog="details"><img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img></paper-button></p>
     <form is="iron-form" id="restForm" method="post">
-      <p>
-        UAA URL: <input name="uaaUrlInput" required>{{uaaUrl}}</span>
-      </p>
-      <p>
-        Admin secret: <input name="adminSecret" type="password" required value="{{adminSecret::input}}">
-      </p>
+      <table class="starter-inputs">
+        <tr><td>UAA URL:</td><td style="width: 85%"><input name="uaaUrlInput" style="width: 100%" required value="{{uaaUrl}}"></td></tr>
+        <tr><td>Admin secret:</td><td><input name="adminSecret" type="password" required value="{{adminSecret::input}}"></td></tr>
+      </table>
       <paper-button raised noink class="starter-button" id="showCommandButton" data-dialog="command">See curl command </paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="submitAdminLogin">Submit</paper-button>
     </form>
@@ -41,6 +39,7 @@
           uaaUrl: {
             type: String,
             notify: true,
+            value: 'https://your-uaa-instance',
             observer: 'updateTokenUrl'
           },
           adminSecret: {
@@ -66,7 +65,9 @@
             self.authHeader = 'Basic ' + btoa('admin:' + self.adminSecret);
             this.request.url = '/api/oauth/token';
             this.request.headers = {authorization: self.authHeader};
-            this.request.body = 'grant_type=client_credentials';
+            self.uaaUrl = this.request.body.uaaUrlInput;
+            delete this.request.body.adminSecret;
+            this.request.body['grant_type'] = 'client_credentials';
             self._reset();
           });
           restForm.addEventListener('iron-form-response', function(event) {
@@ -84,6 +85,7 @@
           if (url && url.indexOf('http') > -1) {
             this.tokenUrl = url + '/oauth/token';
           }
+          // TODO: Fix this form, to accept URL properly.
         //   else {
         //     this.tokenUrl = 'Please update the URL for your UAA instance in dist/uaaConfig.json.';
         //   }
