@@ -1,3 +1,4 @@
 {
-  "url": "Please enter the URL for your UAA instance here."
+  "url": "https://your-uaa-instance",
+  "note": "The url above is needed only when running locally."
 }

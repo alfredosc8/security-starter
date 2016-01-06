@@ -139,6 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Content -->
         <div class="content">
+          <iron-ajax auto url="uaaConfig.json" handle-as="json" last-response="{{uaaConfig}}"></iron-ajax>
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
@@ -170,7 +171,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <p>First, login as admin for your UAA instance.</p>
               </paper-material>
               <paper-material elevation="1">
-                <login-form uaa-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}"></login-form>
+                <login-form uaa-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"></login-form>
               </paper-material>
             </section>
 

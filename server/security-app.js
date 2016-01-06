@@ -6,24 +6,32 @@ var app = express();
 var session = require('express-session');
 var expressProxy = require('express-http-proxy');
 var historyApiFallback = require('connect-history-api-fallback');
+var RedisStore = require('connect-redis')(session);
 
 app.use(express.static(path.join(__dirname, '../www')));
 
-// Initializing default session store
-// *** this session store in only development use redis for prod **
+var vcapRedis = JSON.parse(process.env.VCAP_SERVICES)['redis-1'][0];
+// console.log('VCAP Redis:' + JSON.stringify(vcapRedis));
+
 app.use(session({
-	secret: 'predixsample',
-	name: 'cookie_name',
-	proxy: true,
+	store: new RedisStore({
+		host: vcapRedis.credentials.host,
+		port: vcapRedis.credentials.port,
+		pass: vcapRedis.credentials.password,
+		ttl: 1200 // seconds = 20 min
+	}),
+	secret: 'fiddlesticks',
+	name: 'security-starter-cookie',
 	resave: true,
-	saveUninitialized: false}));
+	saveUninitialized: false
+}));
 
 app.use(function storeUrlInSession(req, res, next) {
     var contentType = req.get('Content-Type');
-    console.log(req.url);
-    console.log('content type: ' + contentType);
+    // console.log(req.url);
+    // console.log('content type: ' + contentType);
     if (!contentType || contentType.indexOf('application/x-www-form-urlencoded') < 0) {
-        next();
+        return next();
     }
     var data = '';
     // req.setEncoding('utf8');
@@ -46,11 +54,8 @@ app.use(function storeUrlInSession(req, res, next) {
 					req.session.uaaUrl = uaaHost;
 				}
 			});
-			// req.session.uaaUrl = 'e0a59a9c-56c2-4ff0-88e3-232330128974.predix-uaa.run.aws-usw02-pr.ice.predix.io';
         }
-        // next();
     });
-
 	next();
 });
 
