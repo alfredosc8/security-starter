@@ -39,7 +39,7 @@
   },
   "scripts": {
     "test": "gulp test:local",
-    "start": "gulp"
+    "start": "gulp serve"
   },
   "engines": {
     "node": ">=0.10.0"
