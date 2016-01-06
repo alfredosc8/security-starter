@@ -59,8 +59,7 @@ Open up app/uaaConfig.json and enter the URL of the new UAA service instance.
 
 __NOTE:__ When running locally, the app will only connect to a single instance of UAA, which is specified in the uaaConfig.json file.  Any value entered in to the "UAA URL" input field on the UI will be ignored.  This input field used only in the cloud.  The reason is that we use a different proxy locally, to work around the corporate proxy server.
 
-Now you're ready to start running this application locally with these commands:
+Now you're ready to start running this application locally:
 ```
-npm install --production
 npm start
 ```
