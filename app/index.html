@@ -100,7 +100,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="done"></iron-icon>
             <span>Check Token</span>
           </a>
-          <!-- TODO: Uncomment this, and add "edit client id" feature.
           <hr/>
           <a data-route="group" href="/group" on-click="onDataRouteClick">
             <iron-icon icon="group-work"></iron-icon>
@@ -109,7 +108,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <a data-route="addtogroup" href="/addToGroup" on-click="onDataRouteClick">
             <iron-icon icon="add-circle-outline"></iron-icon>
             <span>Add To Group</span>
-          </a> -->
+          </a>
         </paper-menu>
       </paper-scroll-header-panel>
 
@@ -139,7 +138,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Content -->
         <div class="content">
-          <iron-ajax auto url="uaaConfig.json" handle-as="json" last-response="{{uaaConfig}}"></iron-ajax>
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
@@ -171,7 +169,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <p>First, login as admin for your UAA instance.</p>
               </paper-material>
               <paper-material elevation="1">
-                <login-form uaa-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"></login-form>
+                <login-form uaa-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}"></login-form>
               </paper-material>
             </section>
 
@@ -190,24 +188,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
               <paper-material elevation="1">
                 <users-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" user-name="{{newUserName}}"></users-form>
-              </paper-material>
-            </section>
-
-            <section data-route="group">
-              <paper-material elevation="1">
-                Create a group in UAA.
-              </paper-material>
-              <paper-material elevation="1">
-                <group-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" group-name="{{newGroupName}}"></group-form>
-              </paper-material>
-            </section>
-
-            <section data-route="addtogroup">
-              <paper-material elevation="1">
-                Add user to group.
-              </paper-material>
-              <paper-material elevation="1">
-                <add-to-group-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" group-name="{{newGroupName}}" user-name="{{newUserName}}"></add-to-group-form>
               </paper-material>
             </section>
 
@@ -231,6 +211,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
               <paper-material elevation="1">
                 <check-token-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" user-token={{newUserToken}}></check-token-form>
+              </paper-material>
+            </section>
+
+            <section data-route="group">
+              <paper-material elevation="1">
+                Create a group in UAA.
+              </paper-material>
+              <paper-material elevation="1">
+                <group-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" group-name="{{newGroupName}}"></group-form>
+              </paper-material>
+            </section>
+
+            <section data-route="addtogroup">
+              <paper-material elevation="1">
+                Add user to group.
+              </paper-material>
+              <paper-material elevation="1">
+                <add-to-group-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" group-name="{{newGroupName}}" user-name="{{newUserName}}"></add-to-group-form>
               </paper-material>
             </section>
 

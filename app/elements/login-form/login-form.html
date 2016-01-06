@@ -11,7 +11,7 @@
     <p>Enter your UAA URL and admin secret. <paper-button noink id="showDetailsButton" data-dialog="details"><img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img></paper-button></p>
     <form is="iron-form" id="restForm" method="post">
       <table class="starter-inputs">
-        <tr><td>UAA URL:</td><td style="width: 85%"><input name="uaaUrlInput" style="width: 100%" required value="{{uaaUrl}}"></td></tr>
+        <tr><td>UAA URL:</td><td style="width: 85%"><input name="uaaUrlInput" style="width: 100%" required value="{{uaaUrl::input}}"></td></tr>
         <tr><td>Admin secret:</td><td><input name="adminSecret" type="password" required value="{{adminSecret::input}}"></td></tr>
       </table>
       <paper-button raised noink class="starter-button" id="showCommandButton" data-dialog="command">See curl command </paper-button>
@@ -27,6 +27,7 @@
       curl '{{tokenUrl}}' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'accept: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' -H 'Connection: keep-alive' --data 'grant_type=client_credentials'
     </tutorial-overlay>
     <tutorial-overlay id="details" class="scrollable" markdown-url="/security.md#login-as-admin"></tutorial-overlay>
+    <iron-ajax id="configFileEl" url="/uaaConfig.json" handle-as="json" on-response="handleUrlFromFile"></iron-ajax>
   </template>
 
   <script>
@@ -79,16 +80,17 @@
             restForm.submit();
           });
           this.$.showDetailsButton.addEventListener('click', this._overlayButtonListener);
+          this.$.configFileEl.generateRequest();
+        },
+
+        handleUrlFromFile: function(config) {
+            this.uaaUrl = config.detail.response.url;
         },
 
         updateTokenUrl: function(url) {
           if (url && url.indexOf('http') > -1) {
             this.tokenUrl = url + '/oauth/token';
           }
-          // TODO: Fix this form, to accept URL properly.
-        //   else {
-        //     this.tokenUrl = 'Please update the URL for your UAA instance in dist/uaaConfig.json.';
-        //   }
         },
 
         behaviors: [RestFormBehavior]
