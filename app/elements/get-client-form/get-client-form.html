@@ -62,6 +62,9 @@
               "authorization": self.adminAuthBearerToken || ""
             };
           });
+          restForm.addEventListener('iron-form-response', function(e) {
+              self.clientDetails = e.detail.response;
+          });
           this.$.getClientButton.addEventListener('click', function() {
             restForm.submit();
           });
