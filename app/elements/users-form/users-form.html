@@ -98,9 +98,7 @@
           this.restRequest = JSON.stringify(this.restRequestObject);
           var restForm = this.$.restForm;
           restForm.addEventListener('iron-form-presubmit', function() {
-            self.loading = true;
-            self.restResponse = '';
-            self.error = '';
+            self._reset();
             this.request.url = '/api/Users';
             this.request.headers = {
               "content-type": "application/json",

@@ -54,5 +54,10 @@ The token is a JSON Web Token (JWT), which is an industry standard.  Learn more 
 #### Create Group
 Groups can be used to manage access to resources.  In Predix UAA, group names can be created with names that match scopes.  The scopes match Predix-Zone-Ids to manage access to Predix platform services.  After creating a Predix service such as Timeseries or Asset, you'll want to create a group to match.
 
-#### Add to Group
+#### Add User to Group
 Different users might have access to different services.  By adding users to groups, you can manage this access at a high level.
+
+This process actually requires three REST API calls:
+1. Get group by name
+2. Get user by name
+3. Add user to group
