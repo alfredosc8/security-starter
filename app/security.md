@@ -61,3 +61,9 @@ This process actually requires three REST API calls:
 1. Get group by name
 2. Get user by name
 3. Add user to group
+
+#### Get Client
+Before we make the call to modify a client, it's important to get all the current client info.  Then we'll only change what we need to change.
+
+#### Update Client
+In Predix cloud, it's important to create groups that match the names of scopes, which match the names of Predix service Zone IDs.

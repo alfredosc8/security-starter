@@ -55,6 +55,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.route = 'checktoken';
     });
 
+    page('/getClient', scrollToTop, function() {
+      app.route = 'getclient';
+    });
+
+    page('/updateClient', scrollToTop, function() {
+      app.route = 'updateclient';
+    });
+
     // add #! before urls
     page({
       hashbang: true

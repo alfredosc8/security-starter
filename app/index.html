@@ -240,6 +240,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
             </section>
 
+            <section data-route="getclient">
+              <paper-material elevation="1">
+                Get a UAA client to update.
+              </paper-material>
+              <paper-material elevation="1">
+                <get-client-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" client-id="{{newClientId}}"></get-client-form>
+              </paper-material>
+            </section>
+
+            <section data-route="updateclient">
+              <paper-material elevation="1">
+                Modify a UAA client.
+              </paper-material>
+              <paper-material elevation="1">
+                <update-client-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" client-details="{{clientDetails}}"></update-client-form>
+              </paper-material>
+            </section>
+
           </iron-pages>
         </div>
       </paper-scroll-header-panel>
