@@ -71,7 +71,7 @@
             this.restRequest = JSON.stringify(this.clientDetails);
           }, 300);
         },
-        updateClientDetails(newDetails) {
+        updateClientDetails: function(newDetails) {
           this.restRequest = JSON.stringify(newDetails);
           this.clientId = newDetails['client_id'];
           this.authorityAdded = false;
