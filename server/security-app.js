@@ -10,7 +10,8 @@ var RedisStore = require('connect-redis')(session);
 
 app.use(express.static(path.join(__dirname, '../www')));
 
-var vcapRedis = JSON.parse(process.env.VCAP_SERVICES)['redis-1'][0];
+var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+var vcapRedis = (vcapServices['redis-1'] || vcapServices['p-redis'])[0];
 // console.log('VCAP Redis:' + JSON.stringify(vcapRedis));
 
 app.use(session({
