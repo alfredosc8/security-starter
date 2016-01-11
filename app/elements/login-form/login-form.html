@@ -16,6 +16,8 @@
       </table>
       <paper-button raised noink class="starter-button" id="showCommandButton" data-dialog="command">See curl command </paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="submitAdminLogin">Submit</paper-button>
+      <!-- this stupid hacky hidden input allows user to submit form with Enter key -->
+      <input hidden="true" type="submit" />
     </form>
     <p>{{error}}</p>
     <p hidden$="{{!success}}">Success!  Here is the Admin token generated.  Tokens are used in Oauth Security to perform commands, such as Create Client Id.</p>

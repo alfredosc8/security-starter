@@ -27,6 +27,7 @@
       <br/>
       <paper-button raised noink class="starter-button" id="userCommandButton" data-dialog="userCommand">See curl command</paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="addUserButton">Submit</paper-button>
+      <input hidden="true" type="submit" />
     </form>
     <p>{{error}}</p>
     <p hidden$="{{!success}}">Success!  Here is the response from UAA.  Notice the User is not a member of any Groups yet which will be needed later to access Services directly.</p>

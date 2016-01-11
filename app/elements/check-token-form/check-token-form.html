@@ -23,6 +23,7 @@
       <paper-button raised noink class="starter-button" id="decodeTokenButton">Decode Token</paper-button>
       <paper-button raised noink class="starter-button" id="checkTokenCommandButton" data-dialog="checkTokenCommand">See curl command</paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="checkTokenButton">Submit</paper-button>
+      <input hidden="true" type="submit" />
     </form>
     <p>{{error}}</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
