@@ -69,78 +69,94 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Drawer Toolbar -->
         <paper-toolbar id="drawerToolbar">
-          <span class="paper-font-title">Menu</span>
+          <span class="paper-font-title">Predix Starter Kit</span>
         </paper-toolbar>
 
         <!-- Drawer Content -->
-        <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
-          <a data-route="home" href="/" on-click="onDataRouteClick">
-            <iron-icon icon="home"></iron-icon>
-            <span>Home</span>
-          </a>
+        <div class="drawerOptions">
+          <div hidden="[[apiTab]]">
+            <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
+              <a data-route="home" href="/" on-click="onDataRouteClick">
+                <iron-icon icon="home"></iron-icon>
+                <span>Home</span>
+              </a>
 
-          <a data-route="loginasadmin" href="/loginAsAdmin" on-click="onDataRouteClick">
-            <iron-icon icon="lock-outline"></iron-icon>
-            <span>Login as Admin</span>
-          </a>
+              <a data-route="loginasadmin" href="/loginAsAdmin" on-click="onDataRouteClick">
+                <iron-icon icon="lock-outline"></iron-icon>
+                <span>Login as Admin</span>
+              </a>
 
-          <a data-route="clientid" href="/clientid" on-click="onDataRouteClick">
-            <iron-icon icon="create"></iron-icon>
-            <span>Create Client ID</span>
-          </a>
-          <a data-route="users" href="/users" on-click="onDataRouteClick">
-            <iron-icon icon="perm-identity"></iron-icon>
-            <span>Create User</span>
-          </a>
-          <a data-route="usertoken" href="/userToken" on-click="onDataRouteClick">
-            <iron-icon icon="lock"></iron-icon>
-            <span>Login as User</span>
-          </a>
-          <a data-route="checktoken" href="checkToken" on-click="onDataRouteClick">
-            <iron-icon icon="done"></iron-icon>
-            <span>Check Token</span>
-          </a>
-          <hr/>
-          <a data-route="group" href="/group" on-click="onDataRouteClick">
-            <iron-icon icon="group-work"></iron-icon>
-            <span>Create Group</span>
-          </a>
-          <a data-route="addtogroup" href="/addToGroup" on-click="onDataRouteClick">
-            <iron-icon icon="add-circle-outline"></iron-icon>
-            <span>Add To Group</span>
-          </a>
-          <a data-route="getclient" href="/getClient" on-click="onDataRouteClick">
-            <iron-icon icon="file-download"></iron-icon>
-            <span>Get Client</span>
-          </a>
-          <a data-route="updateclient" href="/updateClient" on-click="onDataRouteClick">
-            <iron-icon icon="file-upload"></iron-icon>
-            <span>Update Client</span>
-          </a>
-        </paper-menu>
+              <a data-route="clientid" href="/clientid" on-click="onDataRouteClick">
+                <iron-icon icon="create"></iron-icon>
+                <span>Create Client ID</span>
+              </a>
+              <a data-route="users" href="/users" on-click="onDataRouteClick">
+                <iron-icon icon="perm-identity"></iron-icon>
+                <span>Create User</span>
+              </a>
+              <a data-route="usertoken" href="/userToken" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>Login as User</span>
+              </a>
+              <a data-route="checktoken" href="checkToken" on-click="onDataRouteClick">
+                <iron-icon icon="done"></iron-icon>
+                <span>Check Token</span>
+              </a>
+              <hr/>
+              <a data-route="group" href="/group" on-click="onDataRouteClick">
+                <iron-icon icon="group-work"></iron-icon>
+                <span>Create Group</span>
+              </a>
+              <a data-route="addtogroup" href="/addToGroup" on-click="onDataRouteClick">
+                <iron-icon icon="add-circle-outline"></iron-icon>
+                <span>Add To Group</span>
+              </a>
+              <a data-route="getclient" href="/getClient" on-click="onDataRouteClick">
+                <iron-icon icon="file-download"></iron-icon>
+                <span>Get Client</span>
+              </a>
+              <a data-route="updateclient" href="/updateClient" on-click="onDataRouteClick">
+                <iron-icon icon="file-upload"></iron-icon>
+                <span>Update Client</span>
+              </a>
+            </paper-menu>
+          </div>
+
+          <div hidden="{{!apiTab}}">
+            <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
+              <a data-route="apihome" href="/apiHome" on-click="onDataRouteClick">
+                <iron-icon icon="home"></iron-icon>
+                <span>API Home</span>
+              </a>
+            </paper-menu>
+          </div>
+        </div>
       </paper-scroll-header-panel>
 
       <!-- Main Area -->
-      <paper-scroll-header-panel main condenses keep-condensed-header>
+      <paper-scroll-header-panel main fixed>
 
         <!-- Main Toolbar -->
-        <paper-toolbar id="mainToolbar" class="tall">
-          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
-          <span class="flex"></span>
+        <paper-toolbar id="mainToolbar">
+          <div paper-drawer-toggle>
+            <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+            Predix Starter Kit
+          </div>
 
-          <!-- Toolbar icons
-          <paper-icon-button icon="refresh"></paper-icon-button>
-          <paper-icon-button icon="search"></paper-icon-button>
-          -->
           <!-- Application name -->
-          <div class="middle middle-container center horizontal layout">
-            <div class="app-name">Predix Security Starter Kit</div>
-          </div>
+          <!-- <div class="middle middle-container center horizontal layout"> -->
+            <!-- <div class="app-name">Predix Security Starter Kit</div> -->
+          <!-- </div> -->
 
-          <!-- Application sub title -->
-          <div class="bottom bottom-container center horizontal layout">
-            <div class="bottom-title paper-font-subhead">Quickly secure your Predix application</div>
-          </div>
+          <span class="flex"></span>
+          <paper-tabs selected="0" noink="true">
+            <paper-tab on-click="goToHome">
+              <a data-route="home" href="/" on-click="onDataRouteClick">Security</a>
+            </paper-tab>
+            <paper-tab on-click="goToApiHome">
+              <a data-route="apihome" href="/apiHome" on-click="onDataRouteClick">API Explorer</a>
+            </paper-tab>
+          </paper-tabs>
 
         </paper-toolbar>
 
@@ -149,6 +165,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
+              <paper-material elevation="1">
+                Configure and explore your Predix cloud environment.
+              </paper-material>
               <paper-material elevation="1">
                 <h3>Getting Started</h3>
                 <p>
@@ -174,7 +193,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="loginasadmin">
               <paper-material elevation="1">
-                <p>First, login as admin for your UAA instance.</p>
+                First, login as admin for your UAA instance.
               </paper-material>
               <paper-material elevation="1">
                 <login-form uaa-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}"></login-form>
@@ -255,6 +274,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
               <paper-material elevation="1">
                 <update-client-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" client-details="{{clientDetails}}"></update-client-form>
+              </paper-material>
+            </section>
+
+            <section data-route="apihome">
+              <paper-material elevation="1">
+                Test Predix APIs.
+              </paper-material>
+              <paper-material elevation="1">
+                TODO
               </paper-material>
             </section>
 

@@ -47,12 +47,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   /* General styles */
 
-  #drawerToolbar {
-    color: var(--secondary-text-color);
-    background-color: var(--drawer-menu-color);
-    border-bottom: var(--drawer-toolbar-border-color);
-  }
-
   paper-scroll-header-panel {
     height: 100%;
   }
@@ -168,8 +162,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       padding-right: 30px;
     }
 
-    #drawer.paper-drawer-panel > [drawer] {
+    #drawer.paper-drawer-panel .drawerOptions {
       border-right: 1px solid rgba(0, 0, 0, 0.14);
+      height: 100%;
     }
 
     iron-pages {

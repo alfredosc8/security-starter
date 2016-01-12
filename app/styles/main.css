@@ -22,6 +22,12 @@ https://github.com/PolymerElements/paper-menu/issues/31
     pointer-events: none;
 }
 
+.tab-content.paper-tab a {
+  text-decoration: none;
+  color: inherit;
+  height: auto;
+}
+
 textarea {
   font-size: 1em;
 }
