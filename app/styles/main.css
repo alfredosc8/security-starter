@@ -22,6 +22,11 @@ https://github.com/PolymerElements/paper-menu/issues/31
     pointer-events: none;
 }
 
+/* Hack for dropdown on api form. */
+.paper-input-container-0 .floated-label-placeholder.paper-input-container {
+  line-height: 0;
+}
+
 .tab-content.paper-tab a {
   text-decoration: none;
   color: inherit;

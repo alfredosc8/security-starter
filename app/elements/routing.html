@@ -28,11 +28,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.apiTab = false;
     });
 
-    page('/apiHome', scrollToTop, function() {
-      app.route = 'apihome';
-      app.apiTab = true;
-    });
-
     page('/loginAsAdmin', scrollToTop, function() {
       app.route = 'loginasadmin';
     });
@@ -67,6 +62,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     page('/updateClient', scrollToTop, function() {
       app.route = 'updateclient';
+    });
+
+    // API Explorer routes
+    page('/apiHome', scrollToTop, function() {
+      app.route = 'apihome';
+      app.apiTab = true;
+    });
+
+    page('/tsQuery', scrollToTop, function() {
+      app.route = 'tsquery';
+    });
+
+    page('/tsIngest', scrollToTop, function() {
+      app.route = 'tsingest';
     });
 
     // add #! before urls

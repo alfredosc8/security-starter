@@ -122,11 +122,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-menu>
           </div>
 
-          <div hidden="{{!apiTab}}">
+          <div hidden="[[!apiTab]]">
             <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
               <a data-route="apihome" href="/apiHome" on-click="onDataRouteClick">
                 <iron-icon icon="home"></iron-icon>
                 <span>API Home</span>
+              </a>
+              <a data-route="tsquery" href="/tsQuery" on-click="onDataRouteClick">
+                <iron-icon icon="cloud-download"></iron-icon>
+                <span>Time series query</span>
+              </a>
+              <a data-route="tsingest" href="/tsIngest" on-click="onDataRouteClick">
+                <iron-icon icon="cloud-upload"></iron-icon>
+                <span>Time series ingest</span>
               </a>
             </paper-menu>
           </div>
@@ -142,7 +150,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
             Predix Starter Kit
           </div>
-
           <!-- Application name -->
           <!-- <div class="middle middle-container center horizontal layout"> -->
             <!-- <div class="app-name">Predix Security Starter Kit</div> -->
@@ -277,9 +284,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
             </section>
 
+            <!-- API Explorer -->
             <section data-route="apihome">
               <paper-material elevation="1">
                 Test Predix APIs.
+              </paper-material>
+              <paper-material elevation="1">
+                TODO
+              </paper-material>
+            </section>
+
+            <section data-route="tsquery">
+              <paper-material elevation="1">
+                Make a few basic queries against your time series instance.
+              </paper-material>
+              <paper-material elevation="1">
+                <api-form base-url="{{uaaBaseUrl}}" token="{{newUserToken || bearerToken}}"></api-form>
+              </paper-material>
+            </section>
+
+            <section data-route="tsingest">
+              <paper-material elevation="1">
+                Open a websocket, and push data to your time series instance.
               </paper-material>
               <paper-material elevation="1">
                 TODO

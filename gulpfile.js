@@ -141,6 +141,9 @@ gulp.task('copy', function () {
                            'app/elements/**/*.js'])
     .pipe(gulp.dest('dist/www/elements'));
 
+  var requestsJson = gulp.src(['app/requests/**/*'])
+    .pipe(gulp.dest('dist/www/requests'));
+
   var swBootstrap = gulp.src(['bower_components/platinum-sw/bootstrap/*.js'])
     .pipe(gulp.dest('dist/www/elements/bootstrap'));
 
@@ -157,7 +160,7 @@ gulp.task('copy', function () {
   var packageFile = gulp.src(['package.json'])
     .pipe(gulp.dest('dist'));
 
-  return merge(app, bower, elements, vulcanized, swBootstrap, swToolbox, server, packageFile)
+  return merge(app, bower, elements, requestsJson, vulcanized, swBootstrap, swToolbox, server, packageFile)
     .pipe($.size({title: 'copy'}));
 });
 
@@ -254,9 +257,24 @@ gulp.task('serve', ['styles', 'elements', 'images'], function () {
     changeOrigin: true,
     pathRewrite: { '^/github/': '/'}
   };
+  var apiProxyOptions = {
+    target: uaaConfig.apiUrl,
+    changeOrigin: true,
+    logLevel: 'debug',
+    pathRewrite: { '^/proxy-api': '/'}
+  };
+  var uaaLoginOptions = {
+    target: uaaConfig.url,
+    changeOrigin: true,
+    logLevel: 'debug',
+    pathRewrite: { '^/uaalogin': '/oauth/token'}
+  };
+
   if (corporateProxyServer) {
     proxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
+    apiProxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
     githubProxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
+    uaaLoginOptions.agent = new HttpsProxyAgent(corporateProxyServer);
   }
   browserSync({
     port: 5000,
@@ -276,7 +294,13 @@ gulp.task('serve', ['styles', 'elements', 'images'], function () {
     //https: true,
     server: {
       baseDir: ['.tmp', 'app'],
-      middleware: [ proxy('/api', proxyOptions), proxy('/github', githubProxyOptions), historyApiFallback() ],
+      middleware: [
+        proxy('/uaalogin', uaaLoginOptions),
+        proxy('/api', proxyOptions),
+        proxy('/proxy-api', apiProxyOptions),
+        proxy('/github', githubProxyOptions),
+        historyApiFallback()
+      ],
       routes: {
         '/bower_components': 'bower_components'
       }
