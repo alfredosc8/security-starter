@@ -1,4 +1,5 @@
 {
   "url": "https://your-uaa-instance",
-  "note": "The url above is needed only when running locally."
+  "apiUrl": "https://a-predix-service-url",
+  "note": "This file is needed only when running locally."
 }

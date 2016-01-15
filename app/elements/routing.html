@@ -75,10 +75,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     page('/tsQuery', scrollToTop, function() {
       app.route = 'tsquery';
+      app.apiTab = true;
     });
 
     page('/tsIngest', scrollToTop, function() {
       app.route = 'tsingest';
+      app.apiTab = true;
     });
 
     // add #! before urls
