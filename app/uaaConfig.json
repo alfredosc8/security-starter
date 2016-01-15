@@ -1,5 +1,5 @@
 {
-  "url": "https://your-uaa-instance",
-  "apiUrl": "https://a-predix-service-url",
-  "note": "This file is needed only when running locally."
+  "url": "https://589da247-e417-481d-b247-04b43670696b.predix-uaa.run.aws-usw02-pr.ice.predix.io",
+  "apiUrl":"https://589da247-e417-481d-b247-04b43670696b.predix-uaa.run.aws-usw02-pr.ice.predix.io",
+  "note": "The url above is needed only when running locally."
 }
