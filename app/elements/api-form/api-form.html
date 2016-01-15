@@ -34,9 +34,11 @@
           </td>
         </tr>
         <tr><td><b>Request Headers</b></td></tr>
-        <template is="dom-repeat" items="{{httpHeaders}}">
+        <tr><td>authorization</td><td>todo</td></tr>
+        <tr><td>predix-zone-id</td><td>todo</td></tr>
+        <template is="dom-repeat" items="{{displayHeaders}}">
           <!-- <tr><td>{{Object.keys(item)[index]}}</td><td>{{item[item.keys[index]]}}</td></tr> -->
-          <tr><td>{{item['content-type']}}</td></tr>
+          <tr><td>{{item.key}}</td><td>{{item.val}}</td></tr>
         </template>
       </table>
       <p><b>Request Body</b></p>
@@ -102,10 +104,10 @@
             type: String,
             notify: true
           },
-          httpHeaders: {
-            type: Object,
+          displayHeaders: {
+            type: Array,
             notify: true,
-            value: {}
+            value: []
           }
         },
 
@@ -113,11 +115,11 @@
           var self = this;
           this.restRequest = JSON.stringify(defn.body);
           this.httpMethod = defn.method;
-          // this.httpHeaders = defn.headers;
+          // this.displayHeaders = defn.headers;
           defn.headers.forEach(function(h) {
-            self.httpHeaders[h[0]] = h[1];
+            self.push('displayHeaders', h); //[h[0]] = h[1];
           });
-          console.log('headers: ' + JSON.stringify(this.httpHeaders));
+          console.log('headers: ' + JSON.stringify(this.displayHeaders));
           // TODO: set zone id & token here.
           this.apiUrl = defn.path;
         },
@@ -140,6 +142,12 @@
             this.request.url = '/proxy-api' + urlParser.pathname;
             this.request.method = self.requestDefinition.method;
             // this.request.headers = self.requestDefinition.headers;
+            for (var i=0; i<self.requestDefinition.headers.length; i++) {
+              var h = self.requestDefinition.headers[i];
+              console.log('h: ' + JSON.stringify(h));
+              this.request.headers[h.key] = h.val;
+            }
+            console.log('request headers: ' + JSON.stringify(this.request.headers));
             this.request.headers.authorization = self.token || self.adminAuthBearerToken || "";
             this.request.headers['x-endpoint'] = self.apiUrl;
             this.request.body =  self.$.apiRequest.value; //textarea input

@@ -1,7 +1,7 @@
 {
   "headers": [
-    ["content-type", "application/json"],
-    ["predix-zone-id", "d7b313ce-e382-4db6-ad69-9ab0a11bb6ad"]
+    {"key": "content-type", "val": "application/json"},
+    {"key": "predix-zone-id", "val": "d7b313ce-e382-4db6-ad69-9ab0a11bb6ad"}
    ],
   "method": "post",
   "path": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
