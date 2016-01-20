@@ -261,7 +261,7 @@ gulp.task('serve', ['styles', 'elements', 'images'], function () {
     target: uaaConfig.apiUrl,
     changeOrigin: true,
     logLevel: 'debug',
-    pathRewrite: { '^/proxy-api': '/'}
+    pathRewrite: { '^/proxy-api': ''}
   };
   var uaaLoginOptions = {
     target: uaaConfig.url,

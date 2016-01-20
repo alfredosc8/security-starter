@@ -63,3 +63,7 @@ textarea {
 .starter-inputs td {
   padding-bottom: 1em;
 }
+
+.method-box {
+  text-transform: uppercase;
+}

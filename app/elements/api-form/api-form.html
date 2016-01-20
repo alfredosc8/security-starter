@@ -13,7 +13,7 @@
         <img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img>
       </paper-button>
     </p> -->
-    <iron-ajax id="requestLoaderEl" handle-as="json" last-response="{{requestDefinition}}" method="GET"></iron-ajax>
+    <iron-ajax id="requestLoaderEl" handle-as="json" last-response="{{requests}}" method="GET"></iron-ajax>
     <form is="iron-form" id="apiForm" method="post">
       <p>
         UAA URL: <span>{{baseUrl}}</span>
@@ -21,21 +21,22 @@
       <table class="starter-inputs">
         <!-- <tr><td>New scope:</td><td><input required value="{{newScope::input}}"></td></tr> -->
         <tr><td>API URL:</td><td style="width: 85%"><input style="width: 100%" required value="{{apiUrl::input}}"></td></tr>
-        <tr><td>Method:</td><td>{{httpMethod}}</td></tr>
+        <tr><td>Method:</td><td><div class="method-box">{{httpMethod}}</div></td></tr>
         <tr>
           <td>Choose Request:</td>
           <td>
-            <paper-dropdown-menu id="requestMenu" noink no-animations>
-              <paper-menu class="dropdown-content">
-                <paper-item value="time-series-basic">Basic Request</paper-item>
-                <paper-item value="time-series-tags">Get Tags</paper-item>
+            <paper-dropdown-menu id="requestMenu" noink no-animations on-click="loadAllRequests">
+              <paper-menu class="dropdown-content" selected="{{requestIndex}}">
+                <template is="dom-repeat" items="{{requests}}">
+                  <paper-item>{{item.label}}</paper-item>
+                </template>
               </paper-menu>
             </paper-dropdown-menu>
           </td>
         </tr>
         <tr><td><b>Request Headers</b></td></tr>
-        <tr><td>authorization</td><td>todo</td></tr>
-        <tr><td>predix-zone-id</td><td>todo</td></tr>
+        <tr><td>authorization</td><td>{{token}}</td></tr>
+        <tr><td>predix-zone-id</td><td><input required value="{{predixZoneId::input}}"></td></tr>
         <template is="dom-repeat" items="{{displayHeaders}}">
           <!-- <tr><td>{{Object.keys(item)[index]}}</td><td>{{item[item.keys[index]]}}</td></tr> -->
           <tr><td>{{item.key}}</td><td>{{item.val}}</td></tr>
@@ -49,7 +50,7 @@
       <input hidden="true" type="submit" />
     </form>
     <p>{{error}}</p>
-    <!-- <p hidden$="{{!success}}">Success!  Here is the response from UAA.  Notice the User is not a member of any Groups yet which will be needed later to access Services directly.</p> -->
+    <!-- <p hidden$="{{!success}}">Success!  ...</p> -->
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
     <div hidden$="{{!loading}}">
       <paper-progress indeterminate style="width: 100%"></paper-progress>
@@ -84,13 +85,12 @@
           requests: {
             type: Array
           },
-          requestKey: {
-            type: String,
-            observer: 'loadRequestDefinition'
+          requestIndex: {
+            type: Number,
+            observer: 'setSelectedRequest'
           },
           requestFilePath: {
-            type: String,
-            value: '/requests/'
+            type: String
           },
           // apiDisplayName: {
           //   type: String
@@ -111,6 +111,13 @@
           }
         },
 
+        loadAllRequests: function() {
+          // console.log('Load all requests.');
+          // make ajax request to load request file:
+          this.$.requestLoaderEl.url = this.requestFilePath;
+          this.$.requestLoaderEl.generateRequest();
+        },
+
         updateHttpRequest: function(defn) {
           var self = this;
           this.restRequest = JSON.stringify(defn.body);
@@ -124,10 +131,9 @@
           this.apiUrl = defn.path;
         },
 
-        loadRequestDefinition: function(key) {
-          // make ajax request to requestFilePath + requestKey
-          this.$.requestLoaderEl.url = this.requestFilePath + key + '.json';
-          this.$.requestLoaderEl.generateRequest();
+        setSelectedRequest: function(index) {
+          // console.log(JSON.stringify(this.requests[key]));
+          this.requestDefinition = this.requests[index];
         },
 
         ready: function() {
@@ -148,8 +154,9 @@
               this.request.headers[h.key] = h.val;
             }
             console.log('request headers: ' + JSON.stringify(this.request.headers));
-            this.request.headers.authorization = self.token || self.adminAuthBearerToken || "";
+            this.request.headers.authorization = "Bearer " + self.token;
             this.request.headers['x-endpoint'] = self.apiUrl;
+            this.request.headers['predix-zone-id'] = self.predixZoneId;
             this.request.body =  self.$.apiRequest.value; //textarea input
           });
           this.$.apiButton.addEventListener('click', function() {
@@ -157,12 +164,7 @@
           });
           this.$.apiCommandButton.addEventListener('click', this._overlayButtonListener);
           this.$.requestLoaderEl.addEventListener('response', function(ironRequest) {
-            self.requestDefinition = ironRequest.detail.response;
-          });
-          this.$.requestMenu.addEventListener('iron-select', function() {
-            console.log('request selected');
-            console.log(self.$.requestMenu.selectedItem.getAttribute('value'));
-            self.requestKey = self.$.requestMenu.selectedItem.getAttribute('value');
+            self.requests = ironRequest.detail.response;
           });
           // this.$.updateClientDetailsButton.addEventListener('click', this._overlayButtonListener);
         },

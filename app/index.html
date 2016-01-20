@@ -98,10 +98,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="lock"></iron-icon>
                 <span>Login as User</span>
               </a>
-              <a data-route="clientLogin" href="/clientLogin" on-click="onDataRouteClick">
-                <iron-icon icon="lock"></iron-icon>
-                <span>Login as Client</span>
-              </a>
               <a data-route="checktoken" href="checkToken" on-click="onDataRouteClick">
                 <iron-icon icon="done"></iron-icon>
                 <span>Check Token</span>
@@ -123,7 +119,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="file-upload"></iron-icon>
                 <span>Update Client</span>
               </a>
-
+              <a data-route="clientLogin" href="/clientLogin" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>Login as Client</span>
+              </a>
             </paper-menu>
           </div>
 
@@ -132,6 +131,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <a data-route="apihome" href="/apiHome" on-click="onDataRouteClick">
                 <iron-icon icon="home"></iron-icon>
                 <span>API Home</span>
+              </a>
+              <a data-route="apiloginclient" href="/apiLoginClient" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>Login as Client</span>
+              </a>
+              <a data-route="apiloginuser" href="/apiLoginUser" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>Login as User</span>
               </a>
               <a data-route="tsquery" href="/tsQuery" on-click="onDataRouteClick">
                 <iron-icon icon="cloud-download"></iron-icon>
@@ -161,7 +168,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!-- </div> -->
 
           <span class="flex"></span>
-          <paper-tabs selected="0" noink="true">
+          <paper-tabs selected="0" noink="true" id="mainTabControl">
             <paper-tab on-click="goToHome">
               <a data-route="home" href="/" on-click="onDataRouteClick">Security</a>
             </paper-tab>
@@ -294,7 +301,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   Log in as a client
               </paper-material>
               <paper-material elevation="1">
-                <client-login-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}"   client-secret="{{newClientSecret}}">
+                <client-login-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}">
                 </client-login-form>
               </paper-material>
             </section>
@@ -303,6 +310,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <section data-route="apihome">
               <paper-material elevation="1">
                 Test Predix APIs.
+              </paper-material>
+              <paper-material elevation="1">
+                First login as user or client, to get an authorization token.  Then you can experiment with your instances of Predix services.
+              </paper-material>
+            </section>
+
+            <section data-route="apiloginuser">
+              <paper-material elevation="1">
+                <user-token-form
+                  base-url="{{uaaBaseUrl}}"
+                  client-id="{{newClientId}}"
+                  client-secret="{{newClientSecret}}"
+                  user-token="{{apiToken}}"
+                  user-name="{{newUserName}}"></user-token-form>
+              </paper-material>
+            </section>
+
+            <section data-route="apiloginclient">
+              <paper-material elevation="1">
+                <client-login-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" client-token="{{apiToken}}">
+                </client-login-form>
+              </paper-material>
+            </section>
+
+            <section data-route="tsingest">
+              <paper-material elevation="1">
+                Open a websocket, and push data to your time series instance.
               </paper-material>
               <paper-material elevation="1">
                 TODO
@@ -314,16 +348,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Make a few basic queries against your time series instance.
               </paper-material>
               <paper-material elevation="1">
-                <api-form base-url="{{uaaBaseUrl}}" token="{{newUserToken || bearerToken}}"></api-form>
-              </paper-material>
-            </section>
-
-            <section data-route="tsingest">
-              <paper-material elevation="1">
-                Open a websocket, and push data to your time series instance.
-              </paper-material>
-              <paper-material elevation="1">
-                TODO
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" request-file-path="/requests/time-series-query.json"></api-form>
               </paper-material>
             </section>
 

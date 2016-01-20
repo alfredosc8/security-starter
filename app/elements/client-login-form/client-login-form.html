@@ -58,7 +58,7 @@
             notify: true,
             observer: 'updateAuthHeader'
           },
-          userToken: {
+          clientToken: {
             type: String,
             notify: true
           }
@@ -78,7 +78,7 @@
             self.error = '';
           });
           restForm.addEventListener('iron-form-response', function(event) {
-            self.userToken = event.detail.response["access_token"];
+            self.clientToken = event.detail.response["access_token"];
           });
           this.$.clientLoginButton.addEventListener('click', function() {
             restForm.submit();
