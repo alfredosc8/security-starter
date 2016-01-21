@@ -41,7 +41,7 @@
          }
       ],
       "method":"post",
-      "path":"https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
+      "path":"https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints/latest",
       "body":{
          "cache_time":0,
          "tags":[
