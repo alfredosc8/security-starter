@@ -90,16 +90,7 @@
             e.preventDefault();
             var dialog = document.getElementById('decoded');
             if (dialog) {
-              var json = self.userToken;
-              var parts = self.userToken.split('.');
-              if (parts.length === 3) {
-                json = {
-                  header: JSON.parse(atob(parts[0])),
-                  payload: JSON.parse(atob(parts[1]))
-                  // signature: atob(parts[2])
-                };
-              }
-              dialog.rawJson = json;
+              dialog.rawJson = self._decodeToken(self.userToken);
               dialog.open();
             }
           });

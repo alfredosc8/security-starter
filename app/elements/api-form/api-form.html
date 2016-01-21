@@ -8,18 +8,12 @@
         display: block;
       }
     </style>
-    <!-- <p>You can give access to Predix services, by adding authorities to the UAA client.
-      <paper-button noink id="updateClientDetailsButton" data-dialog="updateClientDetails">
-        <img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img>
-      </paper-button>
-    </p> -->
     <iron-ajax id="requestLoaderEl" handle-as="json" last-response="{{requests}}" method="GET"></iron-ajax>
     <form is="iron-form" id="apiForm" method="post">
       <p>
         UAA URL: <span>{{baseUrl}}</span>
       </p>
       <table class="starter-inputs">
-        <!-- <tr><td>New scope:</td><td><input required value="{{newScope::input}}"></td></tr> -->
         <tr><td>API URL:</td><td style="width: 85%"><input style="width: 100%" required value="{{apiUrl::input}}"></td></tr>
         <tr><td>Method:</td><td><div class="method-box">{{httpMethod}}</div></td></tr>
         <tr>
@@ -35,10 +29,9 @@
           </td>
         </tr>
         <tr><td><b>Request Headers</b></td></tr>
-        <tr><td>authorization</td><td>{{token}}</td></tr>
+        <tr><td>authorization</td><td>Bearer <paper-button raised noink class="starter-button" id="viewTokenButton">View Token</paper-button></td></tr>
         <tr><td>predix-zone-id</td><td><input required value="{{predixZoneId::input}}"></td></tr>
         <template is="dom-repeat" items="{{displayHeaders}}">
-          <!-- <tr><td>{{Object.keys(item)[index]}}</td><td>{{item[item.keys[index]]}}</td></tr> -->
           <tr><td>{{item.key}}</td><td>{{item.val}}</td></tr>
         </template>
       </table>
@@ -58,6 +51,7 @@
     <tutorial-overlay id="apiCommand">
       TODO: curl '{{baseUrl}}/oauth/clients/{{clientId}}' -X PUT -H 'Pragma: no-cache' -H 'content-type: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{adminAuthBearerToken}}' --data-binary '{{restRequest}}'
     </tutorial-overlay>
+    <tutorial-overlay id="viewToken"></tutorial-overlay>
     <!-- <tutorial-overlay id="apiDetails" class="scrollable" markdown-url="/security.md#TODO"></tutorial-overlay> -->
   </template>
 
@@ -76,7 +70,8 @@
           //   type: String
           // },
           token: {
-            type: String
+            type: String,
+            value: 'Please log in first.'
           },
           predixZoneId: {
             type: String,
@@ -122,12 +117,11 @@
           var self = this;
           this.restRequest = JSON.stringify(defn.body);
           this.httpMethod = defn.method;
-          // this.displayHeaders = defn.headers;
+          self.splice('displayHeaders', 0, self.displayHeaders.length);
           defn.headers.forEach(function(h) {
             self.push('displayHeaders', h); //[h[0]] = h[1];
           });
           console.log('headers: ' + JSON.stringify(this.displayHeaders));
-          // TODO: set zone id & token here.
           this.apiUrl = defn.path;
         },
 
@@ -138,7 +132,6 @@
 
         ready: function() {
           var self = this;
-          // this.restRequest = JSON.stringify(this.clientDetails);
           var apiForm = this.$.apiForm;
           var urlParser = document.createElement('a');
           apiForm.addEventListener('iron-form-presubmit', function() {
@@ -147,7 +140,6 @@
             // console.log('path from apiUrl: ' + urlParser.pathname);
             this.request.url = '/proxy-api' + urlParser.pathname;
             this.request.method = self.requestDefinition.method;
-            // this.request.headers = self.requestDefinition.headers;
             for (var i=0; i<self.requestDefinition.headers.length; i++) {
               var h = self.requestDefinition.headers[i];
               console.log('h: ' + JSON.stringify(h));
@@ -166,7 +158,15 @@
           this.$.requestLoaderEl.addEventListener('response', function(ironRequest) {
             self.requests = ironRequest.detail.response;
           });
-          // this.$.updateClientDetailsButton.addEventListener('click', this._overlayButtonListener);
+
+          this.$.viewTokenButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            var dialog = document.getElementById('viewToken');
+            if (dialog) {
+              dialog.rawJson = self._decodeToken(self.token);
+              dialog.open();
+            }
+          });
         },
         behaviors: [RestFormBehavior]
       });

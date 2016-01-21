@@ -69,6 +69,21 @@
       this.restResponse = '';
       this.error = '';
       this.success = false;
+    },
+
+    _decodeToken: function(encoded) {
+      var json,
+          parts = encoded.split('.');
+      if (parts.length === 3) {
+        json = {
+          header: JSON.parse(atob(parts[0])),
+          payload: JSON.parse(atob(parts[1]))
+          // signature: atob(parts[2])
+        };
+      } else {
+        json = encoded;
+      }
+      return json;
     }
   };
 </script>
