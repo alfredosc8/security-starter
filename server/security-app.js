@@ -11,20 +11,30 @@ var url = require('url');
 
 app.use(express.static(path.join(__dirname, '../www')));
 
-var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
-var vcapRedis = (vcapServices['redis-1'] || vcapServices['p-redis'])[0];
-// console.log('VCAP Redis:' + JSON.stringify(vcapRedis));
+var sessionOptions = {
+	secret: 'njk2389adsf98yr23hre98',
+	name: 'security-starter-cookie',
+	resave: true,
+	saveUninitialized: false
+};
 
-app.use(session({
-	store: new RedisStore({
+if (process.env.VCAP_SERVICES) {  // use redis when running in cloud
+	var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+	var vcapRedis = (vcapServices['redis-1'] || vcapServices['p-redis'])[0];
+	// console.log('VCAP Redis:' + JSON.stringify(vcapRedis));
+	sessionOptions.store = new RedisStore({
 		host: vcapRedis.credentials.host,
 		port: vcapRedis.credentials.port,
 		pass: vcapRedis.credentials.password,
-		ttl: 30  //1200 // seconds = 20 min
-	}),
-	secret: 'fiddlesticks',
+		ttl: 1200 // seconds = 20 min
+	});
+}
+
+app.use(session({
+	secret: 'localsecret',
 	name: 'security-starter-cookie',
 	resave: true,
+	proxy: true,
 	saveUninitialized: false
 }));
 
