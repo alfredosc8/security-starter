@@ -126,6 +126,10 @@ app.use('/open-ws', function(req, res) {
 		socket.on('error', function(error) {
 			console.log('error opening socket: ' + error);
 		});
+		socket.on('close', function(code, message) {
+			console.log('socket closed. ' + code + ' ' + message);
+			// console.log('ready state: ' + socket.readyState);
+		});
 		socket.on('open', function() {
 			// console.log('socket opened!?!?');
 			// store socket in memory with an ID & expiration
@@ -134,6 +138,7 @@ app.use('/open-ws', function(req, res) {
 			socket.socketId = socketId;
 			socket.exp = Date.now() + 1200000; // 20 min
 			sockets[socketId] = socket;
+			// console.log('ready state: ' + socket.readyState);
 			console.log('sockets: ' + Object.keys(sockets).length);
 			res.status(200).send({"socketId": socketId});
 		});
@@ -142,8 +147,11 @@ app.use('/open-ws', function(req, res) {
 
 app.use('/close-ws', function(req, res) {
 	// find socket in memory by ID. close & delete.
-	delete sockets[req.get('x-socketid')];
-	console.log('deleted a socket. sockets remaining: ' + Object.keys(sockets).length);
+	if (req.get('x-socketid') && sockets[req.get('x-socketid')]) {
+		sockets[req.get('x-socketid')].terminate();
+		delete sockets[req.get('x-socketid')];
+		console.log('deleted a socket. sockets remaining: ' + Object.keys(sockets).length);
+	}
 	res.status(200).send({"message": "Socket closed."});
 });
 
@@ -155,17 +163,40 @@ var wsServer = new WebSocketServer({
 	server: httpServer,
 	verifyClient: function(info) {
 		console.log('verifyClient');
-		console.log(JSON.stringify(info));
+		// TODO: verify hostname at least
+		// console.log(JSON.stringify(info));
 		return true;
 	}
 });
 
 wsServer.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {
-    console.log('received: %s', message);
+    // console.log('received: %s', message);
+		var tsData;
+		try {
+			tsData = JSON.parse(message);
+		} catch (e) {
+			ws.send('{"error": ' + e + '}');
+			return;
+		}
+		if (!tsData.socketId) {
+			ws.send('{"error": "missing socketId"}');
+			return;
+		}
+		var apiSocket = sockets[tsData.socketId];
+		if (apiSocket.readyState !== WebSocket.OPEN) {
+			ws.send('{"error": "socket to back end API has closed."}');
+			delete sockets[tsData.socketId];
+			return;
+		}
+		// pass request through to back end api:
+		apiSocket.send(message);
+		apiSocket.on('message', function(data) {
+			console.log('data from api: ' + data);
+			ws.send(data);
+		});
   });
 
-  ws.send('something');
 });
 ///////// End Web socket server /////////
 
