@@ -31,7 +31,7 @@
         </tr>
         <tr><td><b>Request Headers</b></td></tr>
         <tr><td>authorization</td><td>Bearer <paper-button raised noink class="starter-button" id="viewTokenButton">View Token</paper-button></td></tr>
-        <tr><td>predix-zone-id</td><td><input required value="{{predixZoneId::input}}"></td></tr>
+        <tr><td>predix-zone-id</td><td><input name="zoneIdInput" required value="{{predixZoneId::input}}"></td></tr>
         <template is="dom-repeat" items="{{displayHeaders}}">
           <tr><td>{{item.key}}</td><td>{{item.val}}</td></tr>
         </template>
