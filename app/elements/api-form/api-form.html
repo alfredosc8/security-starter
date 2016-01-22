@@ -229,7 +229,7 @@
             }
             // for now, we just create a new socket every time.
             var socket = new WebSocket(wsProxyUrl);
-            socket.onopen = function(msg) {
+            socket.onopen = function() {
               console.log('ws proxy socket open.');
               requestObj.socketId = self.socketId;
               // console.log('sending request: ' + JSON.stringify(requestObj));
