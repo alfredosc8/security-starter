@@ -1,5 +1,6 @@
 'use strict';
 
+var httpServer = require('http').createServer();
 var express = require('express');
 var path = require('path');
 var app = express();
@@ -8,6 +9,9 @@ var expressProxy = require('express-http-proxy');
 var historyApiFallback = require('connect-history-api-fallback');
 var RedisStore = require('connect-redis')(session);
 var url = require('url');
+var WebSocketServer = require('ws').Server;
+var WebSocket = require('ws');
+var sockets = {};
 
 app.use(express.static(path.join(__dirname, '../www')));
 
@@ -30,13 +34,7 @@ if (process.env.VCAP_SERVICES) {  // use redis when running in cloud
 	});
 }
 
-app.use(session({
-	secret: 'localsecret',
-	name: 'security-starter-cookie',
-	resave: true,
-	proxy: true,
-	saveUninitialized: false
-}));
+app.use(session(sessionOptions));
 
 app.use('/uaalogin', function storeUrlInSession(req, res, next) {
     var data = '';
@@ -108,11 +106,66 @@ app.use('/proxy-api', expressProxy(function(req) {
 	}
 }));
 
-// app.use('/nosession', function(req, res) {
-// 	res.status(500).send({"error": "No UAA URL found in session.  Please log in."});
-// });
+app.use('/open-ws', function(req, res) {
+	var wsUrl = req.get('x-endpoint');
+	if (wsUrl) {
+		console.log('opening a socket to: ' + wsUrl);
+		//check origin? do some security stuff.
+		// open socket to wsUrl, pass in authorization & zone-id headers.
+		var headers = {
+			"authentication": req.get('authentication'),
+			"predix-zone-id": req.get('predix-zone-id')
+		};
+		var socket = new WebSocket(wsUrl, {name: 'headers', value: headers});
+		socket.on('error', function(error) {
+			console.log('error opening socket: ' + error);
+		});
+		// TODO: Only on success!
+		// store socket in memory with an ID & expiration
+		// return socket ID to browser
+		var socketId = Math.random() * 10000000000000000000;
+		socket.socketId = socketId;
+		socket.exp = Date.now() + 1200000; // 20 min
+		sockets[socketId] = socket;
+		console.log('sockets: ' + sockets.length);
+		res.status(200).send({"socketId": socketId});
+	} else {
+		res.status(500).send({"error": "x-endpoint header missing."});
+	}
+});
+
+app.use('/close-ws', function(req, res) {
+	// find socket in memory by ID. close & delete.
+	delete sockets[req.get('x-socketid')];
+	console.log('deleted a socket. sockets remaining: ' + Object.keys(sockets).length);
+	res.status(200).send({"message": "Socket closed."});
+});
 
 app.use(historyApiFallback());
-app.listen(process.env.VCAP_APP_PORT || 5000);
+// app.listen(process.env.VCAP_APP_PORT || 5000);
+
+////////// Web socket server ////////
+var wsServer = new WebSocketServer({
+	server: httpServer,
+	verifyClient: function(info) {
+		console.log('verifyClient');
+		console.log(JSON.stringify(info));
+		return true;
+	}
+});
+
+wsServer.on('connection', function connection(ws) {
+	ws.on('message', function incoming(message) {
+    console.log('received: %s', message);
+  });
+
+  ws.send('something');
+});
+///////// End Web socket server /////////
+
+httpServer.on('request', app);
+httpServer.listen(process.env.VCAP_APP_PORT || 5000, function() {
+	console.log('Listening on ' + httpServer.address().port);
+});
 
 module.exports = app;
