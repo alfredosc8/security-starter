@@ -107,30 +107,36 @@ app.use('/proxy-api', expressProxy(function(req) {
 }));
 
 app.use('/open-ws', function(req, res) {
-	var wsUrl = req.get('x-endpoint');
-	if (wsUrl) {
+	var wsUrl = req.get('x-endpoint'),
+	    auth = req.get('authorization'),
+			zone = req.get('predix-zone-id');
+	if (!auth || !zone || !wsUrl) {
+		res.status(500).send({"error": "one of the required headers is missing: x-endpoint, authorization, or predix-zone-id."});
+	} else {
 		console.log('opening a socket to: ' + wsUrl);
-		//check origin? do some security stuff.
+		// TODO: check origin? do some security stuff.
 		// open socket to wsUrl, pass in authorization & zone-id headers.
 		var headers = {
-			"authentication": req.get('authentication'),
-			"predix-zone-id": req.get('predix-zone-id')
+			"authorization": auth,
+			"predix-zone-id": zone,
+			"origin": "http://www.predix.io" // some value is required here.
 		};
-		var socket = new WebSocket(wsUrl, {name: 'headers', value: headers});
+		// console.log('headers: ' + JSON.stringify(headers));
+		var socket = new WebSocket(wsUrl, {headers: headers});
 		socket.on('error', function(error) {
 			console.log('error opening socket: ' + error);
 		});
-		// TODO: Only on success!
-		// store socket in memory with an ID & expiration
-		// return socket ID to browser
-		var socketId = Math.random() * 10000000000000000000;
-		socket.socketId = socketId;
-		socket.exp = Date.now() + 1200000; // 20 min
-		sockets[socketId] = socket;
-		console.log('sockets: ' + sockets.length);
-		res.status(200).send({"socketId": socketId});
-	} else {
-		res.status(500).send({"error": "x-endpoint header missing."});
+		socket.on('open', function() {
+			// console.log('socket opened!?!?');
+			// store socket in memory with an ID & expiration
+			// return socket ID to browser
+			var socketId = Math.random() * 10000000000000000000;
+			socket.socketId = socketId;
+			socket.exp = Date.now() + 1200000; // 20 min
+			sockets[socketId] = socket;
+			console.log('sockets: ' + Object.keys(sockets).length);
+			res.status(200).send({"socketId": socketId});
+		});
 	}
 });
 
@@ -165,7 +171,7 @@ wsServer.on('connection', function connection(ws) {
 
 httpServer.on('request', app);
 httpServer.listen(process.env.VCAP_APP_PORT || 5000, function() {
-	console.log('Listening on ' + httpServer.address().port);
+	console.log('Listening on port ' + httpServer.address().port);
 });
 
 module.exports = app;
