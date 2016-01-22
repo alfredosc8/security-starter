@@ -125,6 +125,7 @@ app.use('/open-ws', function(req, res) {
 		var socket = new WebSocket(wsUrl, {headers: headers});
 		socket.on('error', function(error) {
 			console.log('error opening socket: ' + error);
+			res.status(500).send({"error": error + '', "url": wsUrl});
 		});
 		socket.on('close', function(code, message) {
 			console.log('socket closed. ' + code + ' ' + message);
@@ -184,7 +185,7 @@ wsServer.on('connection', function connection(ws) {
 			return;
 		}
 		var apiSocket = sockets[tsData.socketId];
-		if (apiSocket.readyState !== WebSocket.OPEN) {
+		if (!apiSocket || apiSocket.readyState !== WebSocket.OPEN) {
 			ws.send('{"error": "socket to back end API has closed."}');
 			delete sockets[tsData.socketId];
 			return;
@@ -193,7 +194,9 @@ wsServer.on('connection', function connection(ws) {
 		apiSocket.send(message);
 		apiSocket.on('message', function(data) {
 			console.log('data from api: ' + data);
-			ws.send(data);
+			if (ws.readyState === WebSocket.OPEN) {
+				ws.send(data);
+			}
 		});
   });
 

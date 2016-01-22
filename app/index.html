@@ -140,13 +140,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="lock"></iron-icon>
                 <span>Login as User</span>
               </a>
-              <a data-route="tsquery" href="/tsQuery" on-click="onDataRouteClick">
-                <iron-icon icon="cloud-download"></iron-icon>
-                <span>Time series query</span>
-              </a>
               <a data-route="tsingest" href="/tsIngest" on-click="onDataRouteClick">
                 <iron-icon icon="cloud-upload"></iron-icon>
                 <span>Time series ingest</span>
+              </a>
+              <a data-route="tsquery" href="/tsQuery" on-click="onDataRouteClick">
+                <iron-icon icon="cloud-download"></iron-icon>
+                <span>Time series query</span>
               </a>
             </paper-menu>
           </div>
@@ -339,7 +339,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Open a websocket, and push data to your time series instance.
               </paper-material>
               <paper-material elevation="1">
-                TODO
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" is-web-socket-request="true" request-file-path="/requests/time-series-ingestion.json"></api-form>
               </paper-material>
             </section>
 
@@ -348,7 +348,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Make a few basic queries against your time series instance.
               </paper-material>
               <paper-material elevation="1">
-                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" request-file-path="/requests/time-series-query.json"></api-form>
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" request-file-path="/requests/time-series-query.json"></api-form>
               </paper-material>
             </section>
 

@@ -9,6 +9,7 @@
       }
     </style>
     <iron-ajax id="requestLoaderEl" handle-as="json" last-response="{{requests}}" method="GET"></iron-ajax>
+    <iron-ajax id="socketCloseEl" handle-as="json" last-response="{{restResponse}}" method="GET"></iron-ajax>
     <form is="iron-form" id="apiForm" method="post">
       <p>
         UAA URL: <span>{{baseUrl}}</span>
@@ -36,11 +37,18 @@
         </template>
       </table>
       <p><b>Request Body</b></p>
-        <textarea id="apiRequest" rows=10 cols=100>{{restRequest}}</textarea>
+        <textarea id="apiRequest" rows=10 cols=100>{{restRequest::input}}</textarea>
       <br/>
-      <paper-button raised noink class="starter-button" id="apiCommandButton" data-dialog="apiCommand">See curl command</paper-button>
-      <paper-button raised noink class="starter-button starter-button-primary" id="apiButton">Submit</paper-button>
-      <input hidden="true" type="submit" />
+      <div hidden$="{{isWebSocketRequest}}">
+        <paper-button raised noink class="starter-button" id="apiCommandButton" data-dialog="apiCommand">See curl command</paper-button>
+        <paper-button raised noink class="starter-button starter-button-primary" id="apiButton">Submit</paper-button>
+        <input hidden="true" type="submit" />
+      </div>
+      <div hidden$="{{!isWebSocketRequest}}">
+        <paper-button raised noink class="starter-button" id="socketOpenButton">Open socket</paper-button>
+        <paper-button raised noink class="starter-button starter-button-primary" id="socketSendButton">Send message</paper-button>
+        <paper-button raised noink class="starter-button" id="socketCloseButton">Close socket</paper-button>
+      </div>
     </form>
     <p>{{error}}</p>
     <!-- <p hidden$="{{!success}}">Success!  ...</p> -->
@@ -97,12 +105,21 @@
           },
           httpMethod: {
             type: String,
-            notify: true
+            notify: true,
+            observer: 'methodChanged'
           },
           displayHeaders: {
             type: Array,
             notify: true,
             value: []
+          },
+          isWebSocketRequest: {
+            type: Boolean,
+            notify: true,
+            value: false
+          },
+          socketId: {
+            type: Number
           }
         },
 
@@ -116,6 +133,8 @@
         updateHttpRequest: function(defn) {
           var self = this;
           this.restRequest = JSON.stringify(defn.body);
+          this.restResponse = '';
+          this.error = '';
           this.httpMethod = defn.method;
           self.splice('displayHeaders', 0, self.displayHeaders.length);
           defn.headers.forEach(function(h) {
@@ -130,26 +149,49 @@
           this.requestDefinition = this.requests[index];
         },
 
+        methodChanged: function(method) {
+          if (method && method.toLowerCase() === 'websocket') {
+            this.isWebSocketRequest = true;
+          } else {
+            this.isWebSocketRequest = false;
+          }
+        },
+
+        getFormUrl: function() {
+          var url;
+          if (!this.isWebSocketRequest) {
+            var urlParser = document.createElement('a');
+            urlParser.href = this.apiUrl;
+            url = '/proxy-api' + urlParser.pathname;
+          } else {
+            url = '/open-ws';
+          }
+          return url;
+        },
+
         ready: function() {
           var self = this;
           var apiForm = this.$.apiForm;
-          var urlParser = document.createElement('a');
           apiForm.addEventListener('iron-form-presubmit', function() {
             self._reset();
-            urlParser.href = self.apiUrl;
+
             // console.log('path from apiUrl: ' + urlParser.pathname);
-            this.request.url = '/proxy-api' + urlParser.pathname;
-            this.request.method = self.requestDefinition.method;
+            // this.request.url = '/proxy-api' + urlParser.pathname;
+            this.request.url = self.getFormUrl();
+            // if this is a websocket form, we first submit an http get to open a websocket to the backend.
+            this.request.method = self.requestDefinition.method === 'websocket' ? 'get' : self.requestDefinition.method;
             for (var i=0; i<self.requestDefinition.headers.length; i++) {
               var h = self.requestDefinition.headers[i];
-              console.log('h: ' + JSON.stringify(h));
               this.request.headers[h.key] = h.val;
             }
-            console.log('request headers: ' + JSON.stringify(this.request.headers));
+            //console.log('request headers: ' + JSON.stringify(this.request.headers));
             this.request.headers.authorization = "Bearer " + self.token;
             this.request.headers['x-endpoint'] = self.apiUrl;
             this.request.headers['predix-zone-id'] = self.predixZoneId;
             this.request.body =  self.$.apiRequest.value; //textarea input
+          });
+          apiForm.addEventListener('iron-form-response', function(event) {
+            self.socketId = event.detail.response.socketId;
           });
           this.$.apiButton.addEventListener('click', function() {
             apiForm.submit();
@@ -166,6 +208,48 @@
               dialog.rawJson = self._decodeToken(self.token);
               dialog.open();
             }
+          });
+
+          this.$.socketOpenButton.addEventListener('click', function() {
+            apiForm.submit();
+          });
+          this.$.socketSendButton.addEventListener('click', function() {
+            console.log('socketId: ' + self.socketId);
+            // build path string: wss:// + current host
+            var wsProxyUrl = 'wss://' + document.location.host;
+            // console.log('wsProxyUrl: ' + wsProxyUrl);
+
+            var requestObj;
+            try {
+              requestObj = JSON.parse(self.$.apiRequest.value);
+              // console.log('request: ' + self.$.apiRequest.value);
+            } catch (e) {
+              self.error = '{"error": ' + e + '}';
+              return;
+            }
+            // for now, we just create a new socket every time.
+            var socket = new WebSocket(wsProxyUrl);
+            socket.onopen = function(msg) {
+              console.log('ws proxy socket open.');
+              requestObj.socketId = self.socketId;
+              // console.log('sending request: ' + JSON.stringify(requestObj));
+              socket.send(JSON.stringify(requestObj));
+            };
+            socket.onmessage = function(evt) {
+              console.log('message received: ' + evt.data);
+              self.restResponse = evt.data;
+              socket.close();
+            };
+            socket.onerror = function(err) {
+              console.log('error from ws proxy');
+              self.error = JSON.stringify(err);
+              socket.close();
+            };
+          });
+          this.$.socketCloseButton.addEventListener('click', function() {
+            self.$.socketCloseEl.url = "/close-ws";
+            self.$.socketCloseEl.headers = {"x-socketid": self.socketId};
+            self.$.socketCloseEl.generateRequest();
           });
         },
         behaviors: [RestFormBehavior]

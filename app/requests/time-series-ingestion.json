@@ -8,7 +8,7 @@
          }
       ],
       "method":"websocket",
-      "path":"wss://gateway-predix-sysint.grc-apps.svc.ice.ge.com/v1/stream/messages",
+      "path":"wss://gateway-predix-data-services.run.aws-usw02-pr.ice.predix.io/v1/stream/messages",
       "body":{
          "messageId":"1453338376222",
          "body":[
