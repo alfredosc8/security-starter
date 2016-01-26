@@ -65,7 +65,7 @@
          "start":"1y-ago",
          "tags":[
             {
-               "name":"RMD_metric2",
+               "name":"Compressor-2015:CompressionRatio",
                "limit":0,
                "order":"desc",
                "aggregations":[
@@ -77,6 +77,36 @@
                "groups":[
 
                ]
+            }
+         ]
+      }
+   },
+   {
+      "label":"Grouped Datapoints Request",
+      "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"post",
+      "path":"https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
+      "body":{
+         "start":"1y-ago",
+         "tags":[
+            {
+               "name":"Compressor-2015:CompressionRatio",
+               "limit":0,
+               "order":"desc",
+               "aggregations":[
+                  {
+                     "type":"avg",
+                     "interval":"2d"
+                  }
+               ],
+               "groups":[{
+			"name": "quality"
+		}]
             }
          ]
       }
