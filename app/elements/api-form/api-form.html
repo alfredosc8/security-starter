@@ -15,8 +15,6 @@
         UAA URL: <span>{{baseUrl}}</span>
       </p>
       <table class="starter-inputs">
-        <tr><td>API URL:</td><td style="width: 85%"><input style="width: 100%" required value="{{apiUrl::input}}"></td></tr>
-        <tr><td>Method:</td><td><div class="method-box">{{httpMethod}}</div></td></tr>
         <tr>
           <td>Choose Request:</td>
           <td>
@@ -29,15 +27,19 @@
             </paper-dropdown-menu>
           </td>
         </tr>
-        <tr><td><b>Request Headers</b></td></tr>
+        <tr>
+          <td><span class$="{{computeColorClass(httpMethod)}}">{{httpMethod}}</span></td>
+          <td><span class="api-path"><input style="width: 80%" required value="{{apiUrl::input}}"></span></td>
+        </tr>
+        <tr><td><b>Request Headers</b></td><td style="width: 85%;"></td></tr>
+        <tr><td>predix-zone-id</td><td><input style="width: 35%;" name="zoneIdInput" required value="{{predixZoneId::input}}"></td></tr>
         <tr><td>authorization</td><td>Bearer <paper-button raised noink class="starter-button" id="viewTokenButton">View Token</paper-button></td></tr>
-        <tr><td>predix-zone-id</td><td><input name="zoneIdInput" required value="{{predixZoneId::input}}"></td></tr>
         <template is="dom-repeat" items="{{displayHeaders}}">
           <tr><td>{{item.key}}</td><td>{{item.val}}</td></tr>
         </template>
       </table>
       <p><b>Request Body</b></p>
-        <textarea id="apiRequest" rows=10 cols=100>{{restRequest::input}}</textarea>
+      <textarea id="apiRequest" rows=10 cols=100>{{restRequest::input}}</textarea>
       <br/>
       <div hidden$="{{isWebSocketRequest}}">
         <paper-button raised noink class="starter-button" id="apiCommandButton" data-dialog="apiCommand">See curl command</paper-button>
@@ -106,7 +108,8 @@
           httpMethod: {
             type: String,
             notify: true,
-            observer: 'methodChanged'
+            observer: 'methodChanged',
+            value: 'get'
           },
           displayHeaders: {
             type: Array,
@@ -137,9 +140,11 @@
           this.error = '';
           this.httpMethod = defn.method;
           self.splice('displayHeaders', 0, self.displayHeaders.length);
-          defn.headers.forEach(function(h) {
-            self.push('displayHeaders', h); //[h[0]] = h[1];
-          });
+          if (defn.headers) {
+            defn.headers.forEach(function(h) {
+              self.push('displayHeaders', h);
+            });
+          }
           console.log('headers: ' + JSON.stringify(this.displayHeaders));
           this.apiUrl = defn.path;
         },
@@ -155,6 +160,23 @@
           } else {
             this.isWebSocketRequest = false;
           }
+        },
+
+        computeColorClass: function(httpMethod) {
+          var method = httpMethod ? httpMethod.toLowerCase() : 'get';
+          if (method === 'post') {
+            return 'method-box method-box-green';
+          } else if (method === 'delete') {
+            return 'method-box method-box-red';
+          } else if (method === 'websocket') {
+            return 'method-box method-box-violet';
+          } else if (method === 'patch') {
+            return 'method-box method-box-brown';
+          } else if (method === 'put') {
+            return 'method-box method-box-yellow';
+          }
+          // default to get
+          return 'method-box method-box-blue';
         },
 
         getFormUrl: function() {

@@ -30,7 +30,9 @@
       }
    },
    {
-      "label":"Get Tags"
+      "label":"Get Tags",
+      "method": "get",
+      "path": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/tags"
    },
    {
       "label":"Latest Datapoints Request",
