@@ -39,7 +39,7 @@
         </template>
       </table>
       <p><b>Request Body</b></p>
-      <textarea id="apiRequest" rows=10 cols=100>{{restRequest::input}}</textarea>
+      <textarea id="apiRequest" rows=10 cols=100>{{restRequest}}</textarea>
       <br/>
       <div hidden$="{{isWebSocketRequest}}">
         <paper-button raised noink class="starter-button" id="apiCommandButton" data-dialog="apiCommand">See curl command</paper-button>
@@ -61,7 +61,7 @@
     <tutorial-overlay id="apiCommand">
       TODO: curl '{{baseUrl}}/oauth/clients/{{clientId}}' -X PUT -H 'Pragma: no-cache' -H 'content-type: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{adminAuthBearerToken}}' --data-binary '{{restRequest}}'
     </tutorial-overlay>
-    <tutorial-overlay id="viewToken"></tutorial-overlay>
+    <tutorial-overlay id="viewApiToken"></tutorial-overlay>
     <!-- <tutorial-overlay id="apiDetails" class="scrollable" markdown-url="/security.md#TODO"></tutorial-overlay> -->
   </template>
 
@@ -135,10 +135,10 @@
 
         updateHttpRequest: function(defn) {
           var self = this;
-          this.restRequest = JSON.stringify(defn.body);
-          this.restResponse = '';
-          this.error = '';
-          this.httpMethod = defn.method;
+          self.restRequest = JSON.stringify(defn.body);
+          self.restResponse = '';
+          self.error = '';
+          self.httpMethod = defn.method;
           self.splice('displayHeaders', 0, self.displayHeaders.length);
           if (defn.headers) {
             defn.headers.forEach(function(h) {
@@ -146,7 +146,7 @@
             });
           }
           console.log('headers: ' + JSON.stringify(this.displayHeaders));
-          this.apiUrl = defn.path;
+          self.apiUrl = defn.path;
         },
 
         setSelectedRequest: function(index) {
@@ -202,9 +202,11 @@
             this.request.url = self.getFormUrl();
             // if this is a websocket form, we first submit an http get to open a websocket to the backend.
             this.request.method = self.requestDefinition.method === 'websocket' ? 'get' : self.requestDefinition.method;
-            for (var i=0; i<self.requestDefinition.headers.length; i++) {
-              var h = self.requestDefinition.headers[i];
-              this.request.headers[h.key] = h.val;
+            if (self.requestDefinition.headers) {
+              for (var i=0; i<self.requestDefinition.headers.length; i++) {
+                var h = self.requestDefinition.headers[i];
+                this.request.headers[h.key] = h.val;
+              }
             }
             //console.log('request headers: ' + JSON.stringify(this.request.headers));
             this.request.headers.authorization = "Bearer " + self.token;
@@ -225,7 +227,7 @@
 
           this.$.viewTokenButton.addEventListener('click', function(e) {
             e.preventDefault();
-            var dialog = document.getElementById('viewToken');
+            var dialog = self.$.viewApiToken;
             if (dialog) {
               dialog.rawJson = self._decodeToken(self.token);
               dialog.open();
