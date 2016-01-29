@@ -59,7 +59,11 @@
       <paper-progress indeterminate style="width: 100%"></paper-progress>
     </div>
     <tutorial-overlay id="apiCommand">
-      TODO: curl '{{baseUrl}}/oauth/clients/{{clientId}}' -X PUT -H 'Pragma: no-cache' -H 'content-type: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{adminAuthBearerToken}}' --data-binary '{{restRequest}}'
+      curl '{{apiUrl}}' -X {{httpMethod}} -H 'predix-zone-id: {{predixZoneId}}' -H 'authorization: Bearer {{token}}'
+      <template is="dom-repeat" items="{{displayHeaders}}">
+        -H '{{item.key}}: {{item.val}}'
+      </template>
+      <span hidden$="{{!requiresBody}}">--data-binary '{{restRequest}}'</span>
     </tutorial-overlay>
     <tutorial-overlay id="viewApiToken"></tutorial-overlay>
     <!-- <tutorial-overlay id="apiDetails" class="scrollable" markdown-url="/security.md#TODO"></tutorial-overlay> -->
@@ -97,9 +101,6 @@
           requestFilePath: {
             type: String
           },
-          // apiDisplayName: {
-          //   type: String
-          // }
           requestDefinition: {
             type: Object,
             notify: true,
@@ -123,6 +124,10 @@
           },
           socketId: {
             type: Number
+          },
+          requiresBody: {
+            type: Boolean,
+            notify: true
           }
         },
 
@@ -155,11 +160,19 @@
         },
 
         methodChanged: function(method) {
-          if (method && method.toLowerCase() === 'websocket') {
+          if (!method) { return; }
+          if (method.toLowerCase() === 'websocket') {
             this.isWebSocketRequest = true;
           } else {
             this.isWebSocketRequest = false;
           }
+
+          if ('websocket post put'.indexOf(method) > -1) {
+            this.requiresBody = true;
+          } else {
+            this.requiresBody = false;
+          }
+          console.log('requiresBody: ' + this.requiresBody);
         },
 
         computeColorClass: function(httpMethod) {
