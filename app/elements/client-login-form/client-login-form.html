@@ -15,10 +15,8 @@
         <img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img>
       </paper-button>
       </p>
-      <p>
-        UAA URL: <span>{{baseUrl}}</span>/ouath/token
-      </p>
       <table class="starter-inputs">
+        <tr><td>UAA URL:</td><td style="width: 85%;"><input name="uaaUrlInput" style="width: 80%;" required value="{{baseUrl::input}}"</td></tr>
         <tr><td>Client ID:</td><td><input name="clientId" required value="{{clientId::input}}"></td></tr>
         <tr><td>Client Secret:</td><td><input name="clientSecret" required type="password" value="{{clientSecret::input}}"></td></tr>
       </table>
@@ -44,10 +42,6 @@
       Polymer({
         is: 'client-login-form',
         properties: {
-          uaaUrl: {
-            type: String,
-            notify: true
-          },
           clientId: {
             type: String,
             notify: true,
@@ -68,9 +62,10 @@
           var self = this;
           var restForm = this.$.restForm;
           restForm.addEventListener('iron-form-presubmit', function() {
-            this.request.url = '/api/oauth/token';
+            this.request.url = '/uaalogin';
             this.request.headers = {authorization: self.authHeader};
             this.request.body.grant_type = 'client_credentials';
+            self.baseUrl = this.request.body.uaaUrlInput;
             delete this.request.body.clientId;
             delete this.request.body.clientSecret;
             self.loading = true;

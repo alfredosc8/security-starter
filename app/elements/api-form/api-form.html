@@ -38,8 +38,10 @@
           <tr><td>{{item.key}}</td><td>{{item.val}}</td></tr>
         </template>
       </table>
-      <p><b>Request Body</b></p>
-      <textarea id="apiRequest" rows=10 cols=100>{{restRequest}}</textarea>
+      <div hidden$="{{!requiresBody}}">
+        <p><b>Request Body</b></p>
+        <textarea id="apiRequest" rows=10 cols=100>{{restRequest}}</textarea>
+      </div>
       <br/>
       <div hidden$="{{isWebSocketRequest}}">
         <paper-button raised noink class="starter-button" id="apiCommandButton" data-dialog="apiCommand">See curl command</paper-button>
@@ -251,7 +253,8 @@
           });
           this.$.socketSendButton.addEventListener('click', function() {
             console.log('socketId: ' + self.socketId);
-            // build path string: wss:// + current host
+            self.error = '';
+            // build path string: wss:// for cloudfoundry.  use ws:// for local dev.
             var wsProxyUrl = 'wss://' + document.location.host;
             // console.log('wsProxyUrl: ' + wsProxyUrl);
 
