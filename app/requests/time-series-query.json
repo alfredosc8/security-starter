@@ -1,35 +1,5 @@
 [
    {
-      "label":"Basic Request",
-      "headers":[
-         {
-            "key":"content-type",
-            "val":"application/json"
-         }
-      ],
-      "method":"post",
-      "path":"https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
-      "body":{
-         "cache_time":0,
-         "tags":[
-            {
-               "name":"Compressor-2015:CompressionRatio",
-               "aggregations":[
-                  {
-                     "type":"avg",
-                     "sampling":{
-                        "unit":"s",
-                        "value":"30"
-                     }
-                  }
-               ]
-            }
-         ],
-         "start":1452112200000,
-         "end":1452717542744
-      }
-   },
-   {
       "label":"Get Tags",
       "method": "get",
       "path": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/tags"
@@ -111,6 +81,36 @@
 		}]
             }
          ]
+      }
+   },
+   {
+      "label":"Time Bounded Request",
+      "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"post",
+      "path":"https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
+      "body":{
+         "cache_time":0,
+         "tags":[
+            {
+               "name":"Compressor-2015:CompressionRatio",
+               "aggregations":[
+                  {
+                     "type":"avg",
+                     "sampling":{
+                        "unit":"s",
+                        "value":"30"
+                     }
+                  }
+               ]
+            }
+         ],
+         "start":1452112200000,
+         "end":1452717542744
       }
    }
 ]
