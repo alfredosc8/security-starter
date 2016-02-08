@@ -41,7 +41,7 @@
   },
   "scripts": {
     "test": "gulp test:local",
-    "start": "gulp serve"
+    "start": "gulp && gulp serve"
   },
   "engines": {
     "node": ">=0.10.0"
