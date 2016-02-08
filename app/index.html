@@ -223,7 +223,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Next, create a client ID.
               </paper-material>
               <paper-material elevation="1">
-                <clientid-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}"></clientid-form>
+                <clientid-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" client-id="{{newClientId}}"></clientid-form>
               </paper-material>
             </section>
 
@@ -320,7 +320,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <user-token-form
                   base-url="{{uaaBaseUrl}}"
                   client-id="{{newClientId}}"
-                  client-secret="{{newClientSecret}}"
                   user-token="{{apiToken}}"
                   user-name="{{newUserName}}"></user-token-form>
               </paper-material>
@@ -328,7 +327,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="apiloginclient">
               <paper-material elevation="1">
-                <client-login-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" client-token="{{apiToken}}">
+                <client-login-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-token="{{apiToken}}">
                 </client-login-form>
               </paper-material>
             </section>

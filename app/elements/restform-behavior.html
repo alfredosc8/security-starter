@@ -61,6 +61,9 @@
       this.restResponse = event.detail.request.parseResponse();
       this.loading = false;
       this.success = false;
+      this.adminSecret = '';
+      this.clientSecret = '';
+      this.userPassword = '';
     },
 
     _handleResponse: function(event) {
@@ -69,6 +72,9 @@
       this.restResponse = JSON.stringify(event.detail.response);
       this.loading = false;
       this.success = true;
+      this.adminSecret = '';
+      this.clientSecret = '';
+      this.userPassword = '';
     },
 
     _reset: function() {
