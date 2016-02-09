@@ -30,5 +30,19 @@
     "description": "This analytic does simple math",
     "customMetadata": "{\"assetid\":\"abc\"}"
       }
+  },
+  {
+    "label":"Upload an analytic to your catalog instance"
+    "headers":[
+      {
+        "key":"content-type",
+        "val":"multipart/form-data"
+      }
+      ],
+      "method":"post",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/artifacts",
+      "body":{
+        
+      }
   }
 ]
