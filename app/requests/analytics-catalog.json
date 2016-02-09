@@ -9,5 +9,26 @@
       ],
       "method":"get",
       "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics"
+  },
+  {
+      "label":"Create an analytic entry in the catalog",
+      "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"post",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics",
+      "body":{
+        
+    "name": "My analytic",
+    "version": "v1",
+    "supportedLanguage": "Java",
+    "taxonomyLocation": "",
+    "author": "John Doe",
+    "description": "This analytic does simple math",
+    "customMetadata": "{\"assetid\":\"abc\"}"
+      }
   }
 ]
