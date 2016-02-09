@@ -106,5 +106,20 @@
       ],
       "method":"get",
       "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/deployment/<deployment id goes here>"
+  },
+  {
+    "label":"Execute the analytic after deployment is fully done",
+    "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"post",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/execution",
+      "body":{
+        "number1":2,
+        "number2":4
+      }
   }
 ]
