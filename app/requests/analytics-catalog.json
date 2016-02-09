@@ -95,5 +95,16 @@
         "diskQuota":1024,
         "instances":1
       }
+  },
+  {
+    "label":"Check the status of the deployment",
+    "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"get",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/deployment/<deployment id goes here>"
   }
 ]
