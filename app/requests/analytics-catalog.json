@@ -54,7 +54,7 @@
       "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/artifacts"
   },
   {
-    "label":"Test run your analytic catalog - asynchronous request",
+    "label":"Test run your analytic- async - note down the request id from the output",
     "headers":[
          {
             "key":"content-type",
@@ -67,5 +67,17 @@
         "number1":700,
         "number2":800
       }
+  },
+  {
+    "label":"Test run results - need analyticaCatalogEntryId and request id",
+      "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"get",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/validation/<request id goes here>"
+
   }
 ]
