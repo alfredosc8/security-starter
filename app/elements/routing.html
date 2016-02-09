@@ -98,6 +98,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       selectApiTab();
     });
 
+    page('/analyticsCatalog', scrollToTop, function() {
+      app.route = 'analyticscatalog';
+      selectApiTab();
+    });
+
+    page('/analyticsRuntime', scrollToTop, function() {
+      app.route = 'analyticsruntime';
+      selectApiTab();
+    });
+
     // add #! before urls
     page({
       hashbang: true

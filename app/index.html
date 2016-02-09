@@ -148,6 +148,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="cloud-download"></iron-icon>
                 <span>Time series query</span>
               </a>
+              <a data-route="analyticscatalog" href="/analyticsCatalog" on-click="onDataRouteClick">
+                <iron-icon icon="list"></iron-icon>
+                <span>Analytics catalog</span>
+              </a>
+              <a data-route="analyticsruntime" href="/analyticsRuntime" on-click="onDataRouteClick">
+                <iron-icon icon="trending-up"></iron-icon>
+                <span>Analytics runtime</span>
+              </a>
             </paper-menu>
           </div>
         </div>
@@ -347,6 +355,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
               <paper-material elevation="1">
                 <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" request-file-path="/requests/time-series-query.json"></api-form>
+              </paper-material>
+            </section>
+
+            <section data-route="analyticscatalog">
+              <paper-material elevation="1">
+                Manage analytics in your catalog instance.
+              </paper-material>
+              <paper-material elevation="1">
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" is-web-socket-request="false" request-file-path="/requests/analytics-catalog.json"></api-form>
+              </paper-material>
+            </section>
+
+            <section data-route="analyticsruntime">
+              <paper-material elevation="1">
+                Execute analytics from your catalog in the Predix cloud.
+              </paper-material>
+              <paper-material elevation="1">
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" request-file-path="/requests/analytics-runtime.json"></api-form>
               </paper-material>
             </section>
 
