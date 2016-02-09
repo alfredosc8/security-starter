@@ -32,7 +32,7 @@
       }
   },
   {
-    "label":"Upload an analytic to your catalog instance"
+    "label":"Upload an analytic to your catalog instance",
     "headers":[
       {
         "key":"content-type",
@@ -40,9 +40,6 @@
       }
       ],
       "method":"post",
-      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/artifacts",
-      "body":{
-        
-      }
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/artifacts"
   }
 ]
