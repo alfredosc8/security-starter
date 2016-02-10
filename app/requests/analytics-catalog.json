@@ -21,7 +21,7 @@
       "method":"post",
       "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics",
       "body":{
-        
+
     "name": "My analytic",
     "version": "v1",
     "supportedLanguage": "Java",
@@ -32,7 +32,7 @@
       }
   },
   {
-    "label":"Upload an analytic to your catalog instance"
+    "label":"Upload an analytic to your catalog instance",
     "headers":[
       {
         "key":"content-type",
@@ -42,7 +42,27 @@
       "method":"post",
       "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/artifacts",
       "body":{
-        
+        "formFields":
+        [
+          {
+            "key": "file",
+            "type": "file"
+          },
+          {
+            "key": "catalogEntryId",
+            "type": "text"
+          },
+          {
+            "key": "type",
+            "val": "Executable",
+            "type": "text"
+          },
+          {
+            "key": "description",
+            "val": "some words",
+            "type": "text"
+          }
+        ]
       }
   }
 ]
