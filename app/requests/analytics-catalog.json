@@ -41,7 +41,7 @@
       ],
       "method":"post",
       "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/artifacts",
-      "body":{
+      "body": {
         "formFields":
         [
           {
@@ -63,6 +63,86 @@
             "type": "text"
           }
         ]
+      }
+  },
+  {
+    "label":"Get the details of the uploaded analytics from catalog",
+      "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"get",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/artifacts"
+  },
+  {
+    "label":"Test run your analytic- async - note down the request id from the output",
+    "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"post",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/validation",
+      "body":{
+        "number1":700,
+        "number2":800
+      }
+  },
+  {
+    "label":"Test run results - need analyticaCatalogEntryId and request id",
+      "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"get",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/validation/<request id goes here>"
+
+  },
+  {
+    "label":"Deploy the analytic to production for analytics runtime to execute in the workflow - async",
+    "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"post",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/deployment",
+      "body":{
+        "memory":512,
+        "diskQuota":1024,
+        "instances":1
+      }
+  },
+  {
+    "label":"Check the status of the deployment",
+    "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"get",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/deployment/<deployment id goes here>"
+  },
+  {
+    "label":"Execute the analytic after deployment is fully done",
+    "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"post",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/execution",
+      "body":{
+        "number1":2,
+        "number2":4
       }
   }
 ]
