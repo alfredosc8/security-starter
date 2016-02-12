@@ -36,6 +36,12 @@ if (process.env.VCAP_SERVICES) {  // use redis when running in cloud
 
 app.use(session(sessionOptions));
 
+function cleanResponseHeaders (rsp, data, req, res, cb) {
+	res.removeHeader('Access-Control-Allow-Origin');
+	res.removeHeader('X-Powered-By');
+	cb(null, data);
+}
+
 app.use('/uaalogin', function storeUrlInSession(req, res, next) {
     var data = '';
     req.on('data', function(chunk) {
@@ -77,16 +83,18 @@ app.use('/api', expressProxy(getUaaUrlFromSession, {
 			  var forwardPath = url.parse(req.url).path;
 			//   console.log("forwardPath returns; " + forwardPath);
 			  return forwardPath;
-		}
+		},
+		intercept: cleanResponseHeaders
 	}
 ));
 
 app.use('/uaalogin', expressProxy(getUaaUrlFromSession, {
-	https: true,
-	forwardPath: function () {
-		return '/oauth/token';
+		https: true,
+		forwardPath: function () {
+			return '/oauth/token';
+		},
+		intercept: cleanResponseHeaders
 	}
-}
 ));
 
 app.use('/proxy-api', expressProxy(function(req) {
@@ -103,7 +111,8 @@ app.use('/proxy-api', expressProxy(function(req) {
 		var forwardPath = url.parse(req.url).path;
 		// console.log('forwardPath: ' + forwardPath);
 		return forwardPath;
-	}
+	},
+	intercept: cleanResponseHeaders
 }));
 
 app.use('/open-ws', function(req, res) {
