@@ -41,7 +41,7 @@
       <table class="starter-inputs" hidden="{{!isMultipartFormRequest}}">
         <tr><td><b>Form Values</b></td><td style="width: 85%;"></td></tr>
         <template is="dom-repeat" items="{{requestDefinition.body.formFields}}">
-          <tr><td>{{item.key}}</td><td><input name="{{item.key}}" type="{{item.type}}" value="{{item.val}}"></input></td></tr>
+          <tr><td>{{item.key}}</td><td><input name="{{item.key}}" type="{{item.type}}" value="{{item.val::input}}" on-change="updateUploadFileName"></input></td></tr>
         </template>
       </table>
       <div hidden$="{{!requiresBody}}">
@@ -72,6 +72,10 @@
         -H '{{item.key}}: {{item.val}}'
       </template>
       <span hidden$="{{!requiresBody}}">--data-binary '{{restRequest}}'</span>
+      <template hidden$="{{!isMultipartFormRequest}}" is="dom-repeat" items="{{requestDefinition.body.formFields}}">
+        <span hidden$="{{!item.isFile}}">-F '{{item.key}}=@{{uploadFileName}}'</span>
+        <span hidden$="{{item.isFile}}">-F '{{item.key}}={{item.val}}'</span>
+      </template>
     </tutorial-overlay>
     <tutorial-overlay id="viewApiToken"></tutorial-overlay>
     <!-- <tutorial-overlay id="apiDetails" class="scrollable" markdown-url="/security.md#TODO"></tutorial-overlay> -->
@@ -141,11 +145,14 @@
           requiresBody: {
             type: Boolean,
             notify: true
+          },
+          uploadFileName: {
+            //HACK!
+            type: String
           }
         },
 
         loadAllRequests: function() {
-          // console.log('Load all requests.');
           // make ajax request to load request file:
           this.$.requestLoaderEl.url = this.requestFilePath;
           this.$.requestLoaderEl.generateRequest();
@@ -168,12 +175,16 @@
               }
             });
           }
+          if (defn.body && defn.body.formFields) {
+            defn.body.formFields.forEach(function(f) {
+              f.isFile = (f.type === 'file');
+            });
+          }
           // console.log('headers: ' + JSON.stringify(this.displayHeaders));
           self.apiUrl = defn.path;
         },
 
         setSelectedRequest: function(index) {
-          // console.log(JSON.stringify(this.requests[key]));
           this.requestDefinition = this.requests[index];
         },
 
@@ -221,6 +232,16 @@
           return url;
         },
 
+        updateUploadFileName: function(e) {
+          if (e.model.item.type === 'file') {
+            console.log('updateUploadFileName');
+            var fileName = document.querySelector('input[type="file"]').value;
+            var fileParts = fileName.split('\\');
+            fileName = fileParts[fileParts.length-1];
+            this.uploadFileName = fileName;
+          }
+        },
+
         //Note: This function can only handle one file upload input, and one file.
         buildFormDataObject: function(requestBody) {
           var formData = new FormData();
@@ -245,8 +266,6 @@
           apiForm.addEventListener('iron-form-presubmit', function() {
             self._reset();
 
-            // console.log('path from apiUrl: ' + urlParser.pathname);
-            // this.request.url = '/proxy-api' + urlParser.pathname;
             this.request.url = self.getFormUrl();
             // if this is a websocket form, we first submit an http get to open a websocket to the backend.
             this.request.method = self.requestDefinition.method === 'websocket' ? 'get' : self.requestDefinition.method;
@@ -295,7 +314,6 @@
             self.error = '';
             // build path string: wss:// for cloudfoundry.  use ws:// for local dev.
             var wsProxyUrl = 'wss://' + document.location.host;
-            // console.log('wsProxyUrl: ' + wsProxyUrl);
 
             var requestObj;
             try {
@@ -329,6 +347,7 @@
             self.$.socketCloseEl.headers = {"x-socketid": self.socketId};
             self.$.socketCloseEl.generateRequest();
           });
+
         },
         behaviors: [RestFormBehavior]
       });
