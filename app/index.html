@@ -98,6 +98,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="lock"></iron-icon>
                 <span>Login as User</span>
               </a>
+              <a data-route="clientLogin" href="/clientLogin" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>Login as Client</span>
+              </a>
               <a data-route="checktoken" href="checkToken" on-click="onDataRouteClick">
                 <iron-icon icon="done"></iron-icon>
                 <span>Check Token</span>
@@ -119,9 +123,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="file-upload"></iron-icon>
                 <span>Update Client</span>
               </a>
-              <a data-route="clientLogin" href="/clientLogin" on-click="onDataRouteClick">
-                <iron-icon icon="lock"></iron-icon>
-                <span>Login as Client</span>
+              <hr/>
+              <a href="#" on-click="logout">
+                <iron-icon icon="close"></iron-icon>
+                <span>Logout</span>
               </a>
             </paper-menu>
           </div>
@@ -155,6 +160,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <a data-route="analyticsruntime" href="/analyticsRuntime" on-click="onDataRouteClick">
                 <iron-icon icon="trending-up"></iron-icon>
                 <span>Analytics runtime</span>
+              </a>
+              <hr/>
+              <a href="#" on-click="logout">
+                <iron-icon icon="close"></iron-icon>
+                <span>Logout</span>
               </a>
             </paper-menu>
           </div>
@@ -380,6 +390,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
       </paper-scroll-header-panel>
     </paper-drawer-panel>
+
+    <iron-ajax id="logoutEl" handle-as="json" url= '/logout' method="GET"></iron-ajax>
 
     <!-- Uncomment next block to enable Service Worker support (1/2) -->
     <!--

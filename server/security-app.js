@@ -62,6 +62,11 @@ app.use('/uaalogin', function storeUrlInSession(req, res, next) {
 	next();
 });
 
+app.use('/logout', function logout(req, res) {
+		req.session.destroy();
+		res.status(200).send({"message": "Session destroyed."});
+});
+
 app.use('/api', function(req, res, next) {
 	if (!req.session.uaaUrl) {
 		res.status(500).send({"error": "No UAA URL in session. Please login again."});
@@ -202,7 +207,7 @@ wsServer.on('connection', function connection(ws) {
 		// pass request through to back end api:
 		apiSocket.send(message);
 		apiSocket.on('message', function(data) {
-			console.log('data from api: ' + data);
+			// console.log('data from api: ' + data);
 			if (ws.readyState === WebSocket.OPEN) {
 				ws.send(data);
 			}

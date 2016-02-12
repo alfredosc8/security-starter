@@ -79,5 +79,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     page('/apiHome');
   };
 
+  app.logout = function() {
+    var logoutEl = document.querySelector('#logoutEl');
+    logoutEl.addEventListener('response', function(ironRequest) {
+      console.log(ironRequest.detail.response);
+      window.location.reload();
+    });
+    logoutEl.generateRequest();
+  };
+
   app.apiTab = false;
 })(document);
