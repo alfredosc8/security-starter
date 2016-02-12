@@ -263,7 +263,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   base-url="{{uaaBaseUrl}}"
                   client-id="{{newClientId}}"
                   client-secret="{{newClientSecret}}"
-                  user-token="{{newUserToken}}"
+                  user-token="{{apiToken}}"
                   user-name="{{newUserName}}"></user-token-form>
               </paper-material>
             </section>
@@ -273,7 +273,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Check if token is valid.
               </paper-material>
               <paper-material elevation="1">
-                <check-token-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" user-token={{newUserToken}}></check-token-form>
+                <check-token-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" user-token={{apiToken}}></check-token-form>
               </paper-material>
             </section>
 
@@ -318,7 +318,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   Log in as a client
               </paper-material>
               <paper-material elevation="1">
-                <client-login-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}">
+                <client-login-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" client-token="{{apiToken}}">
                 </client-login-form>
               </paper-material>
             </section>
