@@ -100,9 +100,7 @@
         },
 
         updateAuthHeader: function() {
-          this.debounce('updateAuth', function() {
-            this.authHeader = 'Basic ' + btoa(this.clientId + ':' + this.clientSecret);
-          }, 300);
+          this.authHeader = 'Basic ' + btoa(this.clientId + ':' + this.clientSecret);
         },
 
         behaviors: [RestFormBehavior]

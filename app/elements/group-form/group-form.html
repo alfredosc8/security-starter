@@ -52,10 +52,8 @@
         restRequestObject: {"displayName": ""},
 
         updateGroupName: function(newGroup) {
-          this.debounce('updateGroup', function() {
-            this.restRequestObject.displayName = newGroup;
-            this.restRequest = JSON.stringify(this.restRequestObject);
-          }, 300);
+          this.restRequestObject.displayName = newGroup;
+          this.restRequest = JSON.stringify(this.restRequestObject);
         },
 
         ready: function() {

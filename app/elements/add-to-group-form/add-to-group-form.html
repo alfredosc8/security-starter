@@ -85,19 +85,12 @@
         },
 
         groupObject: {},
-        // restRequestObject: {"displayName": ""},
-        //
+
         updateGroupName: function(newGroup) {
-          this.debounce('updateGroup', function() {
-            // this.restRequestObject.displayName = newGroup;
-            // this.restRequest = JSON.stringify(this.restRequestObject);
-            this.groupQuery = '/api/Groups?filter=displayName+eq+"' + newGroup + '"&startIndex=1';
-          }, 300);
+          this.groupQuery = '/api/Groups?filter=displayName+eq+"' + newGroup + '"&startIndex=1';
         },
         updateUserName: function(newUser) {
-          this.debounce('updateUser', function() {
-            this.userQuery = '/api/Users?attributes=id%2CuserName&filter=userName+eq+"' + newUser + '"&startIndex=1';
-          }, 300);
+          this.userQuery = '/api/Users?attributes=id%2CuserName&filter=userName+eq+"' + newUser + '"&startIndex=1';
         },
 
         ready: function() {

@@ -83,18 +83,13 @@
         },
 
         updateClientId: function(newId) {
-          this.debounce('updateId', function() {
-            this.restRequestObject.client_id = newId;
-            this.restRequest = JSON.stringify(this.restRequestObject);
-          }, 300);
-
+          this.restRequestObject.client_id = newId;
+          this.restRequest = JSON.stringify(this.restRequestObject);
         },
 
         updateClientSecret: function(newSecret) {
-          this.debounce('updateSecret', function() {
-            this.restRequestObject.client_secret = newSecret;
-            this.restRequest = JSON.stringify(this.restRequestObject);
-          }, 300);
+          this.restRequestObject.client_secret = newSecret;
+          this.restRequest = JSON.stringify(this.restRequestObject);
         },
 
         ready: function() {

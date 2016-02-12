@@ -70,7 +70,7 @@
               auths[auths.length-1] = newAuthority;
             }
             this.restRequest = JSON.stringify(this.clientDetails);
-          }, 300);
+          }, 30);
         },
         updateClientDetails: function(newDetails) {
           this.restRequest = JSON.stringify(newDetails);
