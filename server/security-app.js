@@ -39,6 +39,7 @@ app.use(session(sessionOptions));
 function cleanResponseHeaders (rsp, data, req, res, cb) {
 	res.removeHeader('Access-Control-Allow-Origin');
 	res.removeHeader('X-Powered-By');
+	res.removeHeader('www-authenticate'); // prevents browser from popping up a basic auth window.
 	cb(null, data);
 }
 
