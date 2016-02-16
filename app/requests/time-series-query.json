@@ -14,7 +14,7 @@
 		"start": "1y-ago",
 		"tags": [{
 			"name": "Compressor-2015:CompressionRatio",
-			"limit": 0,
+			"limit": 10,
 			"order": "desc",
 			"aggregations": [{
 				"type": "avg",
@@ -51,7 +51,7 @@
 		"start": "1y-ago",
 		"tags": [{
 			"name": "Compressor-2015:CompressionRatio",
-			"limit": 0,
+			"limit": 10,
 			"order": "desc",
 			"aggregations": [{
 				"type": "avg",
