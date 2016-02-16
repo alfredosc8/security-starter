@@ -74,6 +74,7 @@
 		"cache_time": 0,
 		"tags": [{
 			"name": "Compressor-2015:CompressionRatio",
+			"limit": 10,
 			"aggregations": [{
 				"type": "avg",
 				"sampling": {
