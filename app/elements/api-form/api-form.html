@@ -27,6 +27,12 @@
             </paper-dropdown-menu>
           </td>
         </tr>
+        <template is="dom-if" if="{{requestDefinition.description}}">
+          <tr>
+            <td>Description:</td>
+            <td>{{requestDefinition.description}}</td>
+          </tr>
+        </template>
         <tr>
           <td><span class$="{{computeColorClass(httpMethod)}}">{{httpMethod}}</span></td>
           <td><span class="api-path"><input style="width: 80%" required value="{{apiUrl::input}}"></span></td>
