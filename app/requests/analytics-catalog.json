@@ -1,6 +1,7 @@
 [
   {
-      "label":"Get all analytics as a list from catalog",
+      "label":"Get the list of analytics",
+      "description":"This request returns the list of analytic entries from your analytics catalog.",
       "headers":[
          {
             "key":"content-type",
@@ -11,7 +12,8 @@
       "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics"
   },
   {
-      "label":"Create an analytic entry in the catalog",
+      "label":"Create an analytic catalog entry",
+      "description": "This request creates an entry in your analytics catalog and returns an entry id. You need this analytics catalog entry id to upload, test and deploy your analytic. Change the name, version and description of the entry in the request body. ",
       "headers":[
          {
             "key":"content-type",
@@ -32,7 +34,8 @@
       }
   },
   {
-    "label":"Upload an analytic to your catalog instance",
+    "label":"Upload analytic",
+    "description":"This request uploads an actual analytic(algorithm) for an entry in your analytics catalog. Choose the jar file, analytics catalog entry id and description in the form fields below. Entry id must match an entry that exists in your analytics catalog.",
     "headers":[
       {
         "key":"content-type",
@@ -59,14 +62,15 @@
           },
           {
             "key": "description",
-            "val": "some words",
+            "val": "Describe what your analytic does in this text box",
             "type": "text"
           }
         ]
       }
   },
   {
-    "label":"Get the details of the uploaded analytics from catalog",
+    "label":"Get analytic details",
+    "description":"This request gets the details of an uploaded analytic(algorithm). Enter your actual analytic catalog entry id in the path below before submitting the request.",
       "headers":[
          {
             "key":"content-type",
@@ -77,7 +81,8 @@
       "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/artifacts"
   },
   {
-    "label":"Test run your analytic- async - note down the request id from the output",
+    "label":"Validate analytic",
+    "description":"This request validates your analytic(algorithm) asynchronously and returns a request id. You need this request id to get the response when the analytic execution completes. Enter your actual analytic catalog entry id in the path below before submitting the request.",
     "headers":[
          {
             "key":"content-type",
@@ -92,7 +97,8 @@
       }
   },
   {
-    "label":"Test run results - need analyticaCatalogEntryId and request id",
+    "label":"Get analytic result",
+    "description":"This request returns the result of the validation of your analytic. Enter your actual analytic catalog entry id and request id in the path below before submitting the request."
       "headers":[
          {
             "key":"content-type",
@@ -104,7 +110,8 @@
 
   },
   {
-    "label":"Deploy the analytic to production for analytics runtime to execute in the workflow - async",
+    "label":"Deploy analytic",
+    "description":"This request deploys your analytic to production asynchronously and returns a deployment id. After deployment, your analytic will be ready for runtime execution. You need this deployment id to check the status of the deployment. Enter your actual analytic catalog entry id in the path below before submitting the request.",
     "headers":[
          {
             "key":"content-type",
@@ -120,7 +127,8 @@
       }
   },
   {
-    "label":"Check the status of the deployment",
+    "label":"Check deployment status",
+    "description":"This request checks the status of the analytic deployment. Enter your actual analytic catalog entry id and deployment id in the path below before submitting the request.",
     "headers":[
          {
             "key":"content-type",
@@ -131,7 +139,8 @@
       "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/deployment/<deployment id goes here>"
   },
   {
-    "label":"Execute the analytic after deployment is fully done",
+    "label":"Run analytic",
+    "description":"After the deployment is done, this request runs the deployed analytic. Enter your actual analytic catalog entry id in the path below before submitting the request.",
     "headers":[
          {
             "key":"content-type",

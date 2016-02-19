@@ -1,6 +1,7 @@
 [
     {
-      "label":"Execute analytic as part of business workflow using your analytic runtime service instance",
+      "label":"Execute analytic",
+      "description":"This request executes an analytic or set of analytics as described in BPMN xml in the request body below. Enter the name of the analytic in the request below by combining your analytic catalog entry id, name and version. For instance: 7f5dd8d5-54c3-4d81-af9e-155319b4557c::My analytic::v1",
       "headers":[
          {
             "key":"content-type",
