@@ -98,7 +98,7 @@
   },
   {
     "label":"Get analytic result",
-    "description":"This request returns the result of the validation of your analytic. Enter your actual analytic catalog entry id and request id in the path below before submitting the request."
+    "description":"This request returns the result of the validation of your analytic. Enter your actual analytic catalog entry id and request id in the path below before submitting the request.",
       "headers":[
          {
             "key":"content-type",
