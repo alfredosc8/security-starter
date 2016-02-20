@@ -8,16 +8,16 @@
         display: block;
       }
     </style>
-    <p>Enter your UAA Admin Secret. <paper-button noink id="showDetailsButton" data-dialog="details"><img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img></paper-button></p>
+    <p>Enter your UAA URL and admin secret. <paper-button noink id="showDetailsButton" data-dialog="details"><img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img></paper-button></p>
     <form is="iron-form" id="restForm" method="post">
-      <p>
-        UAA URL: <span>{{tokenUrl}}</span>
-      </p>
-      <p>
-        Admin secret: <input name="adminSecret" type="password" required value="{{adminSecret::input}}">
-      </p>
+      <table class="starter-inputs">
+        <tr><td>UAA URL:</td><td style="width: 85%"><input name="uaaUrlInput" style="width: 100%" required value="{{uaaUrl::input}}"></td></tr>
+        <tr><td>Admin secret:</td><td><input name="adminSecret" type="password" required value="{{adminSecret::input}}"></td></tr>
+      </table>
       <paper-button raised noink class="starter-button" id="showCommandButton" data-dialog="command">See curl command </paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="submitAdminLogin">Submit</paper-button>
+      <!-- this stupid hacky hidden input allows user to submit form with Enter key -->
+      <input hidden="true" type="submit" />
     </form>
     <p>{{error}}</p>
     <p hidden$="{{!success}}">Success!  Here is the Admin token generated.  Tokens are used in Oauth Security to perform commands, such as Create Client Id.</p>
@@ -29,6 +29,7 @@
       curl '{{tokenUrl}}' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'accept: application/json' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' -H 'Connection: keep-alive' --data 'grant_type=client_credentials'
     </tutorial-overlay>
     <tutorial-overlay id="details" class="scrollable" markdown-url="/security.md#login-as-admin"></tutorial-overlay>
+    <iron-ajax id="configFileEl" url="/uaaConfig.json" handle-as="json" on-response="handleUrlFromFile"></iron-ajax>
   </template>
 
   <script>
@@ -41,6 +42,7 @@
           uaaUrl: {
             type: String,
             notify: true,
+            value: 'https://your-uaa-instance',
             observer: 'updateTokenUrl'
           },
           adminSecret: {
@@ -64,9 +66,11 @@
           restForm.addEventListener('iron-form-presubmit', function() {
             // console.log('iron-form-presubmit event caught');
             self.authHeader = 'Basic ' + btoa('admin:' + self.adminSecret);
-            this.request.url = '/api/oauth/token';
+            this.request.url = '/uaalogin';
             this.request.headers = {authorization: self.authHeader};
-            this.request.body = 'grant_type=client_credentials';
+            self.uaaUrl = this.request.body.uaaUrlInput;
+            delete this.request.body.adminSecret;
+            this.request.body['grant_type'] = 'client_credentials';
             self._reset();
           });
           restForm.addEventListener('iron-form-response', function(event) {
@@ -78,13 +82,16 @@
             restForm.submit();
           });
           this.$.showDetailsButton.addEventListener('click', this._overlayButtonListener);
+          this.$.configFileEl.generateRequest();
+        },
+
+        handleUrlFromFile: function(config) {
+            this.uaaUrl = config.detail.response.url;
         },
 
         updateTokenUrl: function(url) {
           if (url && url.indexOf('http') > -1) {
             this.tokenUrl = url + '/oauth/token';
-          } else {
-            this.tokenUrl = 'Please update the URL for your UAA instance in dist/uaaConfig.json.';
           }
         },
 

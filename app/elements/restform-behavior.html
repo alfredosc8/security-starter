@@ -40,12 +40,19 @@
     },
 
     _overlayButtonListener: function(e) {
+
       e.preventDefault();
       var id = e.target.getAttribute('data-dialog');
-      // console.log('dialog id: ' + id);
-      var dialog = document.getElementById(id);
-      if (dialog) {
-        dialog.open();
+      // TODO: Clean this up!  Ugly hack, walking up the DOM tree.
+      var parent = e.target.parentElement;
+      for(var i=0; i<3; i++) {
+        // console.log('i = ' + i);
+        var dialog = parent.querySelector('#' + id);
+        if (dialog) {
+          dialog.open();
+          break;
+        }
+        parent = parent.parentElement;
       }
     },
 
@@ -54,6 +61,9 @@
       this.restResponse = event.detail.request.parseResponse();
       this.loading = false;
       this.success = false;
+      this.adminSecret = '';
+      this.clientSecret = '';
+      this.userPassword = '';
     },
 
     _handleResponse: function(event) {
@@ -62,6 +72,9 @@
       this.restResponse = JSON.stringify(event.detail.response);
       this.loading = false;
       this.success = true;
+      this.adminSecret = '';
+      this.clientSecret = '';
+      this.userPassword = '';
     },
 
     _reset: function() {
@@ -69,6 +82,21 @@
       this.restResponse = '';
       this.error = '';
       this.success = false;
+    },
+
+    _decodeToken: function(encoded) {
+      var json,
+          parts = encoded.split('.');
+      if (parts.length === 3) {
+        json = {
+          header: JSON.parse(atob(parts[0])),
+          payload: JSON.parse(atob(parts[1]))
+          // signature: atob(parts[2])
+        };
+      } else {
+        json = encoded;
+      }
+      return json;
     }
   };
 </script>

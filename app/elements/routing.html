@@ -22,9 +22,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       next();
     }
 
+    function selectApiTab() {
+      app.apiTab = true;
+      document.getElementById('mainTabControl').selected = 1;
+    }
+
     // Routes
     page('/', scrollToTop, function() {
       app.route = 'home';
+      app.apiTab = false;
     });
 
     page('/loginAsAdmin', scrollToTop, function() {
@@ -53,6 +59,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     page('/checkToken', scrollToTop, function() {
       app.route = 'checktoken';
+    });
+
+    page('/getClient', scrollToTop, function() {
+      app.route = 'getclient';
+    });
+
+    page('/updateClient', scrollToTop, function() {
+      app.route = 'updateclient';
+    });
+    page('/clientLogin', scrollToTop, function() {
+      app.route = 'clientLogin';
+    });
+
+    // API Explorer routes
+    page('/apiHome', scrollToTop, function() {
+      app.route = 'apihome';
+      selectApiTab();
+    });
+
+    page('/apiLoginClient', scrollToTop, function() {
+      app.route = 'apiloginclient';
+      selectApiTab();
+    });
+
+    page('/apiLoginUser', scrollToTop, function() {
+      app.route = 'apiloginuser';
+      selectApiTab();
+    });
+
+    page('/tsQuery', scrollToTop, function() {
+      app.route = 'tsquery';
+      selectApiTab();
+    });
+
+    page('/tsIngest', scrollToTop, function() {
+      app.route = 'tsingest';
+      selectApiTab();
+    });
+
+    page('/analyticsCatalog', scrollToTop, function() {
+      app.route = 'analyticscatalog';
+      selectApiTab();
+    });
+
+    page('/analyticsRuntime', scrollToTop, function() {
+      app.route = 'analyticsruntime';
+      selectApiTab();
     });
 
     // add #! before urls

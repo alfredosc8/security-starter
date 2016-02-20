@@ -14,15 +14,19 @@
       </paper-button>
     </p>
     <form is="iron-form" id="restForm" method="post">
-      <p>
-        UAA URL: <span>{{baseUrl}}</span>/check_token
-      </p>
+      <table class="starter-inputs">
+        <tr><td>UAA URL:</td><td><span>{{baseUrl}}</span>/check_token</td></tr>
+        <tr><td>Client ID:</td><td><input name="clientId" required value="{{clientId::input}}"></td></tr>
+        <tr><td>Client Secret:</td><td><input name="clientSecret" required type="password" value="{{clientSecret::input}}"></td></tr>
+      </table>
+
       <p>Request</p>
       <textarea id="checkTokenRequest" rows=10 cols=100>{{userToken}}</textarea>
       <br/>
       <paper-button raised noink class="starter-button" id="decodeTokenButton">Decode Token</paper-button>
       <paper-button raised noink class="starter-button" id="checkTokenCommandButton" data-dialog="checkTokenCommand">See curl command</paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="checkTokenButton">Submit</paper-button>
+      <input hidden="true" type="submit" />
     </form>
     <p>{{error}}</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
@@ -89,25 +93,14 @@
             e.preventDefault();
             var dialog = document.getElementById('decoded');
             if (dialog) {
-              var json = self.userToken;
-              var parts = self.userToken.split('.');
-              if (parts.length === 3) {
-                json = {
-                  header: JSON.parse(atob(parts[0])),
-                  payload: JSON.parse(atob(parts[1]))
-                  // signature: atob(parts[2])
-                };
-              }
-              dialog.rawJson = json;
+              dialog.rawJson = self._decodeToken(self.userToken);
               dialog.open();
             }
           });
         },
 
         updateAuthHeader: function() {
-          this.debounce('updateAuth', function() {
-            this.authHeader = 'Basic ' + btoa(this.clientId + ':' + this.clientSecret);
-          }, 300);
+          this.authHeader = 'Basic ' + btoa(this.clientId + ':' + this.clientSecret);
         },
 
         behaviors: [RestFormBehavior]

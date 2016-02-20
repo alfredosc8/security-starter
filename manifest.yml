@@ -1,0 +1,9 @@
+---
+applications:
+- name: predix-starter
+  memory: 128M
+  buildpack: https://github.com/heroku/heroku-buildpack-nodejs
+  command:  node server/security-app.js
+  path: dist
+services:
+  - security-starter-redis

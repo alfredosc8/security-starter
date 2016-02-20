@@ -69,92 +69,153 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Drawer Toolbar -->
         <paper-toolbar id="drawerToolbar">
-          <span class="paper-font-title">Menu</span>
+          <span class="paper-font-title">Predix Starter Kit</span>
         </paper-toolbar>
 
         <!-- Drawer Content -->
-        <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
-          <a data-route="home" href="/" on-click="onDataRouteClick">
-            <iron-icon icon="home"></iron-icon>
-            <span>Home</span>
-          </a>
+        <div class="drawerOptions">
+          <div hidden="[[apiTab]]">
+            <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
+              <a data-route="home" href="/" on-click="onDataRouteClick">
+                <iron-icon icon="home"></iron-icon>
+                <span>Home</span>
+              </a>
 
-          <a data-route="loginasadmin" href="/loginAsAdmin" on-click="onDataRouteClick">
-            <iron-icon icon="lock-outline"></iron-icon>
-            <span>Login as Admin</span>
-          </a>
+              <a data-route="loginasadmin" href="/loginAsAdmin" on-click="onDataRouteClick">
+                <iron-icon icon="lock-outline"></iron-icon>
+                <span>Login as Admin</span>
+              </a>
 
-          <a data-route="clientid" href="/clientid" on-click="onDataRouteClick">
-            <iron-icon icon="create"></iron-icon>
-            <span>Create Client ID</span>
-          </a>
-          <a data-route="users" href="/users" on-click="onDataRouteClick">
-            <iron-icon icon="perm-identity"></iron-icon>
-            <span>Create User</span>
-          </a>
-          <a data-route="usertoken" href="/userToken" on-click="onDataRouteClick">
-            <iron-icon icon="lock"></iron-icon>
-            <span>Login as User</span>
-          </a>
-          <a data-route="checktoken" href="checkToken" on-click="onDataRouteClick">
-            <iron-icon icon="done"></iron-icon>
-            <span>Check Token</span>
-          </a>
-          <!-- TODO: Uncomment this, and add "edit client id" feature.
-          <hr/>
-          <a data-route="group" href="/group" on-click="onDataRouteClick">
-            <iron-icon icon="group-work"></iron-icon>
-            <span>Create Group</span>
-          </a>
-          <a data-route="addtogroup" href="/addToGroup" on-click="onDataRouteClick">
-            <iron-icon icon="add-circle-outline"></iron-icon>
-            <span>Add To Group</span>
-          </a> -->
-        </paper-menu>
+              <a data-route="clientid" href="/clientid" on-click="onDataRouteClick">
+                <iron-icon icon="create"></iron-icon>
+                <span>Create Client ID</span>
+              </a>
+              <a data-route="users" href="/users" on-click="onDataRouteClick">
+                <iron-icon icon="perm-identity"></iron-icon>
+                <span>Create User</span>
+              </a>
+              <a data-route="usertoken" href="/userToken" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>Login as User</span>
+              </a>
+              <a data-route="clientLogin" href="/clientLogin" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>Login as Client</span>
+              </a>
+              <a data-route="checktoken" href="checkToken" on-click="onDataRouteClick">
+                <iron-icon icon="done"></iron-icon>
+                <span>Check Token</span>
+              </a>
+              <hr/>
+              <a data-route="group" href="/group" on-click="onDataRouteClick">
+                <iron-icon icon="group-work"></iron-icon>
+                <span>Create Group</span>
+              </a>
+              <a data-route="addtogroup" href="/addToGroup" on-click="onDataRouteClick">
+                <iron-icon icon="add-circle-outline"></iron-icon>
+                <span>Add To Group</span>
+              </a>
+              <a data-route="getclient" href="/getClient" on-click="onDataRouteClick">
+                <iron-icon icon="file-download"></iron-icon>
+                <span>Get Client</span>
+              </a>
+              <a data-route="updateclient" href="/updateClient" on-click="onDataRouteClick">
+                <iron-icon icon="file-upload"></iron-icon>
+                <span>Update Client</span>
+              </a>
+              <hr/>
+              <a href="#" on-click="logout">
+                <iron-icon icon="close"></iron-icon>
+                <span>Logout</span>
+              </a>
+            </paper-menu>
+          </div>
+
+          <div hidden="[[!apiTab]]">
+            <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
+              <a data-route="apihome" href="/apiHome" on-click="onDataRouteClick">
+                <iron-icon icon="home"></iron-icon>
+                <span>API Home</span>
+              </a>
+              <a data-route="apiloginclient" href="/apiLoginClient" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>Login as Client</span>
+              </a>
+              <a data-route="apiloginuser" href="/apiLoginUser" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>Login as User</span>
+              </a>
+              <a data-route="tsingest" href="/tsIngest" on-click="onDataRouteClick">
+                <iron-icon icon="cloud-upload"></iron-icon>
+                <span>Time series ingest</span>
+              </a>
+              <a data-route="tsquery" href="/tsQuery" on-click="onDataRouteClick">
+                <iron-icon icon="cloud-download"></iron-icon>
+                <span>Time series query</span>
+              </a>
+              <a data-route="analyticscatalog" href="/analyticsCatalog" on-click="onDataRouteClick">
+                <iron-icon icon="list"></iron-icon>
+                <span>Analytics catalog</span>
+              </a>
+              <a data-route="analyticsruntime" href="/analyticsRuntime" on-click="onDataRouteClick">
+                <iron-icon icon="trending-up"></iron-icon>
+                <span>Analytics runtime</span>
+              </a>
+              <hr/>
+              <a href="#" on-click="logout">
+                <iron-icon icon="close"></iron-icon>
+                <span>Logout</span>
+              </a>
+            </paper-menu>
+          </div>
+        </div>
       </paper-scroll-header-panel>
 
       <!-- Main Area -->
-      <paper-scroll-header-panel main condenses keep-condensed-header>
+      <paper-scroll-header-panel main fixed>
 
         <!-- Main Toolbar -->
-        <paper-toolbar id="mainToolbar" class="tall">
-          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
-          <span class="flex"></span>
-
-          <!-- Toolbar icons
-          <paper-icon-button icon="refresh"></paper-icon-button>
-          <paper-icon-button icon="search"></paper-icon-button>
-          -->
+        <paper-toolbar id="mainToolbar">
+          <div paper-drawer-toggle>
+            <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+            Predix Starter Kit
+          </div>
           <!-- Application name -->
-          <div class="middle middle-container center horizontal layout">
-            <div class="app-name">Predix Security Starter Kit</div>
-          </div>
+          <!-- <div class="middle middle-container center horizontal layout"> -->
+            <!-- <div class="app-name">Predix Security Starter Kit</div> -->
+          <!-- </div> -->
 
-          <!-- Application sub title -->
-          <div class="bottom bottom-container center horizontal layout">
-            <div class="bottom-title paper-font-subhead">Quickly secure your Predix application</div>
-          </div>
+          <span class="flex"></span>
+          <paper-tabs selected="0" noink="true" id="mainTabControl">
+            <paper-tab on-click="goToHome">
+              <a data-route="home" href="/" on-click="onDataRouteClick">Security</a>
+            </paper-tab>
+            <paper-tab on-click="goToApiHome">
+              <a data-route="apihome" href="/apiHome" on-click="onDataRouteClick">API Explorer</a>
+            </paper-tab>
+          </paper-tabs>
 
         </paper-toolbar>
 
         <!-- Main Content -->
         <div class="content">
-          <iron-ajax auto url="uaaConfig.json" handle-as="json" last-response="{{uaaConfig}}"></iron-ajax>
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
               <paper-material elevation="1">
+                Configure and explore your Predix cloud environment.
+              </paper-material>
+              <paper-material elevation="1">
                 <h3>Getting Started</h3>
                 <p>
                   This utility helps you configure your instance of Predix UAA without extra tools.
+                  After configuring UAA, you can make real API calls to Predix services.
                   First-time users can follow the steps in the menu in order.
-                  Before you can begin, you need to update the URL for your UAA instance in dist/uaaConfig.json,
-                  then restart this utility with the "gulp" command.
                 </p>
                 <p>
                   First, set up the basics to create a secure microservice, including a Client ID and User.
                   Next, set up groups and scopes, so your microservice can work with Predix platform services.
-                  (The features to set up groups and scopes will be coming soon to this utility.  For now, please use UAAC.)
+                  Now you're ready to make API calls to your live instances of Predix services on the API Explorer tab.
                 </p>
                 <p>
                   This utility calls some of the REST API exposed by your instance of Predix UAA.
@@ -168,10 +229,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="loginasadmin">
               <paper-material elevation="1">
-                <p>First, login as admin for your UAA instance.</p>
+                First, login as admin for your UAA instance.
               </paper-material>
               <paper-material elevation="1">
-                <login-form uaa-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}"></login-form>
+                <login-form uaa-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}"></login-form>
               </paper-material>
             </section>
 
@@ -180,7 +241,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Next, create a client ID.
               </paper-material>
               <paper-material elevation="1">
-                <clientid-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}"></clientid-form>
+                <clientid-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" client-id="{{newClientId}}"></clientid-form>
               </paper-material>
             </section>
 
@@ -189,25 +250,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Create users in UAA.
               </paper-material>
               <paper-material elevation="1">
-                <users-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}" user-name="{{newUserName}}"></users-form>
-              </paper-material>
-            </section>
-
-            <section data-route="group">
-              <paper-material elevation="1">
-                Create a group in UAA.
-              </paper-material>
-              <paper-material elevation="1">
-                <group-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}" group-name="{{newGroupName}}"></group-form>
-              </paper-material>
-            </section>
-
-            <section data-route="addtogroup">
-              <paper-material elevation="1">
-                Add user to group.
-              </paper-material>
-              <paper-material elevation="1">
-                <add-to-group-form base-url="{{uaaConfig.url}}" admin-auth-bearer-token="{{bearerToken}}" group-name="{{newGroupName}}" user-name="{{newUserName}}"></add-to-group-form>
+                <users-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" user-name="{{newUserName}}"></users-form>
               </paper-material>
             </section>
 
@@ -217,10 +260,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
               <paper-material elevation="1">
                 <user-token-form
-                  base-url="{{uaaConfig.url}}"
+                  base-url="{{uaaBaseUrl}}"
                   client-id="{{newClientId}}"
                   client-secret="{{newClientSecret}}"
-                  user-token="{{newUserToken}}"
+                  user-token="{{apiToken}}"
                   user-name="{{newUserName}}"></user-token-form>
               </paper-material>
             </section>
@@ -230,7 +273,116 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Check if token is valid.
               </paper-material>
               <paper-material elevation="1">
-                <check-token-form base-url="{{uaaConfig.url}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" user-token={{newUserToken}}></check-token-form>
+                <check-token-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" user-token={{apiToken}}></check-token-form>
+              </paper-material>
+            </section>
+
+            <section data-route="group">
+              <paper-material elevation="1">
+                Create a group in UAA.
+              </paper-material>
+              <paper-material elevation="1">
+                <group-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" group-name="{{newGroupName}}"></group-form>
+              </paper-material>
+            </section>
+
+            <section data-route="addtogroup">
+              <paper-material elevation="1">
+                Add user to group.
+              </paper-material>
+              <paper-material elevation="1">
+                <add-to-group-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" group-name="{{newGroupName}}" user-name="{{newUserName}}"></add-to-group-form>
+              </paper-material>
+            </section>
+
+            <section data-route="getclient">
+              <paper-material elevation="1">
+                Get a UAA client to update.
+              </paper-material>
+              <paper-material elevation="1">
+                <get-client-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" client-id="{{newClientId}}" client-details="{{clientDetails}}"></get-client-form>
+              </paper-material>
+            </section>
+
+            <section data-route="updateclient">
+              <paper-material elevation="1">
+                Modify a UAA client.
+              </paper-material>
+              <paper-material elevation="1">
+                <update-client-form base-url="{{uaaBaseUrl}}" admin-auth-bearer-token="{{bearerToken}}" client-details="{{clientDetails}}"></update-client-form>
+              </paper-material>
+            </section>
+
+            <section data-route="clientLogin">
+              <paper-material elevation="1">
+                  Log in as a client
+              </paper-material>
+              <paper-material elevation="1">
+                <client-login-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" client-token="{{apiToken}}">
+                </client-login-form>
+              </paper-material>
+            </section>
+
+            <!-- API Explorer -->
+            <section data-route="apihome">
+              <paper-material elevation="1">
+                Test Predix APIs.
+              </paper-material>
+              <paper-material elevation="1">
+                First login as user or client, to get an authorization token.  Then you can experiment with your instances of Predix services.
+              </paper-material>
+            </section>
+
+            <section data-route="apiloginuser">
+              <paper-material elevation="1">
+                <user-token-form
+                  base-url="{{uaaBaseUrl}}"
+                  client-id="{{newClientId}}"
+                  user-token="{{apiToken}}"
+                  user-name="{{newUserName}}"></user-token-form>
+              </paper-material>
+            </section>
+
+            <section data-route="apiloginclient">
+              <paper-material elevation="1">
+                <client-login-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-token="{{apiToken}}">
+                </client-login-form>
+              </paper-material>
+            </section>
+
+            <section data-route="tsingest">
+              <paper-material elevation="1">
+                Open a websocket, and push data to your time series instance.
+              </paper-material>
+              <paper-material elevation="1">
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" is-web-socket-request="true" request-file-path="/requests/time-series-ingestion.json"></api-form>
+              </paper-material>
+            </section>
+
+            <section data-route="tsquery">
+              <paper-material elevation="1">
+                Make a few basic queries against your time series instance.
+              </paper-material>
+              <paper-material elevation="1">
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" request-file-path="/requests/time-series-query.json"></api-form>
+              </paper-material>
+            </section>
+
+            <section data-route="analyticscatalog">
+              <paper-material elevation="1">
+                Manage analytics in your catalog instance.
+              </paper-material>
+              <paper-material elevation="1">
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" is-web-socket-request="false" request-file-path="/requests/analytics-catalog.json"></api-form>
+              </paper-material>
+            </section>
+
+            <section data-route="analyticsruntime">
+              <paper-material elevation="1">
+                Execute analytics from your catalog in the Predix cloud.
+              </paper-material>
+              <paper-material elevation="1">
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" request-file-path="/requests/analytics-runtime.json"></api-form>
               </paper-material>
             </section>
 
@@ -238,6 +390,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
       </paper-scroll-header-panel>
     </paper-drawer-panel>
+
+    <iron-ajax id="logoutEl" handle-as="json" url= '/logout' method="GET"></iron-ajax>
 
     <!-- Uncomment next block to enable Service Worker support (1/2) -->
     <!--

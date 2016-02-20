@@ -15,17 +15,16 @@
         <img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img>
       </paper-button>
       </p>
-      <p>
-        UAA URL: <span>{{baseUrl}}</span>/ouath/token
-      </p>
       <table class="starter-inputs">
+        <tr><td>UAA URL:</td><td style="width: 85%;"><input name="uaaUrlInput" style="width: 80%;" required value="{{baseUrl::input}}"</td></tr>
         <tr><td>Client ID:</td><td><input name="clientId" required value="{{clientId::input}}"></td></tr>
         <tr><td>Client Secret:</td><td><input name="clientSecret" required type="password" value="{{clientSecret::input}}"></td></tr>
         <tr><td>User name:</td><td><input name="username" required value="{{userName::input}}"></td></tr>
-        <tr><td>Password:</td><td><input name="password" type="password" value="{{userPwd::input}}" required></td></tr>
+        <tr><td>Password:</td><td><input name="password" type="password" value="{{userPassword::input}}" required></td></tr>
       </table>
       <paper-button raised noink class="starter-button" id="userLoginCommandButton" data-dialog="userLoginCommand">See curl command</paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="userLoginButton">Submit</paper-button>
+      <input hidden="true" type="submit" />
     </form>
     <p>{{error}}</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
@@ -33,7 +32,7 @@
       <paper-progress indeterminate style="width: 100%"></paper-progress>
     </div>
     <tutorial-overlay id="userLoginCommand">
-      curl '{{baseUrl}}/oauth/token' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' --data 'username={{userName}}&password={{userPwd}}&grant_type=password'
+      curl '{{baseUrl}}/oauth/token' -H 'Pragma: no-cache' -H 'content-type: application/x-www-form-urlencoded' -H 'Cache-Control: no-cache' -H 'authorization: {{authHeader}}' --data 'username={{userName}}&password={{userPassword}}&grant_type=password'
     </tutorial-overlay>
     <tutorial-overlay id="userLoginDetails" class="scrollable" markdown-url="/security.md#login-as-user"></tutorial-overlay>
   </template>
@@ -45,15 +44,11 @@
       Polymer({
         is: 'user-token-form',
         properties: {
-          uaaUrl: {
-            type: String,
-            notify: true
-          },
           userName: {
             type: String,
             notify: true
           },
-          userPwd: {
+          userPassword: {
             type: String,
             notify: true
           },
@@ -77,9 +72,10 @@
           var self = this;
           var restForm = this.$.restForm;
           restForm.addEventListener('iron-form-presubmit', function() {
-            this.request.url = '/api/oauth/token';
+            this.request.url = '/uaalogin';
             this.request.headers = {authorization: self.authHeader};
             this.request.body.grant_type = 'password';
+            self.baseUrl = this.request.body.uaaUrlInput;
             delete this.request.body.clientId;
             delete this.request.body.clientSecret;
             self.loading = true;
@@ -97,9 +93,7 @@
         },
 
         updateAuthHeader: function() {
-          this.debounce('updateAuth', function() {
-            this.authHeader = 'Basic ' + btoa(this.clientId + ':' + this.clientSecret);
-          }, 300);
+          this.authHeader = 'Basic ' + btoa(this.clientId + ':' + this.clientSecret);
         },
 
         behaviors: [RestFormBehavior]

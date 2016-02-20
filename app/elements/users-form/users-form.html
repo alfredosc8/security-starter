@@ -27,6 +27,7 @@
       <br/>
       <paper-button raised noink class="starter-button" id="userCommandButton" data-dialog="userCommand">See curl command</paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="addUserButton">Submit</paper-button>
+      <input hidden="true" type="submit" />
     </form>
     <p>{{error}}</p>
     <p hidden$="{{!success}}">Success!  Here is the response from UAA.  Notice the User is not a member of any Groups yet which will be needed later to access Services directly.</p>
@@ -73,34 +74,23 @@
             ]
         },
         updateUserName: function(newId) {
-          this.debounce('updateUserName', function() {
-            this.restRequestObject.userName = newId;
-            this.restRequest = JSON.stringify(this.restRequestObject);
-          }, 300);
-
+          this.restRequestObject.userName = newId;
+          this.restRequest = JSON.stringify(this.restRequestObject);
         },
         updateUserPassword: function(newId) {
-          this.debounce('updateUserPassword', function() {
-            this.restRequestObject.password = newId;
-            this.restRequest = JSON.stringify(this.restRequestObject);
-          }, 300);
-
+          this.restRequestObject.password = newId;
+          this.restRequest = JSON.stringify(this.restRequestObject);
         },
         updateEmailValue: function(newId) {
-          this.debounce('updateEmailValue', function() {
-            this.restRequestObject.emails[0].value = newId;
-            this.restRequest = JSON.stringify(this.restRequestObject);
-          }, 300);
-
+          this.restRequestObject.emails[0].value = newId;
+          this.restRequest = JSON.stringify(this.restRequestObject);
         },
         ready: function() {
           var self = this;
           this.restRequest = JSON.stringify(this.restRequestObject);
           var restForm = this.$.restForm;
           restForm.addEventListener('iron-form-presubmit', function() {
-            self.loading = true;
-            self.restResponse = '';
-            self.error = '';
+            self._reset();
             this.request.url = '/api/Users';
             this.request.headers = {
               "content-type": "application/json",

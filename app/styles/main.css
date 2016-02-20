@@ -22,6 +22,17 @@ https://github.com/PolymerElements/paper-menu/issues/31
     pointer-events: none;
 }
 
+/* Hack for dropdown on api form. */
+.paper-input-container-0 .floated-label-placeholder.paper-input-container {
+  line-height: 0;
+}
+
+.tab-content.paper-tab a {
+  text-decoration: none;
+  color: inherit;
+  height: auto;
+}
+
 textarea {
   font-size: 1em;
 }
@@ -47,8 +58,56 @@ textarea {
 
 .starter-inputs {
   border-spacing: 0;
+  max-width: 850px;
 }
 
 .starter-inputs td {
   padding-bottom: 1em;
+}
+
+.method-box {
+  text-transform: uppercase;
+  color: white;
+  padding: 0.3em;
+  width: 90%;
+  display: inline-block;
+  text-align: center;
+  min-height: 20px;
+}
+
+.method-box-blue {
+  /*get*/
+  background-color: rgb(0, 92, 185);
+}
+
+.method-box-green {
+  /*post*/
+  background-color: rgb(70, 173, 0);
+}
+
+.method-box-red {
+  /*delete*/
+  background-color: rgb(183, 17, 37);
+}
+
+.method-box-brown {
+  /*patch*/
+  background-color: rgb(211, 128, 66);
+}
+
+.method-box-yellow {
+  /*put*/
+  background-color: rgb(255, 152, 33);
+}
+
+.method-box-violet {
+  /*websocket*/
+  background-color: rgb(77, 0, 153);
+}
+
+.api-path {
+  width: 100%;
+  padding: 0.3em;
+  background-color: rgb(234, 234, 234);
+  display: inline-block;
 }
