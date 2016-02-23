@@ -11,16 +11,30 @@ var RedisStore = require('connect-redis')(session);
 var url = require('url');
 var WebSocketServer = require('ws').Server;
 var WebSocket = require('ws');
+var HttpsProxyAgent = require('https-proxy-agent');
+
 var sockets = {};
-
-app.use(express.static(path.join(__dirname, '../www')));
-
+var corporateProxyAgent;
 var sessionOptions = {
 	secret: 'njk2389adsf98yr23hre98',
 	name: 'security-starter-cookie',
 	resave: true,
 	saveUninitialized: false
 };
+
+// Set up some options for cloud vs. local, and proxy vs. no proxy.
+var corporateProxyServer = process.env.HTTP_PROXY || process.env.http_proxy || process.env.HTTPS_PROXY || process.env.https_proxy;
+if (corporateProxyServer) {
+		corporateProxyAgent = new HttpsProxyAgent(corporateProxyServer);
+}
+
+if (process.env.NODE_ENV === 'local') {
+	app.use(express.static(path.join(__dirname, '../.tmp')));
+	app.use('/bower_components', express.static(path.join(__dirname, '../bower_components')));
+	app.use(express.static(path.join(__dirname, '../app')));
+} else {
+	app.use(express.static(path.join(__dirname, '../www')));
+}
 
 if (process.env.VCAP_SERVICES) {  // use redis when running in cloud
 	var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
@@ -41,6 +55,18 @@ function cleanResponseHeaders (rsp, data, req, res, cb) {
 	res.removeHeader('X-Powered-By');
 	res.removeHeader('www-authenticate'); // prevents browser from popping up a basic auth window.
 	cb(null, data);
+}
+
+function getUaaUrlFromSession(req) {
+	console.log('UAA URL from session: ' + req.session.uaaUrl);
+	return req.session.uaaUrl;
+}
+
+function setProxyAgent(req) {
+	if (corporateProxyAgent) {
+		req.agent = corporateProxyAgent;
+	}
+	return req;
 }
 
 app.use('/uaalogin', function storeUrlInSession(req, res, next) {
@@ -76,11 +102,6 @@ app.use('/api', function(req, res, next) {
 	}
 });
 
-function getUaaUrlFromSession(req) {
-	console.log('UAA URL from session: ' + req.session.uaaUrl);
-	return req.session.uaaUrl;
-}
-
 // using express-http-proxy, we can pass in a function to get the target URL for dynamic proxying:
 app.use('/api', expressProxy(getUaaUrlFromSession, {
 		https: true,
@@ -90,7 +111,8 @@ app.use('/api', expressProxy(getUaaUrlFromSession, {
 			//   console.log("forwardPath returns; " + forwardPath);
 			  return forwardPath;
 		},
-		intercept: cleanResponseHeaders
+		intercept: cleanResponseHeaders,
+		decorateRequest: setProxyAgent
 	}
 ));
 
@@ -99,7 +121,8 @@ app.use('/uaalogin', expressProxy(getUaaUrlFromSession, {
 		forwardPath: function () {
 			return '/oauth/token';
 		},
-		intercept: cleanResponseHeaders
+		intercept: cleanResponseHeaders,
+		decorateRequest: setProxyAgent
 	}
 ));
 
@@ -118,7 +141,8 @@ app.use('/proxy-api', expressProxy(function(req) {
 		// console.log('forwardPath: ' + forwardPath);
 		return forwardPath;
 	},
-	intercept: cleanResponseHeaders
+	intercept: cleanResponseHeaders,
+	decorateRequest: setProxyAgent
 }));
 
 app.use('/open-ws', function(req, res) {
