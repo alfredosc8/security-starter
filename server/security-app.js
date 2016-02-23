@@ -196,7 +196,11 @@ app.use('/close-ws', function(req, res) {
 });
 
 app.use(historyApiFallback());
-// app.listen(process.env.VCAP_APP_PORT || 5000);
+app.use(function logErrors(err, req, res, next) {
+	console.log('-- ' + res.statusCode + ' ERROR --\n' + err.stack);
+	console.log('-- From Request --\n' + req.url);
+	next();
+});
 
 ////////// Web socket server ////////
 var wsServer = new WebSocketServer({
