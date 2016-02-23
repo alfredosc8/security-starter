@@ -23,10 +23,7 @@ cf bind-service ...
 ```
 #### Find URL for your UAA service
 `cf env some-project`
-#### Download & Configure Security Starter Kit
-`git clone https://github.com/PredixDev/security-starter.git`
 
-Open security-starter/dist/uaaConfig.json and enter the UAA URL.
 #### Run Security Starter Kit
 ```
 npm install -g bower gulp
