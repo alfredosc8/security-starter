@@ -241,7 +241,7 @@ gulp.task('express', function() {
     watch: 'server/security-app.js',
     env: {
       "NODE_ENV": "local"
-    },
+    }
   });
 });
 
