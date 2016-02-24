@@ -197,8 +197,8 @@ app.use('/close-ws', function(req, res) {
 
 app.use(historyApiFallback());
 app.use(function logErrors(err, req, res, next) {
-	console.log('-- ERROR --\n' + err.stack);
-	console.log('-- From Request --\n' + req.url);
+	console.error(err.stack);
+	console.error('-- From Request: ', req.url);
 	next();
 });
 
