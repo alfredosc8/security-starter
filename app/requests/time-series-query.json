@@ -34,7 +34,6 @@
 	"method": "post",
 	"path": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints/latest",
 	"body": {
-		"cache_time": 0,
 		"tags": [{
 			"name": "Compressor-2015:CompressionRatio"
 		}]
