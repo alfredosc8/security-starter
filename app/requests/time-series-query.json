@@ -39,6 +39,21 @@
 		}]
 	}
 }, {
+	"label": "Limited Datapoints",
+	"headers": [{
+		"key": "content-type",
+		"val": "application/json"
+	}],
+	"method": "post",
+	"path": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
+	"body": {
+		"start": "1y-ago",
+		"tags": [{
+			"name": "Compressor-2015:CompressionRatio",
+			"limit": 2
+		}]
+	}
+}, {
 	"label": "Ordered Datapoints Request",
 	"headers": [{
 		"key": "content-type",
