@@ -73,15 +73,7 @@
 	"body": {
 		"cache_time": 0,
 		"tags": [{
-			"name": "Compressor-2015:CompressionRatio",
-			"limit": 10,
-			"aggregations": [{
-				"type": "avg",
-				"sampling": {
-					"unit": "s",
-					"value": "30"
-				}
-			}]
+			"name": "Compressor-2015:CompressionRatio"
 		}],
 		"start": 1452112200000,
 		"end": 1453458896222
