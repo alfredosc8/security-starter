@@ -1,4 +1,26 @@
 [{
+	"label": "Aggregations Request",
+	"headers": [{
+		"key": "content-type",
+		"val": "application/json"
+	}],
+	"method": "post",
+	"path": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
+	"body": {
+		"tags": [{
+			"name": "Compressor-2015:CompressionRatio",
+			"aggregations": [{
+				"type": "avg",
+				"sampling": {
+					"unit": "s",
+					"value": "30"
+				}
+			}]
+		}],
+		"start": 1452112200000,
+		"end": 1453458896222
+	}
+}, {
 	"label": "Get Tags",
 	"method": "get",
 	"path": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/tags"
