@@ -12,6 +12,7 @@ var url = require('url');
 var WebSocketServer = require('ws').Server;
 var WebSocket = require('ws');
 var HttpsProxyAgent = require('https-proxy-agent');
+var helmet = require('helmet');
 
 var sockets = {};
 var corporateProxyAgent;
@@ -19,7 +20,8 @@ var sessionOptions = {
 	secret: 'njk2389adsf98yr23hre98',
 	name: 'security-starter-cookie',
 	resave: true,
-	saveUninitialized: false
+	saveUninitialized: false,
+	cookie: {secure: true}
 };
 
 // Set up some options for cloud vs. local, and proxy vs. no proxy.
@@ -27,6 +29,26 @@ var corporateProxyServer = process.env.HTTP_PROXY || process.env.http_proxy || p
 if (corporateProxyServer) {
 		corporateProxyAgent = new HttpsProxyAgent(corporateProxyServer);
 }
+
+app.use(helmet());
+app.enable('trust proxy');
+
+app.use(function(req, res, next) {
+	console.log('PAIN!!!!!!');
+	console.log('request: ' + JSON.stringify(req.headers));
+	console.log('referer: ' + req.get('referer'));
+	var protocol = url.parse(req.get('referer') || '').protocol;
+	console.log('original protocol: ' + protocol);
+	if (protocol === 'https:') { // || req.session.redirected) {
+		// req.session.redirected = false;
+		next();
+	} else {
+		console.log('NOT HTTPS');
+		// req.session.redirected = true;
+		res.redirect('https://' + req.headers.host + req.url);
+	}
+	// next();
+});
 
 if (process.env.NODE_ENV === 'local') {
 	app.use(express.static(path.join(__dirname, '../.tmp')));
@@ -38,7 +60,7 @@ if (process.env.NODE_ENV === 'local') {
 
 if (process.env.VCAP_SERVICES) {  // use redis when running in cloud
 	var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
-	var vcapRedis = (vcapServices['redis-1'] || vcapServices['p-redis'])[0];
+	var vcapRedis = (vcapServices['redis-1'] || vcapServices['p-redis'] || vcapServices['redis'])[0];
 	// console.log('VCAP Redis:' + JSON.stringify(vcapRedis));
 	sessionOptions.store = new RedisStore({
 		host: vcapRedis.credentials.host,
@@ -52,7 +74,7 @@ app.use(session(sessionOptions));
 
 function cleanResponseHeaders (rsp, data, req, res, cb) {
 	res.removeHeader('Access-Control-Allow-Origin');
-	res.removeHeader('X-Powered-By');
+	// res.removeHeader('X-Powered-By');
 	res.removeHeader('www-authenticate'); // prevents browser from popping up a basic auth window.
 	cb(null, data);
 }
