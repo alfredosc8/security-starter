@@ -18,14 +18,12 @@ var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 var merge = require('merge-stream');
 var path = require('path');
-var fs = require('fs');
 // var glob = require('glob');
 var historyApiFallback = require('connect-history-api-fallback');
 // var packageJson = require('./package.json');
 // var crypto = require('crypto');
 var polybuild = require('polybuild');
-var proxy = require('http-proxy-middleware');
-var HttpsProxyAgent = require('https-proxy-agent');
+var nodemon = require('gulp-nodemon');
 
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
@@ -237,47 +235,20 @@ gulp.task('clean', function (cb) {
   del(['.tmp', 'dist'], cb);
 });
 
-// Watch files for changes & reload
-gulp.task('serve', ['styles', 'elements', 'images'], function () {
-  var corporateProxyServer = process.env.http_proxy || process.env.HTTP_PROXY;
-  // console.log("corporateProxyServer: " + corporateProxyServer);
-  var uaaConfig = JSON.parse(fs.readFileSync('./app/uaaConfig.json', 'utf-8'));
-  // console.log('URL: ' + uaaConfig.url);
-  var proxyOptions = {
-    target: uaaConfig.url,
-    changeOrigin: true,
-    logLevel: 'debug',
-    pathRewrite: { '^/api/': '/'}
-    // onProxyReq: function onProxyReq(proxyReq, req, res) {
-    //   console.log('Request headers: ' + JSON.stringify(req.headers));
-    // }
-  };
-  var githubProxyOptions = {
-    target: 'https://raw.githubusercontent.com',
-    changeOrigin: true,
-    pathRewrite: { '^/github/': '/'}
-  };
-  var apiProxyOptions = {
-    target: uaaConfig.apiUrl,
-    changeOrigin: true,
-    logLevel: 'debug',
-    pathRewrite: { '^/proxy-api': ''}
-  };
-  var uaaLoginOptions = {
-    target: uaaConfig.url,
-    changeOrigin: true,
-    logLevel: 'debug',
-    pathRewrite: { '^/uaalogin': '/oauth/token'}
-  };
+gulp.task('express', function() {
+  return nodemon({
+    script: 'server/security-app.js',
+    watch: 'server/security-app.js',
+    env: {
+      "NODE_ENV": "local"
+    }
+  });
+});
 
-  if (corporateProxyServer) {
-    proxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
-    apiProxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
-    githubProxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
-    uaaLoginOptions.agent = new HttpsProxyAgent(corporateProxyServer);
-  }
+// Watch files for changes & reload
+gulp.task('serve', ['styles', 'elements', 'images', 'express'], function () {
   browserSync({
-    port: 5000,
+    port: 5001,
     notify: false,
     logPrefix: 'PSK',
     snippetOptions: {
@@ -288,23 +259,27 @@ gulp.task('serve', ['styles', 'elements', 'images'], function () {
         }
       }
     },
+    proxy: {
+      target: "http://localhost:5000",
+      ws: true
+    }
     // Run as an https by uncommenting 'https: true'
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
     //https: true,
-    server: {
-      baseDir: ['.tmp', 'app'],
-      middleware: [
-        proxy('/uaalogin', uaaLoginOptions),
-        proxy('/api', proxyOptions),
-        proxy('/proxy-api', apiProxyOptions),
-        proxy('/github', githubProxyOptions),
-        historyApiFallback()
-      ],
-      routes: {
-        '/bower_components': 'bower_components'
-      }
-    }
+    // server: {
+    //   baseDir: ['.tmp', 'app'],
+    //   middleware: [
+    //     proxy('/uaalogin', uaaLoginOptions),
+    //     proxy('/api', proxyOptions),
+    //     proxy('/proxy-api', apiProxyOptions),
+    //     proxy('/github', githubProxyOptions),
+    //     historyApiFallback()
+    //   ],
+    //   routes: {
+    //     '/bower_components': 'bower_components'
+    //   }
+    // }
   });
 
   gulp.watch(['app/**/*.html'], reload);

@@ -55,11 +55,16 @@ cf env <<new-sample-app-name>>
 Check the output of that last command, for the "predix-uaa" service, and copy the "uri" for that service, from the "credentials" object.
 
 #### Running locally
-Open up app/uaaConfig.json and enter the URL of the new UAA service instance.
-
-__NOTE:__ When running locally, the app will only connect to a single instance of UAA, which is specified in the uaaConfig.json file.  Any value entered in to the "UAA URL" input field on the UI will be ignored.  This input field used only in the cloud.  The reason is that we use a different proxy locally, to work around the corporate proxy server.
-
-Now you're ready to start running this application locally:
+You can start running the app locally in two ways.  For a quick start, run:
 ```
 npm start
 ```
+If you want to develop on this application, you probably want to use gulp:
+```
+gulp serve
+```
+This will do a few magic things for you.  The app will be served using BrowserSync, which is watching for changes, and will automatically reload when you make a change to the front end code.  It will also start the security-app server code using nodemon.  This will watch for changes to the server code, and restart the server whenever a change is made.
+
+The app can run locally either inside the GE network, or outside the network.  It will check for the 'http_proxy' environment variable, and if present, will use a proxy agent to pass requests out to the Predix cloud.
+
+At this time, the web socket requests will not work when running locally.  You'll need to change one line of code from "wss" to "ws" in the api-form web component.
