@@ -27,7 +27,8 @@ https://github.com/PolymerElements/paper-menu/issues/31
   line-height: 0;
 }
 
-.tab-content.paper-tab a {
+/* Hack for tabs in top right*/
+.paper-tab-0 .tab-content.paper-tab > a {
   text-decoration: none;
   color: inherit;
   height: auto;
