@@ -142,7 +142,8 @@ app.use('/proxy-api', expressProxy(function(req) {
 		return forwardPath;
 	},
 	intercept: cleanResponseHeaders,
-	decorateRequest: setProxyAgent
+	decorateRequest: setProxyAgent,
+	limit: '250mb'
 }));
 
 app.use('/open-ws', function(req, res) {
