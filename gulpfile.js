@@ -57,15 +57,15 @@ var jshintTask = function (src) {
     .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
 };
 
-var imageOptimizeTask = function (src, dest) {
-  return gulp.src(src)
-    .pipe($.cache($.imagemin({
-      progressive: true,
-      interlaced: true
-    })))
-    .pipe(gulp.dest(dest))
-    .pipe($.size({title: 'images'}));
-};
+// var imageOptimizeTask = function (src, dest) {
+//   return gulp.src(src)
+//     .pipe($.cache($.imagemin({
+//       progressive: true,
+//       interlaced: true
+//     })))
+//     .pipe(gulp.dest(dest))
+//     .pipe($.size({title: 'images'}));
+// };
 
 var optimizeHtmlTask = function (src, dest) {
   var assets = $.useref.assets({searchPath: ['.tmp', 'app', 'dist']});
@@ -116,9 +116,9 @@ gulp.task('jshint', function () {
 });
 
 // Optimize images
-gulp.task('images', function () {
-  return imageOptimizeTask('app/images/**/*', 'dist/www/images');
-});
+// gulp.task('images', function () {
+//   return imageOptimizeTask('app/images/**/*', 'dist/www/images');
+// });
 
 // Copy all files at the root level (app)
 gulp.task('copy', function () {
@@ -158,7 +158,10 @@ gulp.task('copy', function () {
   var packageFile = gulp.src(['package.json'])
     .pipe(gulp.dest('dist'));
 
-  return merge(app, bower, elements, requestsJson, vulcanized, swBootstrap, swToolbox, server, packageFile)
+  var images = gulp.src(['app/images/**/*'])
+    .pipe(gulp.dest('dist/www/images'));
+
+  return merge(app, bower, elements, requestsJson, vulcanized, swBootstrap, swToolbox, images, server, packageFile)
     .pipe($.size({title: 'copy'}));
 });
 
@@ -246,7 +249,7 @@ gulp.task('express', function() {
 });
 
 // Watch files for changes & reload
-gulp.task('serve', ['styles', 'elements', 'images', 'express'], function () {
+gulp.task('serve', ['styles', 'elements', 'express'], function () {
   browserSync({
     port: 5001,
     notify: false,
@@ -318,7 +321,7 @@ gulp.task('default', ['clean'], function (cb) {
   runSequence(
     ['copy', 'styles'],
     'elements',
-    ['jshint', 'images', 'fonts', 'html'],
+    ['jshint', 'fonts', 'html'],
     'vulcanize','rename-index', 'remove-old-build-index', // 'cache-config',
     cb);
 });
