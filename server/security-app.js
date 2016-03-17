@@ -12,6 +12,7 @@ var url = require('url');
 var WebSocketServer = require('ws').Server;
 var WebSocket = require('ws');
 var HttpsProxyAgent = require('https-proxy-agent');
+var helmet = require('helmet');
 
 var sockets = {};
 var corporateProxyAgent;
@@ -19,7 +20,14 @@ var sessionOptions = {
 	secret: 'njk2389adsf98yr23hre98',
 	name: 'security-starter-cookie',
 	resave: true,
-	saveUninitialized: false
+	saveUninitialized: false,
+	cookie: {secure: true}
+};
+var helmetCspDirectives = {
+	defaultSrc: ["'self'"],
+	scriptSrc: ["'self'", "'unsafe-inline'"],
+	styleSrc: ["'self'", "https://fonts.googleapis.com", "'unsafe-inline'"],
+	fontSrc: ["'self'", "https://fonts.gstatic.com"]
 };
 
 // Set up some options for cloud vs. local, and proxy vs. no proxy.
@@ -28,18 +36,30 @@ if (corporateProxyServer) {
 		corporateProxyAgent = new HttpsProxyAgent(corporateProxyServer);
 }
 
+app.use(helmet.xssFilter());
+app.use(helmet.frameguard());
+app.use(helmet.hidePoweredBy());
+app.use(helmet.noSniff());
+app.use(helmet.hsts({
+  maxAge: 7776000000,  // 90 days in ms
+  force: true
+}));
+app.set('trust proxy', 1);
+
 if (process.env.NODE_ENV === 'local') {
+	helmetCspDirectives.connectSrc = ["'self'", "localhost:5002", "ws://localhost:5002"];
+	app.use(helmet.csp(helmetCspDirectives));
 	app.use(express.static(path.join(__dirname, '../.tmp')));
 	app.use('/bower_components', express.static(path.join(__dirname, '../bower_components')));
 	app.use(express.static(path.join(__dirname, '../app')));
 } else {
+	app.use(helmet.csp(helmetCspDirectives));
 	app.use(express.static(path.join(__dirname, '../www')));
 }
 
 if (process.env.VCAP_SERVICES) {  // use redis when running in cloud
 	var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
-	var vcapRedis = (vcapServices['redis-1'] || vcapServices['p-redis'])[0];
-	// console.log('VCAP Redis:' + JSON.stringify(vcapRedis));
+	var vcapRedis = (vcapServices['redis-1'] || vcapServices['p-redis'] || vcapServices['redis'])[0];
 	sessionOptions.store = new RedisStore({
 		host: vcapRedis.credentials.host,
 		port: vcapRedis.credentials.port,
@@ -52,7 +72,6 @@ app.use(session(sessionOptions));
 
 function cleanResponseHeaders (rsp, data, req, res, cb) {
 	res.removeHeader('Access-Control-Allow-Origin');
-	res.removeHeader('X-Powered-By');
 	res.removeHeader('www-authenticate'); // prevents browser from popping up a basic auth window.
 	cb(null, data);
 }
@@ -172,7 +191,6 @@ app.use('/open-ws', function(req, res) {
 			// console.log('ready state: ' + socket.readyState);
 		});
 		socket.on('open', function() {
-			// console.log('socket opened!?!?');
 			// store socket in memory with an ID & expiration
 			// return socket ID to browser
 			var socketId = Math.random() * 10000000000000000000;
