@@ -33,6 +33,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.apiTab = false;
     });
 
+    page('/setUaa/:uaaGuid', scrollToTop, function(ctx) {
+        var loginForm = document.querySelector('login-form');
+        var uaaUrl = loginForm.uaaUrl || '';
+        uaaUrl = uaaUrl.replace('your-uaa-instance', ctx.params.uaaGuid);
+        loginForm.uaaUrl = uaaUrl;
+        page('/');
+    });
+
     page('/loginAsAdmin', scrollToTop, function() {
       app.route = 'loginasadmin';
     });
