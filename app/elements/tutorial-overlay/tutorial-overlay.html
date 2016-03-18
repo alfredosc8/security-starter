@@ -53,9 +53,7 @@
       var getMdEl = this.$.getMdEl,
         mdEl = this.$.md;
 
-      if (this.markdownUrl
-          && this.markdownUrl.length > 0
-          && Polymer.dom(mdEl).children.length === 0) {
+      if (this.markdownUrl && this.markdownUrl.length > 0 && Polymer.dom(mdEl).children.length === 0) {
         // console.log('fetching markdown from: ' + this.markdownUrl);
         var parts = this.markdownUrl.split('#'),
           elementId = parts[1];
