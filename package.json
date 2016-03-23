@@ -41,7 +41,7 @@
   },
   "scripts": {
     "test": "gulp test:local",
-    "start": "gulp && gulp serve"
+    "start": "node server/security-app.js"
   },
   "engines": {
     "node": ">=0.10.0"
