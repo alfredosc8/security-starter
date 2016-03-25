@@ -63,7 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
     <platinum-https-redirect></platinum-https-redirect>
-    
+
     <paper-drawer-panel id="paperDrawerPanel">
       <!-- Drawer Scroll Header Panel -->
       <paper-scroll-header-panel drawer fixed>
@@ -215,7 +215,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </p>
                 <p>
                   First, set up the basics to create a secure microservice, including a Client ID and User.
-                  Next, set up groups and scopes, so your microservice can work with Predix platform services.
+                  Next, set up authorities or groups and scopes, so your microservice can work with Predix platform services.
+                  Authorities are used with the "client_credentials" grant type.  Groups and scopes are used with "password" or "authorization_code" grant type.
                   Now you're ready to make API calls to your live instances of Predix services on the API Explorer tab.
                 </p>
                 <p>
