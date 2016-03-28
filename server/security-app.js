@@ -47,6 +47,7 @@ app.use(helmet.hsts({
 app.set('trust proxy', 1);
 
 if (process.env.NODE_ENV === 'local') {
+	delete sessionOptions.cookie;
 	helmetCspDirectives.connectSrc = ["'self'", "localhost:5002", "ws://localhost:5002"];
 	app.use(helmet.csp(helmetCspDirectives));
 	app.use(express.static(path.join(__dirname, '../.tmp')));
