@@ -44,15 +44,20 @@
       }
     },
 
-    ready: function() {
-      if (this.markdownUrl && this.markdownUrl.length > 0) {
+    listeners: {
+      'iron-overlay-opened': 'handleOverlayOpened'
+    },
+
+    handleOverlayOpened: function() {
+      var self = this;
+      var getMdEl = this.$.getMdEl,
+        mdEl = this.$.md;
+
+      if (this.markdownUrl && this.markdownUrl.length > 0 && Polymer.dom(mdEl).children.length === 0) {
         // console.log('fetching markdown from: ' + this.markdownUrl);
         var parts = this.markdownUrl.split('#'),
           elementId = parts[1];
-        // console.log('hashtag: ' + elementId);
-        var getMdEl = this.$.getMdEl,
-          mdEl = this.$.md;
-        // console.log('md el: ' + getMdEl);
+
         getMdEl.addEventListener('response', function(event) {
 
           var frag = document.createDocumentFragment(),
@@ -60,7 +65,7 @@
           var div = document.createElement('div');
           div.innerHTML = marked(event.detail.response);
           div.id = "containerDiv";
-          frag.appendChild(div); // put all the HTML from md into a DOM frag
+          Polymer.dom(frag).appendChild(div); // put all the HTML from md into a DOM frag
           var containerEl = frag.getElementById(div.id),
               targetElement = frag.getElementById(elementId);
           if (elementId && targetElement && containerEl && containerEl.hasChildNodes()) {
@@ -83,14 +88,15 @@
               }
 
               if (inSection) {
-                sectionFrag.appendChild(el);
+                Polymer.dom(sectionFrag).appendChild(el);
               }
             }
           } else {
             sectionFrag = frag; // just show the whole document
           }
 
-          mdEl.appendChild(sectionFrag);
+          Polymer.dom(mdEl).appendChild(sectionFrag);
+          self.refit();
         });
 
         getMdEl.generateRequest();

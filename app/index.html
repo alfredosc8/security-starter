@@ -60,10 +60,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </head>
 
 <body unresolved class="fullbleed layout vertical">
+
+  <!-- Google Tag Manager -->
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-W264TV"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W264TV');</script>
+  <!-- End Google Tag Manager -->
+
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
     <platinum-https-redirect></platinum-https-redirect>
-    
+
     <paper-drawer-panel id="paperDrawerPanel">
       <!-- Drawer Scroll Header Panel -->
       <paper-scroll-header-panel drawer fixed>
@@ -215,7 +226,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </p>
                 <p>
                   First, set up the basics to create a secure microservice, including a Client ID and User.
-                  Next, set up groups and scopes, so your microservice can work with Predix platform services.
+                  Next, set up authorities or groups and scopes, so your microservice can work with Predix platform services.
+                  Authorities are used with the "client_credentials" grant type.  Groups and scopes are used with "password" or "authorization_code" grant type.
                   Now you're ready to make API calls to your live instances of Predix services on the API Explorer tab.
                 </p>
                 <p>

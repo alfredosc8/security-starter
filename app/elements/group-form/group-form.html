@@ -14,12 +14,12 @@
         UAA URL: <span>{{baseUrl}}</span>/Groups
       </p>
       <table class="starter-inputs">
-        <tr><td>New group name:</td><td><input name="groupName" required value="{{groupName::input}}"></td></tr>
+        <tr><td>New group name:</td><td style="width: 75%"><input name="groupName" style="width: 100%" required value="{{groupName::input}}"></td></tr>
       </table>
       <p>Request</p>
       <textarea id="groupRequest" rows=10 cols=100>{{restRequest}}</textarea>
       <br/>
-      <paper-button raised noink class="starter-button" id="groupCommandButton" data-dialog="groupCommand">See curl command</paper-button>
+      <paper-button raised noink class="starter-button" id="groupCommandButton" data-dialog="groupCommand">See cURL command</paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="addGroupButton">Submit</paper-button>
       <input hidden="true" type="submit" />
     </form>

@@ -1,34 +1,3 @@
-## Predix UAA Security
-
-### Expected Outcome
-Use the [Predix Security Starter Kit](https://github.com/PredixDev/security-starter) along with this tutorial to quickly secure your Predix application.
-
-### Prerequisites
-* Predix Beta access
-* Node
-* Git
-
-### Tutorial Steps
-
-#### Create UAA service instance
-`cf create-service predix-uaa`
-
-Remember your admin secret!
-#### Bind an app to UAA service
-```
-git clone some-project
-cd some-project
-cf push
-cf bind-service ...
-```
-#### Find URL for your UAA service
-`cf env some-project`
-
-#### Run Security Starter Kit
-```
-npm install -g bower gulp
-gulp serve
-```
 #### Login as Admin
 Enter the admin secret you created earlier, when you ran this command: `cf create-service predix-uaa`.
 
