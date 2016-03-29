@@ -21,6 +21,7 @@ var sessionOptions = {
 	name: 'security-starter-cookie',
 	resave: true,
 	saveUninitialized: false,
+	// proxy: true,   // not sure about this one...
 	cookie: {secure: true}
 };
 var helmetCspDirectives = {
@@ -36,6 +37,12 @@ if (corporateProxyServer) {
 		corporateProxyAgent = new HttpsProxyAgent(corporateProxyServer);
 }
 
+// app.use('/headers', function(req, res) {
+// 	console.log('ALL REQUEST HEADERS ****');
+// 	console.log(req.headers);
+// 	res.send(req.headers);
+// });
+
 app.use(helmet.xssFilter());
 app.use(helmet.frameguard());
 app.use(helmet.hidePoweredBy());
@@ -46,6 +53,7 @@ app.use(helmet.hsts({
 }));
 app.set('trust proxy', 1);
 
+console.log('PREDIX_ENV: ' + process.env.PREDIX_ENV);
 if (process.env.NODE_ENV === 'local') {
 	delete sessionOptions.cookie;
 	helmetCspDirectives.connectSrc = ["'self'", "localhost:5002", "ws://localhost:5002"];
@@ -54,6 +62,10 @@ if (process.env.NODE_ENV === 'local') {
 	app.use('/bower_components', express.static(path.join(__dirname, '../bower_components')));
 	app.use(express.static(path.join(__dirname, '../app')));
 } else {
+	if (process.env.PREDIX_ENV === 'VPC') {
+		// HACK needed for VPC environment.  seems we can't set secure cookie there, due to cloud config.
+		delete sessionOptions.cookie;
+	}
 	app.use(helmet.csp(helmetCspDirectives));
 	app.use(express.static(path.join(__dirname, '../www')));
 }
@@ -128,7 +140,6 @@ app.use('/api', expressProxy(getUaaUrlFromSession, {
 		forwardPath: function (req) {
 			//   console.log("Forwarding request: " + req.originalUrl);
 			  var forwardPath = url.parse(req.url).path;
-			//   console.log("forwardPath returns; " + forwardPath);
 			  return forwardPath;
 		},
 		intercept: cleanResponseHeaders,
@@ -156,7 +167,6 @@ app.use('/proxy-api', expressProxy(function(req) {
 }, {
 	https: true,
 	forwardPath: function (req) {
-		// console.log("Forwarding request: " + req.originalUrl);
 		var forwardPath = url.parse(req.url).path;
 		// console.log('forwardPath: ' + forwardPath);
 		return forwardPath;
@@ -181,7 +191,6 @@ app.use('/open-ws', function(req, res) {
 			"predix-zone-id": zone,
 			"origin": "http://www.predix.io" // some value is required here.
 		};
-		// console.log('headers: ' + JSON.stringify(headers));
 		var socket = new WebSocket(wsUrl, {headers: headers});
 		socket.on('error', function(error) {
 			console.log('error opening socket: ' + error);
@@ -189,7 +198,6 @@ app.use('/open-ws', function(req, res) {
 		});
 		socket.on('close', function(code, message) {
 			console.log('socket closed. ' + code + ' ' + message);
-			// console.log('ready state: ' + socket.readyState);
 		});
 		socket.on('open', function() {
 			// store socket in memory with an ID & expiration
