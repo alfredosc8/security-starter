@@ -84,6 +84,8 @@
         },
 
         updateTokenUrl: function(url) {
+          url = this._retargetUrl(url);
+          this.uaaUrl = url;
           if (url && url.indexOf('http') > -1) {
             this.tokenUrl = url + '/oauth/token';
           }

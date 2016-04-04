@@ -186,8 +186,7 @@
               f.isFile = (f.type === 'file');
             });
           }
-          // console.log('headers: ' + JSON.stringify(this.displayHeaders));
-          self.apiUrl = defn.path;
+          self.apiUrl = self._retargetUrl(defn.path);
         },
 
         setSelectedRequest: function(index) {
