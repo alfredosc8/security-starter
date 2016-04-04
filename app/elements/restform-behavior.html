@@ -98,6 +98,21 @@
         json = encoded;
       }
       return json;
+    },
+
+    _retargetUrl: function(url) {
+      var hostname = window.location.hostname;
+      var hostnameParts, hostSuffix;
+      hostnameParts = hostname.split('.');
+      hostnameParts.shift();
+      hostSuffix = hostnameParts.join('.');
+      if(hostname !== 'localhost' && url.indexOf(hostSuffix) < 0) {
+        // this code assumes that the service URL will look like this:
+        //  https://service-name.runSOMETHINGio/api/path
+        return url.replace(/run.*predix\.io/, hostSuffix);
+      } else {
+        return url;
+      }
     }
   };
 </script>
