@@ -54,7 +54,8 @@ app.use(helmet.hsts({
 app.set('trust proxy', 1);
 
 console.log('PREDIX_ENV: ' + process.env.PREDIX_ENV);
-if (process.env.NODE_ENV === 'local') {
+console.log('NODE_ENV: ' + process.env.NODE_ENV);
+if (process.env.NODE_ENV !== 'production') {
 	delete sessionOptions.cookie;
 	helmetCspDirectives.connectSrc = ["'self'", "localhost:5002", "ws://localhost:5002"];
 	app.use(helmet.csp(helmetCspDirectives));
