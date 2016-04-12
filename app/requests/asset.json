@@ -38,6 +38,12 @@
 		},
 		"tags": []
 	}]
-
-
+}, {
+	"label": "Get Classifications",
+	"method": "get",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification"
+}, {
+	"label": "Get Specific Classification",
+	"method": "get",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/EngineWithAttributes"
 }]
