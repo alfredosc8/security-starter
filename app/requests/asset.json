@@ -46,4 +46,8 @@
 	"label": "Get Specific Classification",
 	"method": "get",
 	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/EngineWithAttributes"
+}, {
+	"label": "Delete Specific Classification",
+	"method": "delete",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/EngineWithAttributes"
 }]
