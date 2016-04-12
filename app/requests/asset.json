@@ -1,0 +1,43 @@
+[{
+	"label": "Create Classification Request",
+	"headers": [{
+		"key": "content-type",
+		"val": "application/json"
+	}],
+	"method": "post",
+	"path": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
+	"body": [{
+		"description": "Creating Engine classification for testing purpose",
+		"uri": "/classification/EngineWithAttributes",
+		"name": "EngineWithAttributes",
+		"obsolete": false,
+		"attributes": {
+			"make": {
+				"type": "string",
+				"enumeration": [],
+				"required": true,
+				"display": true,
+				"value": [
+					"Toyota",
+					"Audi",
+					"BMW",
+					"Hyundai"
+				]
+			},
+			"mileage": {
+				"type": "string",
+				"enumeration": [
+					"gas",
+					"electrity"
+				],
+				"required": false,
+				"display": true,
+				"value": [],
+				"uom": "mpg"
+			}
+		},
+		"tags": []
+	}]
+
+
+}]
