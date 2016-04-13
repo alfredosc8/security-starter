@@ -100,4 +100,43 @@
 	"label": "Delete Specific Asset",
 	"method": "delete",
 	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/asset/getrb_1234"
+}, {
+	"label": "Create Model Request",
+	"headers": [{
+		"key": "content-type",
+		"val": "application/json"
+	}],
+	"method": "post",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/engine/ENG1.23",
+	"body": [{
+		"uri": "/engine/ENG1.23",
+		"serialNo": 12345,
+		"jetEnginePart": {
+			"uri": "/part/pt9876",
+			"sNo": 55555
+		}
+	}, {
+		"uri": "/engine/ENG1.24",
+		"serialNo": 12346,
+		"jetEnginePart": {
+			"uri": "/part/pt9877",
+			"sNo": 55556
+		}
+	}]
+}, {
+	"label": "Get Engine Models",
+	"method": "get",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/engine"
+}, {
+	"label": "Get Part Models",
+	"method": "get",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/part"
+}, {
+	"label": "Get Specific Engine Model",
+	"method": "get",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/engine/ENG1.24"
+}, {
+	"label": "Get Specific Part Model",
+	"method": "get",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/part/pt9877"
 }]
