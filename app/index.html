@@ -157,6 +157,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="lock"></iron-icon>
                 <span>Login as User</span>
               </a>
+              <a data-route="asset" href="/asset" on-click="onDataRouteClick">
+                <iron-icon icon="shopping-cart"></iron-icon>
+                <span>Asset</span>
+              </a>
               <a data-route="tsingest" href="/tsIngest" on-click="onDataRouteClick">
                 <iron-icon icon="cloud-upload"></iron-icon>
                 <span>Time series ingest</span>
@@ -362,6 +366,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </client-login-form>
               </paper-material>
             </section>
+
+            <section data-route="asset">
+              <paper-material elevation="1">
+                Execute CRUD operations on Asset
+              </paper-material>
+              <paper-material elevation="1">
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" request-file-path="/requests/asset.json"></api-form>
+              </paper-material>
+            </section>
+
 
             <section data-route="tsingest">
               <paper-material elevation="1">
