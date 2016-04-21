@@ -41,7 +41,7 @@
   },
   "scripts": {
     "test": "gulp test:local",
-    "start": "node server/security-app.js"
+    "start": "NODE_ENV=local node server/security-app.js"
   },
   "engines": {
     "node": ">=0.10.0"
