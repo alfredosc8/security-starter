@@ -128,15 +128,7 @@
 	"method": "get",
 	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/engine"
 }, {
-	"label": "Get Part Models",
-	"method": "get",
-	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/part"
-}, {
 	"label": "Get Specific Engine Model",
 	"method": "get",
 	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/engine/ENG1.24"
-}, {
-	"label": "Get Specific Part Model",
-	"method": "get",
-	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/part/pt9877"
 }]
