@@ -8,8 +8,8 @@
 	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification",
 	"body": [{
 		"description": "Creating Engine classification for testing purpose",
-		"uri": "/classification/EngineWithAttributes",
-		"name": "EngineWithAttributes",
+		"uri": "/classification/engine",
+		"name": "Engine",
 		"obsolete": false,
 		"attributes": {
 			"make": {
@@ -18,10 +18,10 @@
 				"required": true,
 				"display": true,
 				"value": [
-					"Toyota",
-					"Audi",
-					"BMW",
-					"Hyundai"
+					"GE_eng_1",
+					"GE_eng_2",
+					"GE_eng_3",
+					"GE_eng_4"
 				]
 			},
 			"mileage": {
@@ -45,11 +45,11 @@
 }, {
 	"label": "Get Specific Classification",
 	"method": "get",
-	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification/EngineWithAttributes"
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification/engine"
 }, {
 	"label": "Delete Specific Classification",
 	"method": "delete",
-	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification/EngineWithAttributes"
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification/engine"
 }, {
 	"label": "Create Asset Request",
 	"headers": [{
@@ -64,7 +64,7 @@
 		"obsolete": false,
 		"empty": false,
 		"assetId": "geturbine_1234",
-		"specification": "/classification/EngineWithAttributes",
+		"specification": "/classification/engine",
 		"propagateState": false,
 		"attributes": {
 			"make": {
@@ -73,7 +73,7 @@
 				"required": true,
 				"display": true,
 				"value": [
-					"Toyota"
+					"GE_eng_1"
 				]
 			},
 			"dimensions": {
