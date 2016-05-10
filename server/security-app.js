@@ -91,7 +91,7 @@ function cleanResponseHeaders (rsp, data, req, res, cb) {
 }
 
 function getUaaUrlFromSession(req) {
-	console.log('UAA URL from session: ' + req.session.uaaUrl);
+	//console.log('UAA URL from session: ' + req.session.uaaUrl);
 	return req.session.uaaUrl;
 }
 
@@ -190,7 +190,7 @@ app.use('/open-ws', function(req, res) {
 		var headers = {
 			"authorization": auth,
 			"predix-zone-id": zone,
-			"origin": "http://www.predix.io" // some value is required here.
+			"origin": "https://www.predix.io" // some value is required here.
 		};
 		var socket = new WebSocket(wsUrl, {headers: headers});
 		socket.on('error', function(error) {
@@ -205,11 +205,11 @@ app.use('/open-ws', function(req, res) {
 			// return socket ID to browser
 			var socketId = Math.random() * 10000000000000000000;
 			socket.socketId = socketId;
-			socket.exp = Date.now() + 1200000; // 20 min
+			socket.expiration = Date.now() + 1200000; // 20 min
 			sockets[socketId] = socket;
 			// console.log('ready state: ' + socket.readyState);
 			console.log('sockets: ' + Object.keys(sockets).length);
-			res.status(200).send({"socketId": socketId});
+			res.status(200).send({"socketId": socketId, "readyState": "OPEN"});
 		});
 	}
 });
@@ -235,7 +235,7 @@ app.use(function logErrors(err, req, res, next) {
 var wsServer = new WebSocketServer({
 	server: httpServer,
 	verifyClient: function(info) {
-		console.log('verifyClient');
+		//console.log('verifyClient');
 		// TODO: verify hostname at least
 		// console.log(JSON.stringify(info));
 		return true;
@@ -245,34 +245,54 @@ var wsServer = new WebSocketServer({
 wsServer.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {
     // console.log('received: %s', message);
-		var tsData;
+		var incomingData;
 		try {
-			tsData = JSON.parse(message);
+			incomingData = JSON.parse(message);
 		} catch (e) {
 			ws.send('{"error": ' + e + '}');
 			return;
 		}
-		if (!tsData.socketId) {
+		if (!incomingData.socketId) {
 			ws.send('{"error": "missing socketId"}');
 			return;
 		}
-		var apiSocket = sockets[tsData.socketId];
+		var apiSocket = sockets[incomingData.socketId];
 		if (!apiSocket || apiSocket.readyState !== WebSocket.OPEN) {
 			ws.send('{"error": "socket to back end API has closed."}');
-			delete sockets[tsData.socketId];
+			delete sockets[incomingData.socketId];
 			return;
 		}
 		// pass request through to back end api:
-		apiSocket.send(message);
+		if (!incomingData.handshake) {
+			apiSocket.send(message);
+		}
 		apiSocket.on('message', function(data) {
 			// console.log('data from api: ' + data);
 			if (ws.readyState === WebSocket.OPEN) {
+				// console.log('sending data to UI: ' + data);
 				ws.send(data);
 			}
 		});
+		apiSocket.on('close', function(code, message) {
+			console.log('socket to back end API has closed. code: ' + code + ' message: ' + message);
+			delete sockets[incomingData.socketId];
+		});
   });
-
 });
+
+setInterval(function cleanupSockets() {
+	console.log('cleanupSockets');
+	var socketIds = Object.keys(sockets);
+	socketIds.forEach(function(socketId) {
+		// console.log('socket id: ' + socketId + ' expiration: ' + sockets[socketId].expiration);
+		if (sockets[socketId].expiration < Date.now()) {
+			console.log('deleting a socket.');
+			sockets[socketId].terminate();
+			delete sockets[socketId];
+		}
+	});
+	console.log('sockets remaining: ' + Object.keys(sockets).length);
+}, 1200000);
 ///////// End Web socket server /////////
 
 httpServer.on('request', app);

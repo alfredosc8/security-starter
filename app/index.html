@@ -157,10 +157,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="lock"></iron-icon>
                 <span>Login as User</span>
               </a>
-              <a data-route="asset" href="/asset" on-click="onDataRouteClick">
-                <iron-icon icon="shopping-cart"></iron-icon>
+              <!-- <a data-route="asset" href="/asset" on-click="onDataRouteClick">
+                <iron-icon icon="apps"></iron-icon>
                 <span>Asset</span>
-              </a>
+              </a> -->
               <a data-route="tsingest" href="/tsIngest" on-click="onDataRouteClick">
                 <iron-icon icon="cloud-upload"></iron-icon>
                 <span>Time series ingest</span>
@@ -176,6 +176,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <a data-route="analyticsruntime" href="/analyticsRuntime" on-click="onDataRouteClick">
                 <iron-icon icon="trending-up"></iron-icon>
                 <span>Analytics runtime</span>
+              </a>
+              <a data-route="wsclient" href="/wsClient" on-click="onDataRouteClick">
+                <iron-icon icon="settings-input-component"></iron-icon>
+                <span>Websocket client</span>
               </a>
               <hr/>
               <a href="#" on-click="logout">
@@ -233,6 +237,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   Next, set up authorities or groups and scopes, so your microservice can work with Predix platform services.
                   Authorities are used with the "client_credentials" grant type.  Groups and scopes are used with "password" or "authorization_code" grant type.
                   Now you're ready to make API calls to your live instances of Predix services on the API Explorer tab.
+                </p>
+                <p>
+                  See the <a href$="{{tutorialUrl}}">tutorials on Predix.io</a> for more information.
                 </p>
                 <p>
                   This utility calls some of the REST API exposed by your instance of Predix UAA.
@@ -410,6 +417,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
               <paper-material elevation="1">
                 <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" request-file-path="/requests/analytics-runtime.json"></api-form>
+              </paper-material>
+            </section>
+
+            <section data-route="wsclient">
+              <paper-material elevation="1">
+                Open a secure websocket, send messages and see responses. This tool assumes that all data will be sent and received as JSON.
+              </paper-material>
+              <paper-material elevation="1">
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" http-method="websocket"></api-form>
               </paper-material>
             </section>
 

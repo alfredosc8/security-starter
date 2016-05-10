@@ -126,6 +126,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       selectApiTab();
     });
 
+    page('/wsClient', scrollToTop, function() {
+      app.route = 'wsclient';
+      selectApiTab();
+    });
+
     // add #! before urls
     page({
       hashbang: true
