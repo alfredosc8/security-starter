@@ -15,7 +15,7 @@
         UAA URL: <span>{{baseUrl}}</span>
       </p>
       <table class="starter-inputs">
-        <tr>
+        <tr hidden="{{!requestFilePath}}">
           <td>Choose Request:</td>
           <td>
             <paper-dropdown-menu id="requestMenu" noink no-animations on-click="loadAllRequests">
@@ -117,7 +117,8 @@
             observer: 'setSelectedRequest'
           },
           requestFilePath: {
-            type: String
+            type: String,
+            value: null
           },
           requestDefinition: {
             type: Object,
@@ -155,6 +156,9 @@
           uploadFileName: {
             //HACK!
             type: String
+          },
+          socket: {
+            type: Object
           }
         },
 
@@ -273,8 +277,13 @@
 
             this.request.url = self.getFormUrl();
             // if this is a websocket form, we first submit an http get to open a websocket to the backend.
-            this.request.method = self.requestDefinition.method === 'websocket' ? 'get' : self.requestDefinition.method;
-            if (self.requestDefinition.headers) {
+            if (self.httpMethod === 'websocket' || self.requestDefinition.method === 'websocket') {
+              this.request.method = 'get';
+            } else {
+              this.request.method = self.requestDefinition.method;
+            }
+            // this.request.method = self.requestDefinition.method === 'websocket' ? 'get' : self.requestDefinition.method;
+            if (self.requestDefinition && self.requestDefinition.headers) {
               for (var i=0; i<self.requestDefinition.headers.length; i++) {
                 var h = self.requestDefinition.headers[i];
                 this.request.headers[h.key] = h.val;
@@ -292,7 +301,35 @@
             }
           });
           apiForm.addEventListener('iron-form-response', function(event) {
-            self.socketId = event.detail.response.socketId;
+            if (!self.isWebSocketRequest) {
+              return;
+            }
+            if (event.detail.response) {
+              self.socketId = event.detail.response.socketId;
+              // console.log('new socket id: ' + self.socketId);
+            }
+            // build path string: wss:// for cloudfoundry.  use ws:// for local dev.
+            var wsProxyUrl = 'wss://' + document.location.host;
+            // actually open the socket here!
+            self.socket = new WebSocket(wsProxyUrl);
+
+            self.socket.onopen = function() {
+              console.log('ws proxy socket open.');
+              // need to send socket ID, to bind client socket to back end socket.
+              // TODO: fix this!  it's ugly for time series ingestion.
+              self.socket.send(JSON.stringify({socketId: self.socketId, handshake: true}));
+            };
+
+            self.socket.onmessage = function(evt) {
+              console.log('message received: ' + evt.data);
+              self.restResponse = evt.data + '\n' + self.restResponse;
+              // socket.close();
+            };
+            self.socket.onerror = function(err) {
+              console.log('error from ws proxy');
+              self.error = JSON.stringify(err);
+              self.socket.close();
+            };
           });
           this.$.apiButton.addEventListener('click', function() {
             apiForm.submit();
@@ -317,35 +354,21 @@
           this.$.socketSendButton.addEventListener('click', function() {
             console.log('socketId: ' + self.socketId);
             self.error = '';
-            // build path string: wss:// for cloudfoundry.  use ws:// for local dev.
-            var wsProxyUrl = 'wss://' + document.location.host;
 
             var requestObj;
             try {
               requestObj = JSON.parse(self.$.apiRequest.value);
+              requestObj.socketId = self.socketId;
               // console.log('request: ' + self.$.apiRequest.value);
             } catch (e) {
               self.error = '{"error": ' + e + '}';
               return;
             }
-            // for now, we just create a new socket every time.
-            var socket = new WebSocket(wsProxyUrl);
-            socket.onopen = function() {
-              console.log('ws proxy socket open.');
-              requestObj.socketId = self.socketId;
-              // console.log('sending request: ' + JSON.stringify(requestObj));
-              socket.send(JSON.stringify(requestObj));
-            };
-            socket.onmessage = function(evt) {
-              console.log('message received: ' + evt.data);
-              self.restResponse = evt.data;
-              socket.close();
-            };
-            socket.onerror = function(err) {
-              console.log('error from ws proxy');
-              self.error = JSON.stringify(err);
-              socket.close();
-            };
+            if (self.socket.readyState === 1) {
+              self.socket.send(JSON.stringify(requestObj));
+            } else {
+              self.error = '{"error": "Web socket has closed.  Please open and try again."}';
+            }
           });
           this.$.socketCloseButton.addEventListener('click', function() {
             self.$.socketCloseEl.url = "/close-ws";

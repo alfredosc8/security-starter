@@ -89,4 +89,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.apiTab = false;
+
+  (function setTutorialUrl(window) {
+    var host = window.location.hostname;
+    if (host.indexOf('.run.asv-pr.ice.predix.io') > -1) {
+      app.tutorialUrl = 'https://predix-io.run.asv-pr.ice.predix.io/resources/tutorials';
+    } else {
+      app.tutorialUrl = 'https://www.predix.io/resources/tutorials';
+    }
+  })(window);
 })(document);
