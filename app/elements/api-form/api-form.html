@@ -98,9 +98,6 @@
             type: String,
             notify: true
           },
-          // environment: {
-          //   type: String
-          // },
           token: {
             type: String,
             value: 'Please log in first.'
@@ -336,7 +333,7 @@
           });
           this.$.apiCommandButton.addEventListener('click', this._overlayButtonListener);
           this.$.requestLoaderEl.addEventListener('response', function(ironRequest) {
-            self.requests = ironRequest.detail.response;
+            self.set('requests', ironRequest.detail.response);
           });
 
           this.$.viewTokenButton.addEventListener('click', function(e) {
