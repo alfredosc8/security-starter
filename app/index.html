@@ -232,6 +232,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   After configuring UAA, you can make real API calls to Predix services.
                   First-time users can follow the steps in the menu in order.
                 </p>
+
                 <p>
                   First, set up the basics to create a secure microservice, including a Client ID and User.
                   Next, set up authorities or groups and scopes, so your microservice can work with Predix platform services.
@@ -239,15 +240,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   Now you're ready to make API calls to your live instances of Predix services on the API Explorer tab.
                 </p>
                 <p>
-                  See the <a href$="{{tutorialUrl}}">tutorials on Predix.io</a> for more information.
-                </p>
-                <p>
                   This utility calls some of the REST API exposed by your instance of Predix UAA.
                   The <a href="https://github.com/cloudfoundry/cf-uaac" target="_blank">UAAC command line tool</a> is a Ruby application that calls the same REST API, and allows for more advanced configuration.
                 </p>
                 <p>
-                  For more information on OAuth, read <a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2" target="_blank">An Introduction to OAuth2.</a>
+                  To learn more about Predix, see the <a href$="{{tutorialUrl}}">tutorials on Predix.io</a>. For more information on OAuth, read <a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2" target="_blank">An Introduction to OAuth2.</a>
                 </p>
+                <p>
+                  <i>Note:</i> Make sure you're using the right instance of this utility. If not, you'll get errors.
+                </p>
+                <ul>
+                  <li><a href="https://predix-starter.run.aws-usw02-pr.ice.predix.io/">Predix Basic</a></li>
+                  <li><a href="https://predix-starter.run.asv-pr.ice.predix.io/">Predix Select</a></li>
+                </ul>
               </paper-material>
             </section>
 

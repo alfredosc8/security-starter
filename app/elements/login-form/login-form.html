@@ -76,7 +76,9 @@
             // save token in memory for other calls:
             self.adminAuthBearerToken = event.detail.response["token_type"] + ' ' + event.detail.response["access_token"];
           });
-          this.$.showCommandButton.addEventListener('click', this._overlayButtonListener);
+          this.$.showCommandButton.addEventListener('click', function(e) {
+            self._overlayButtonListener(e, restForm);
+          });
           this.$.submitAdminLogin.addEventListener('click', function() {
             restForm.submit();
           });

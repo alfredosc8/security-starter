@@ -88,7 +88,9 @@
           this.$.userLoginButton.addEventListener('click', function() {
             restForm.submit();
           });
-          this.$.userLoginCommandButton.addEventListener('click', this._overlayButtonListener);
+          this.$.userLoginCommandButton.addEventListener('click', function(e) {
+            self._overlayButtonListener(e, restForm);
+          });
           this.$.userLoginDetailsButton.addEventListener('click', this._overlayButtonListener);
         },
 
