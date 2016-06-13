@@ -108,7 +108,9 @@
           this.$.addClientIdButton.addEventListener('click', function() {
             restForm.submit();
           });
-          this.$.clientIdCommandButton.addEventListener('click', this._overlayButtonListener);
+          this.$.clientIdCommandButton.addEventListener('click', function(e) {
+            self._overlayButtonListener(e, restForm);
+          });
           this.$.clientIdDetailsButton.addEventListener('click', this._overlayButtonListener);
         },
 

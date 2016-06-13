@@ -39,7 +39,13 @@
       'iron-form-response': '_handleResponse'
     },
 
-    _overlayButtonListener: function(e) {
+    _overlayButtonListener: function(e, restForm) {
+
+      if (restForm && restForm.validate && !restForm.validate()) {
+        // we'll call submit on the iron-form, just to show the error messages.
+        restForm.submit();
+        return;
+      }
 
       e.preventDefault();
       var id = e.target.getAttribute('data-dialog');

@@ -331,7 +331,9 @@
           this.$.apiButton.addEventListener('click', function() {
             apiForm.submit();
           });
-          this.$.apiCommandButton.addEventListener('click', this._overlayButtonListener);
+          this.$.apiCommandButton.addEventListener('click', function(e) {
+            self._overlayButtonListener(e, apiForm);
+          });
           this.$.requestLoaderEl.addEventListener('response', function(ironRequest) {
             self.set('requests', ironRequest.detail.response);
           });
