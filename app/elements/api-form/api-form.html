@@ -160,9 +160,11 @@
         },
 
         loadAllRequests: function() {
-          // make ajax request to load request file:
-          this.$.requestLoaderEl.url = this.requestFilePath;
-          this.$.requestLoaderEl.generateRequest();
+          if (!this.requests) {
+            // make ajax request to load request file:
+            this.$.requestLoaderEl.url = this.requestFilePath;
+            this.$.requestLoaderEl.generateRequest();
+          }
         },
 
         updateHttpRequest: function(defn) {
@@ -335,7 +337,9 @@
             self._overlayButtonListener(e, apiForm);
           });
           this.$.requestLoaderEl.addEventListener('response', function(ironRequest) {
-            self.set('requests', ironRequest.detail.response);
+            self.requests = ironRequest.detail.response;
+            console.log('requests loaded');
+            self.$.requestMenu.open();
           });
 
           this.$.viewTokenButton.addEventListener('click', function(e) {
