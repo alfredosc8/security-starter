@@ -84,7 +84,6 @@
       </template>
     </tutorial-overlay>
     <tutorial-overlay id="viewApiToken"></tutorial-overlay>
-    <!-- <tutorial-overlay id="apiDetails" class="scrollable" markdown-url="/security.md#TODO"></tutorial-overlay> -->
   </template>
 
   <script>
@@ -156,6 +155,12 @@
           },
           socket: {
             type: Object
+          },
+          currentRoute: {
+            observer: 'routeChanged'
+          },
+          route: {
+            readonly: true
           }
         },
 
@@ -208,6 +213,12 @@
             this.requiresBody = true;
           } else {
             this.requiresBody = false;
+          }
+        },
+
+        routeChanged: function() {
+          if (this.route === this.currentRoute) {
+            this.loadAllRequests();
           }
         },
 
@@ -338,8 +349,6 @@
           });
           this.$.requestLoaderEl.addEventListener('response', function(ironRequest) {
             self.requests = ironRequest.detail.response;
-            console.log('requests loaded');
-            self.$.requestMenu.open();
           });
 
           this.$.viewTokenButton.addEventListener('click', function(e) {
@@ -362,7 +371,6 @@
             try {
               requestObj = JSON.parse(self.$.apiRequest.value);
               requestObj.socketId = self.socketId;
-              // console.log('request: ' + self.$.apiRequest.value);
             } catch (e) {
               self.error = '{"error": ' + e + '}';
               return;
