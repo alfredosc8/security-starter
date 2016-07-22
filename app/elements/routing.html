@@ -27,7 +27,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       document.getElementById('mainTabControl').selected = 1;
     }
 
-    // Routes
     page('/', scrollToTop, function() {
       app.route = 'home';
       app.apiTab = false;
@@ -37,11 +36,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var loginForm = document.querySelector('login-form');
         var uaaUrl = window.location.protocol + '//';
         var uaaServiceName = 'predix-uaa';
-        if (window.location.hostname.indexOf('predix.io') < 0) {
+        var hostName = window.location.hostname;
+        if (hostName.indexOf('predix.io') < 0) {
           uaaServiceName = 'predix-uaa-staging';
         }
         uaaServiceName = ctx.params.uaaGuid + '.' + uaaServiceName;
-        uaaUrl += window.location.hostname.replace('predix-starter', uaaServiceName);
+        if (hostName.indexOf('predix-starter')) {
+          // eventually, we can remove this, and just assume the predix-toolkit hostname.
+          uaaUrl += hostName.replace('predix-starter', uaaServiceName);
+        } else {
+          uaaUrl += hostName.replace('predix-toolkit', uaaServiceName);
+        }
         loginForm.uaaUrl = uaaUrl;
         page('/');
     });
