@@ -41,7 +41,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           uaaServiceName = 'predix-uaa-staging';
         }
         uaaServiceName = ctx.params.uaaGuid + '.' + uaaServiceName;
-        if (hostName.indexOf('predix-starter')) {
+        if (hostName.indexOf('predix-starter') >= 0) {
           // eventually, we can remove this, and just assume the predix-toolkit hostname.
           uaaUrl += hostName.replace('predix-starter', uaaServiceName);
         } else {
