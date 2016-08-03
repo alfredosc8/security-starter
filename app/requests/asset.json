@@ -51,56 +51,6 @@
 	"method": "delete",
 	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification/engine"
 }, {
-	"label": "Create Asset Request",
-	"headers": [{
-		"key": "content-type",
-		"val": "application/json"
-	}],
-	"method": "post",
-	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/asset",
-	"body": [{
-		"uri": "/asset/getrb_1234",
-		"description": "wind turbine 3 blades",
-		"obsolete": false,
-		"empty": false,
-		"assetId": "geturbine_1234",
-		"specification": "/classification/engine",
-		"propagateState": false,
-		"attributes": {
-			"make": {
-				"type": "string",
-				"enumeration": [],
-				"required": true,
-				"display": true,
-				"value": [
-					"GE_eng_1"
-				]
-			},
-			"dimensions": {
-				"type": "string",
-				"enumeration": [],
-				"required": true,
-				"display": true,
-				"value": [
-					"5mx1mx15m"
-				]
-			}
-		},
-		"tags": []
-	}]
-}, {
-	"label": "Get Assets",
-	"method": "get",
-	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/asset"
-}, {
-	"label": "Get Specific Asset",
-	"method": "get",
-	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/asset/getrb_1234"
-}, {
-	"label": "Delete Specific Asset",
-	"method": "delete",
-	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/asset/getrb_1234"
-}, {
 	"label": "Create Model Request",
 	"headers": [{
 		"key": "content-type",
