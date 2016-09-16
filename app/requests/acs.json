@@ -23,7 +23,7 @@
       "method":"put",
       "path":"https://predix-acs.run.aws-usw02-pr.ice.predix.io/v1/resource/{resourceIdentifier}",
       "body" :{
-        "resourceIdentifier": "my_resource",
+        "resourceIdentifier": "{resourceIdentifier}",
         "attributes": [
           {
             "issuer": "https://acs.attributes.int",
@@ -117,7 +117,7 @@
       "method":"put",
       "path":"https://predix-acs.run.aws-usw02-pr.ice.predix.io/v1/subject/{subjectIdentifier}",
       "body": {
-        "subjectIdentifier": "subject_operator",
+        "subjectIdentifier": "{subjectIdentifier}",
         "attributes": [
             {
               "name": "role",
@@ -141,26 +141,26 @@
       "path":"https://predix-acs.run.aws-usw02-pr.ice.predix.io/v1/subject",
       "body": [
         {
-          "subjectIdentifier": "subject_admin",
+          "subjectIdentifier": "subject_operator",
           "attributes": [
               {
                 "name": "role",
-                "value": "admin",
+                "value": "operator",
                 "issuer": "https://acs.attributes.int"
               }
             ],
-            "subjectId": "subject_admin"
+            "subjectId": "subject_operator"
           },
           {
-            "subjectIdentifier": "a_subject",
+            "subjectIdentifier": "admin_subject",
             "attributes": [
                 {
                   "name": "role",
-                  "value": "operator",
+                  "value": "admin",
                   "issuer": "https://acs.attributes.int"
                 }
               ],
-              "subjectId": "a_subject"
+              "subjectId": "admin_subject"
             }
 
       ]
@@ -213,7 +213,7 @@
       "method":"put",
       "path":"https://predix-acs.run.aws-usw02-pr.ice.predix.io/v1/policy-set/{name}",
       "body":{
-        "name": "mypolicy",
+        "name": "{name}",
         "policies" :[
             {
               "name" : "allow-all-HTTP-requests-for-admin",
