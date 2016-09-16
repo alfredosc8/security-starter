@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/px-json/px-json.html">
 <link rel="import" href="../restform-behavior.html">
 
 <dom-module id="api-form">
@@ -52,7 +53,7 @@
       </table>
       <div hidden$="{{!requiresBody}}">
         <p><b>Request Body</b></p>
-        <textarea id="apiRequest" rows=10 cols=100 value="{{restRequest}}"></textarea>
+        <px-json id="apiRequest" json="{{restRequest}}"></px-json>
       </div>
       <br/>
       <div hidden$="{{isWebSocketRequest}}">
@@ -77,7 +78,7 @@
       <template is="dom-repeat" items="{{displayHeaders}}">
         -H '{{item.key}}: {{item.val}}'
       </template>
-      <span hidden$="{{!requiresBody}}">--data-binary '{{restRequest}}'</span>
+      <span hidden$="{{!requiresBody}}">--data-binary '{{stringify(restRequest)}}'</span>
       <template hidden$="{{!isMultipartFormRequest}}" is="dom-repeat" items="{{requestDefinition.body.formFields}}">
         <span hidden$="{{!item.isFile}}">-F '{{item.key}}=@{{uploadFileName}}'</span>
         <span hidden$="{{item.isFile}}">-F '{{item.key}}={{item.val}}'</span>
@@ -174,7 +175,7 @@
 
         updateHttpRequest: function(defn) {
           var self = this;
-          self.restRequest = JSON.stringify(defn.body);
+          self.restRequest = defn.body;
           self.restResponse = '';
           self.error = '';
           self.isMultipartFormRequest = false;
@@ -279,6 +280,10 @@
           return formData;
         },
 
+        stringify: function(obj) {
+            return JSON.stringify(obj);
+        },
+
         ready: function() {
           var self = this;
           var apiForm = this.$.apiForm;
@@ -307,7 +312,7 @@
               this.request.contentType = undefined;
               this.request.body = self.buildFormDataObject(this.request.body);
             } else {
-              this.request.body =  self.$.apiRequest.value; //textarea input
+              this.request.body = JSON.stringify(self.$.apiRequest.json);
             }
           });
           apiForm.addEventListener('iron-form-response', function(event) {
@@ -369,7 +374,7 @@
 
             var requestObj;
             try {
-              requestObj = JSON.parse(self.$.apiRequest.value);
+              requestObj = self.$.apiRequest.json;
               requestObj.socketId = self.socketId;
             } catch (e) {
               self.error = '{"error": ' + e + '}';

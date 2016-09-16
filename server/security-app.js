@@ -119,8 +119,18 @@ app.use('/uaalogin', function storeUrlInSession(req, res, next) {
 				}
 			});
     });
-	next();
-});
+		next();
+	},
+	expressProxy(getUaaUrlFromSession, {
+			https: true,
+			forwardPath: function () {
+				return '/oauth/token';
+			},
+			intercept: cleanResponseHeaders,
+			decorateRequest: setProxyAgent
+		}
+	)
+);
 
 app.use('/logout', function logout(req, res) {
 		req.session.destroy();
@@ -142,16 +152,6 @@ app.use('/api', expressProxy(getUaaUrlFromSession, {
 			//   console.log("Forwarding request: " + req.originalUrl);
 			  var forwardPath = url.parse(req.url).path;
 			  return forwardPath;
-		},
-		intercept: cleanResponseHeaders,
-		decorateRequest: setProxyAgent
-	}
-));
-
-app.use('/uaalogin', expressProxy(getUaaUrlFromSession, {
-		https: true,
-		forwardPath: function () {
-			return '/oauth/token';
 		},
 		intercept: cleanResponseHeaders,
 		decorateRequest: setProxyAgent
