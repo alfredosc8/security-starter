@@ -182,6 +182,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="settings-input-component"></iron-icon>
                 <span>Websocket client</span>
               </a>
+              <a data-route="acspolicy" href="/acspolicy" on-click="onDataRouteClick">
+                <iron-icon icon="lock-outline"></iron-icon>
+                <span>Access Control Service</span>
+              </a>
               <hr/>
               <a href="#" on-click="logout">
                 <iron-icon icon="close"></iron-icon>
@@ -435,6 +439,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
               <paper-material elevation="1">
                 <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" http-method="websocket"></api-form>
+              </paper-material>
+            </section>
+
+            <section data-route="acspolicy">
+              <paper-material elevation="1">
+                Manage ACS from your catalog in the Predix cloud.
+              </paper-material>
+              <paper-material elevation="1">
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}"
+                 request-file-path="/requests/acs.json" current-route="{{route}}" route="acspolicy"></api-form>
               </paper-material>
             </section>
 
