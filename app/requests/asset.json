@@ -57,7 +57,7 @@
 		"val": "application/json"
 	}],
 	"method": "post",
-	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/engine/ENG1.23",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/engine",
 	"body": [{
 		"uri": "/engine/ENG1.23",
 		"serialNo": 12345,
