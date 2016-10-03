@@ -1,6 +1,6 @@
 [
   {
-      "label":"Get the list of resource",
+      "label":"Get the list of resources",
       "description":"This request returns the list of ACS attribute management resource from the ACS instance.",
       "headers":[
          {
@@ -35,7 +35,7 @@
       }
   },
   {
-      "label":"Add multiple resource",
+      "label":"Add multiple resources",
       "description":"This request to add ACS attribute management resource.",
       "headers":[
          {
@@ -94,7 +94,7 @@
       "path":"https://predix-acs.run.aws-usw02-pr.ice.predix.io/v1/resource/{resourceIdentifier}"
   },
   {
-      "label":"Get the list of subject",
+      "label":"Get list of subjects",
       "description":"This request returns the list of ACS attribute management subject from the ACS instance.",
       "headers":[
          {
@@ -129,7 +129,7 @@
         }
   },
   {
-      "label":"Add multiple subject",
+      "label":"Add multiple subjects",
       "description":"This request to add ACS attribute management subject",
       "headers":[
          {
@@ -190,8 +190,8 @@
       "path":"https://predix-acs.run.aws-usw02-pr.ice.predix.io/v1/subject/{subjectIdentifier}"
   },
   {
-      "label":"Get the list of ACS policy-set",
-      "description":"This request returns the list of ACS policy set from the ACS instance.",
+      "label":"Get ACS policy-sets",
+      "description":"This request returns the list of ACS policy sets from the ACS instance.",
       "headers":[
          {
             "key":"content-type",
@@ -202,7 +202,7 @@
       "path":"https://predix-acs.run.aws-usw02-pr.ice.predix.io/v1/policy-set"
   },
   {
-      "label":"Add a ACS-policy",
+      "label":"Add an ACS-policy",
       "description":"This request to add policy set.Modify the path to add policy name,this should match the name attribute on post body.",
       "headers":[
          {
