@@ -1,5 +1,5 @@
 [{
-	"label": "Aggregations Request",
+	"label": "Aggregation Request",
 	"headers": [{
 		"key": "content-type",
 		"val": "application/json"
