@@ -11,7 +11,7 @@
     <p>Enter your UAA URL and admin secret. <paper-button noink id="showDetailsButton" data-dialog="details"><img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img></paper-button></p>
     <form is="iron-form" id="restForm" method="post">
       <table class="starter-inputs">
-        <tr><td>UAA URL:</td><td style="width: 85%"><input name="uaaUrlInput" style="width: 100%" required value="{{uaaUrl::input}}"></td></tr>
+        <tr><td>UAA URL:</td><td style="width: 100%"><input name="uaaUrlInput" style="width: 85%" required value="{{uaaUrl::input}}"></td></tr>
         <tr><td>Admin secret:</td><td><input name="adminSecret" type="password" required value="{{adminSecret::input}}"></td></tr>
       </table>
       <paper-button raised noink class="starter-button" id="showCommandButton" data-dialog="command">See cURL command </paper-button>
