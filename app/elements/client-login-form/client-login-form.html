@@ -42,6 +42,11 @@
       Polymer({
         is: 'client-login-form',
         properties: {
+          baseUrl: {
+            type: String,
+            notify: true,
+            observer: 'updateUaaUrl'
+          },
           clientId: {
             type: String,
             notify: true,
@@ -78,6 +83,9 @@
           this.$.clientLoginButton.addEventListener('click', function() {
             restForm.submit();
           });
+          this.$.clientLoginButton.addEventListener('click', function() {
+            restForm.submit();
+          });
           this.$.clientLoginCommandButton.addEventListener('click', function(e) {
             self._overlayButtonListener(e, restForm);
           });
@@ -86,6 +94,10 @@
 
         updateAuthHeader: function() {
           this.authHeader = 'Basic ' + btoa(this.clientId + ':' + this.clientSecret);
+        },
+
+        updateUaaUrl: function(newValue, oldValue) {
+          this.__updateUaaUrl(newValue, oldValue);
         },
 
         behaviors: [RestFormBehavior]
