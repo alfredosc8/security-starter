@@ -15,6 +15,8 @@
       <paper-button noink id="authcodeLoginDetailsButton" data-dialog="authcodeLoginDetails">
         <img title="Learn more." src="/images/Octicons-mortar-board.svg" class="starter-learn-img"></img>
       </paper-button>
+      <br/>
+      Be sure to enter the correct UAA URL.  By submitting this form, you will leave this app and be redirected to UAA.
       </p>
       <table class="starter-inputs">
         <input hidden="true" name="response_type" value="code" />
@@ -23,15 +25,15 @@
         <tr><td>UAA URL:</td><td style="width: 100%;"><input name="uaaUrlInput" value="{{baseUrl::input}}" style="width: 85%;" required></td></tr>
         <tr><td>Client ID:</td><td><input name="client_id" required value="{{clientId::input}}"></td></tr>
       </table>
-      <paper-button raised noink class="starter-button" id="authcodeLoginCommandButton" data-dialog="authcodeLoginCommand">See cURL command</paper-button>
+      <paper-button raised noink class="starter-button" id="authcodeLoginCommandButton" data-dialog="authcodeLoginCommand">See full URL</paper-button>
       <paper-button raised noink class="starter-button starter-button-primary" id="submitButton">Submit</paper-button>
       <input hidden="true" type="submit" />
     </form>
     <tutorial-overlay id="authcodeLoginCommand">
-      place this url in a browser: {{baseUrl}}/oauth/authorize?response_code=code&client_id={{clientId}}&state={{state}}&redirect_uri={{encodedRedirectUrl}}
+      <strong>Place this url in a browser:</strong> {{baseUrl}}/oauth/authorize?response_code=code&client_id={{clientId}}&state={{state}}&redirect_uri={{encodedRedirectUrl}}
     </tutorial-overlay>
     <tutorial-overlay id="authcodeLoginDetails" class="scrollable" markdown-url="/security.md#user-authcode-login"></tutorial-overlay>
-    <p id="authcodeText" style="display:none">We've sent the redirect back this page so you can see the authcode below</p>
+    <p id="authcodeText" style="display:none">We've sent the redirect back to this page so you can see the authcode below</p>
     <p><b>{{authcode}}</b></p>
 
     <!--form2 -->
