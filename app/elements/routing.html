@@ -100,6 +100,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
 
     page('/userAuthcode', scrollToTop, function() {
+      // TODO: can we move this into the user-authcode-form ??
       app.route = 'userauthcode';
       var form = document.querySelector('user-authcode-form');
       var queryParams = parseQueryParams();
