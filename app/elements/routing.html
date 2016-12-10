@@ -37,11 +37,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if (queryParams.indexOf('?') >= 0 ) {
         queryParams = queryParams.substr(queryParams.indexOf("?")+1);
         urlParams = {};
-        while (match = search.exec(queryParams)) {
+        while ((match = search.exec(queryParams))) {
           urlParams[decode(match[1])] = decode(match[2]);
         }
         var state = urlParams["state"];
-        while (match = search.exec(state)) {
+        while ((match = search.exec(state))) {
           urlParams[decode(match[1])] = decode(match[2]);
         }
 
@@ -110,8 +110,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       if ( queryParams && queryParams["clientId"] ) {
         var clientId = queryParams["clientId"];
-        if ( clientId.indexOf("?") >= 0 )
+        if ( clientId.indexOf("?") >= 0 ) {
           clientId = clientId.substring(0,clientId.indexOf("?"));
+        }
         form.clientId = clientId;
       }
       if ( queryParams && queryParams["code"] ) {
@@ -119,8 +120,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         form.$.authcodeText.style = "display";
         form.$.restFormForAuthcodeToken.style = "display";
       }
-      if ( window.location.search.length > 0 )
+      if ( window.location.search.length > 0 ) {
         window.location.hash = "#!/userAuthcode";
+      }
     });
 
     page('/checkToken', scrollToTop, function() {
