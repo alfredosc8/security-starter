@@ -104,38 +104,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="create"></iron-icon>
                 <span>Create Client ID</span>
               </a>
+              <a data-route="getclient" href="/getClient" on-click="onDataRouteClick">
+                <iron-icon icon="file-download"></iron-icon>
+                <span>Get Client ID</span>
+              </a>
+              <a data-route="updateclient" href="/updateClient" on-click="onDataRouteClick">
+                <iron-icon icon="file-upload"></iron-icon>
+                <span>Update Client ID</span>
+              </a>
               <a data-route="users" href="/users" on-click="onDataRouteClick">
                 <iron-icon icon="perm-identity"></iron-icon>
                 <span>Create User</span>
               </a>
-              <a data-route="usertoken" href="/userToken" on-click="onDataRouteClick">
-                <iron-icon icon="lock"></iron-icon>
-                <span>Login as User</span>
-              </a>
-              <a data-route="clientLogin" href="/clientLogin" on-click="onDataRouteClick">
-                <iron-icon icon="lock"></iron-icon>
-                <span>Login as Client</span>
-              </a>
-              <a data-route="checktoken" href="checkToken" on-click="onDataRouteClick">
-                <iron-icon icon="done"></iron-icon>
-                <span>Check Token</span>
-              </a>
-              <hr/>
               <a data-route="group" href="/group" on-click="onDataRouteClick">
                 <iron-icon icon="group-work"></iron-icon>
                 <span>Create Group</span>
               </a>
               <a data-route="addtogroup" href="/addToGroup" on-click="onDataRouteClick">
                 <iron-icon icon="add-circle-outline"></iron-icon>
-                <span>Add To Group</span>
+                <span>Add User To Group</span>
               </a>
-              <a data-route="getclient" href="/getClient" on-click="onDataRouteClick">
-                <iron-icon icon="file-download"></iron-icon>
-                <span>Get Client</span>
+              <hr/>
+              <a data-route="userauthcode" href="/userAuthcode" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>User Authcode Login</span>
               </a>
-              <a data-route="updateclient" href="/updateClient" on-click="onDataRouteClick">
-                <iron-icon icon="file-upload"></iron-icon>
-                <span>Update Client</span>
+              <a data-route="usertoken" href="/userToken" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>User Password Login</span>
+              </a>
+              <a data-route="clientLogin" href="/clientLogin" on-click="onDataRouteClick">
+                <iron-icon icon="lock"></iron-icon>
+                <span>Client ID Login</span>
+              </a>
+              <a data-route="checktoken" href="checkToken" on-click="onDataRouteClick">
+                <iron-icon icon="done"></iron-icon>
+                <span>Check Token</span>
               </a>
               <hr/>
               <a href="#" on-click="logout">
@@ -299,6 +303,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
             </section>
 
+            <section data-route="userauthcode">
+              <paper-material elevation="1">
+                Log in as the newly created user.
+              </paper-material>
+              <paper-material elevation="1">
+                <user-authcode-form
+                  base-url="{{uaaBaseUrl}}"
+                  client-id="{{newClientId}}"
+                  client-secret="{{newClientSecret}}"
+                  user-token="{{apiToken}}"
+                  user-name="{{newUserName}}"></user-authcode-form>
+              </paper-material>
+            </section>
+
             <section data-route="checktoken">
               <paper-material elevation="1">
                 Check if token is valid.
@@ -346,7 +364,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="clientLogin">
               <paper-material elevation="1">
-                  Log in as a client
+                  Log in as a client.
               </paper-material>
               <paper-material elevation="1">
                 <client-login-form base-url="{{uaaBaseUrl}}" client-id="{{newClientId}}" client-secret="{{newClientSecret}}" client-token="{{apiToken}}">

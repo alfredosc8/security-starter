@@ -40,6 +40,7 @@
               this.append(parsed);
             },
             append: function(JSONobject) {
+                //console.log('OUTPUT=' + JSON.stringify(JSONobject, undefined, 2));
                 Polymer.dom(this.$.output).innerHTML = this.highlight(JSONobject);
             },
 

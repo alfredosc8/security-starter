@@ -60,6 +60,7 @@ textarea {
 .starter-inputs {
   border-spacing: 0;
   max-width: 850px;
+  white-space: nowrap;
 }
 
 .starter-inputs td {

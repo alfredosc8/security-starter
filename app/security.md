@@ -14,6 +14,18 @@ Users of your application will enter this username and password to access your a
 #### Login as User
 This is a demonstration of logging as your new user, with the grant type of "password".  In production, you should probably use grant type "authorization_code".  Also, the client ID and secret should only be stored on the server, not displayed in the browser.
 
+#### User Authcode Login
+This is a demonstration of logging as your new user, with the grant type of "authorization_code".  This is the most secure application architecture.  The client ID should be for purposes of AuthCode Login, with limited authorities, not one that has privileges to back end services.
+
+The user's browser is redirected to the UAA Login page so that even the Application is unaware of the user's password.  An AuthCode is returned and sent as a query parameter to the redirect url within your application.  Your application will receive the authcode and retrieve a userToken from UAA.   Ideally, at this point, you're application will use info from the User token (see openid) to send requests to ACS policies to control what the user sees.
+
+Notice the user token returned has the scopes of the ClientId that match the user groups that the user is a member of. For this reason, we recommend your application use a login_client_id which has limited authority and an app_client_id which has authority to access Predix services.
+
+Also notice that the redirect_uri in both requests is very important, they need to match in order for UAA to return the token.  And notice that the Authcode returned is only valid once, subsequent requests to retrieve the token, using the authcode return an Invalid authorization code response.
+
+#### User Authcode Token
+This is a demonstration of getting a user token, with the grant type of "authorization_code".  This is the most secure application architecture.  The client ID should be for purposes of AuthCode Login, with limited authorities, not one that has privileges to back end services. The user's browser is redirected to the UAA Login page so that even the Application is unaware of the user's password.  An AuthCode is returned and sent as a query parameter to the redirect url within your application.  Your application will receive the authcode and retrieve a userToken from UAA.   Ideally, at this point, you're application will use info from the User token (see openid) to send requests to ACS policies to control what the user sees.
+
 #### Check Token
 The token is a JSON Web Token (JWT), which is an industry standard.  Learn more about JWT at <a href="http://jwt.io" target="\_blank">jwt.io.</a>  The check_token REST API can be used by your front end UI Application, or back end microservice to ensure that the user has a valid token.
 
