@@ -82,7 +82,7 @@
       "path":"https://predix-acs.run.aws-usw02-pr.ice.predix.io/v1/resource/{resourceIdentifier}"
   },
   {
-      "label":"Delete a subject",
+      "label":"Delete a resource",
       "description":"This request to DELETE ACS attribute management subject by resourceIdentifier.",
       "headers":[
          {
