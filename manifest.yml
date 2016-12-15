@@ -1,7 +1,8 @@
 ---
 applications:
 - name: predix-starter
-  memory: 128M
+  memory: 256M
+  instances: 2
   buildpack: https://github.com/heroku/heroku-buildpack-nodejs
   command:  node server/security-app.js
   path: dist
