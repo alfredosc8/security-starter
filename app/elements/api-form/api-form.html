@@ -68,7 +68,7 @@
       </div>
     </form>
     <p>{{error}}</p>
-    <!-- <p hidden$="{{!success}}">Success!  ...</p> -->
+    <p hidden$="{{!success}}">HTTP Response Code: {{responseCodeText}}</p>
     <pretty-json raw-json="{{restResponse}}"></pretty-json>
     <div hidden$="{{!loading}}">
       <paper-progress indeterminate style="width: 100%"></paper-progress>
@@ -175,6 +175,7 @@
 
         updateHttpRequest: function(defn) {
           var self = this;
+          self.success = false;
           self.restRequest = defn.body;
           self.restResponse = '';
           self.error = '';

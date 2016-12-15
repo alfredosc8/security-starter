@@ -27,6 +27,9 @@
         type: String,
         notify: true
       },
+      responseCodeText: {
+        type: String
+      },
       loading: {
         type: Boolean,
         value: false,
@@ -77,6 +80,7 @@
       // event.detail as an iron-request
       this.error = null;
       this.restResponse = JSON.stringify(event.detail.response);
+      this.responseCodeText = event.detail.status + " " + event.detail.statusText;
       this.loading = false;
       this.success = true;
       this.adminSecret = '';
@@ -89,6 +93,7 @@
       this.restResponse = '';
       this.error = '';
       this.success = false;
+      this.responseCodeText = '';
     },
 
     _decodeToken: function(encoded) {
