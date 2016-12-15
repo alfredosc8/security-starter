@@ -86,7 +86,9 @@
           this.$.checkTokenButton.addEventListener('click', function() {
             restForm.submit();
           });
-          this.$.checkTokenCommandButton.addEventListener('click', this._overlayButtonListener);
+          this.$.checkTokenCommandButton.addEventListener('click', function(e) {
+            self._overlayButtonListener(e, restForm);
+          });
           this.$.checkTokenDetailsButton.addEventListener('click', this._overlayButtonListener);
 
           this.$.decodeTokenButton.addEventListener('click', function(e) {
