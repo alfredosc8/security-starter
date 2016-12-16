@@ -224,6 +224,14 @@ app.use('/close-ws', function(req, res) {
 	res.status(200).send({"message": "Socket closed."});
 });
 
+app.get('/health', function(req, res) {
+	var memoryUsage = process.memoryUsage();
+	if (memoryUsage.heapTotal && memoryUsage.heapUsed && memoryUsage.heapTotal > 0) {
+		memoryUsage.heapPercent = (memoryUsage.heapUsed / memoryUsage.heapTotal) * 100;
+	}
+	res.status(200).send({"status": "ok", "memoryUsage": memoryUsage});
+});
+
 app.use(historyApiFallback());
 app.use(function logErrors(err, req, res, next) {
 	console.error(err.stack);
