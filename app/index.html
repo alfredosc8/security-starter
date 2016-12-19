@@ -256,8 +256,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   <i>Note:</i> Make sure you're using the right instance of this utility. If not, you'll get errors.
                 </p>
                 <ul>
-                  <li><a href="https://predix-toolkit.run.aws-usw02-pr.ice.predix.io/">Predix Basic</a></li>
-                  <li><a href="https://predix-toolkit.run.asv-pr.ice.predix.io/">Predix Select</a></li>
+                  <li><a href="https://predix-toolkit.run.aws-usw02-pr.ice.predix.io/">Predix US West</a> (formerly Predix Basic)</li>
+                  <li><a href="https://predix-toolkit.run.asv-pr.ice.predix.io/">Predix US East</a> (formerly Predix Select)</li>
                 </ul>
               </paper-material>
             </section>
@@ -404,7 +404,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Execute CRUD operations on Asset
               </paper-material>
               <paper-material elevation="1">
-                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" request-file-path="/requests/asset.json"
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" request-file-path="/requests/asset.json"
                   current-route="{{route}}" route="asset"></api-form>
               </paper-material>
             </section>
@@ -415,7 +415,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Open a websocket, and push data to your time series instance.
               </paper-material>
               <paper-material elevation="1">
-                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}"
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{tsZone}}"
                   is-web-socket-request="true" request-file-path="/requests/time-series-ingestion.json"
                   current-route="{{route}}" route="tsingest"></api-form>
               </paper-material>
@@ -426,7 +426,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Make a few basic queries against your time series instance.
               </paper-material>
               <paper-material elevation="1">
-                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}"
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{tsZone}}"
                   request-file-path="/requests/time-series-query.json" current-route="{{route}}" route="tsquery"></api-form>
               </paper-material>
             </section>
@@ -436,7 +436,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Manage analytics in your catalog instance.
               </paper-material>
               <paper-material elevation="1">
-                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}"
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}"
                   is-web-socket-request="false" request-file-path="/requests/analytics-catalog.json"
                   current-route="{{route}}" route="analyticscatalog"></api-form>
               </paper-material>
@@ -447,7 +447,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Execute analytics from your catalog in the Predix cloud.
               </paper-material>
               <paper-material elevation="1">
-                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}"
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}"
                   request-file-path="/requests/analytics-runtime.json" current-route="{{route}}" route="analyticsruntime"></api-form>
               </paper-material>
             </section>
@@ -457,7 +457,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Open a secure websocket, send messages and see responses. This tool assumes that all data will be sent and received as JSON.
               </paper-material>
               <paper-material elevation="1">
-                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}" http-method="websocket"></api-form>
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" http-method="websocket"></api-form>
               </paper-material>
             </section>
 
@@ -466,7 +466,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Manage ACS from your catalog in the Predix cloud.
               </paper-material>
               <paper-material elevation="1">
-                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{apiZone}}"
+                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" 
                  request-file-path="/requests/acs.json" current-route="{{route}}" route="acspolicy"></api-form>
               </paper-material>
             </section>

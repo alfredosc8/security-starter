@@ -8,5 +8,6 @@ applications:
   path: dist
 services:
   - security-starter-redis
+  - predix-starter-newrelic
 env:
   PREDIX_ENV: VPC

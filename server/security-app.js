@@ -1,5 +1,8 @@
 'use strict';
 
+if (process.env.NODE_ENV === 'production') {
+	require('newrelic'); // This needs to be loaded before other modules.
+}
 var httpServer = require('http').createServer();
 var express = require('express');
 var path = require('path');
@@ -222,6 +225,14 @@ app.use('/close-ws', function(req, res) {
 		console.log('deleted a socket. sockets remaining: ' + Object.keys(sockets).length);
 	}
 	res.status(200).send({"message": "Socket closed."});
+});
+
+app.get('/health', function(req, res) {
+	var memoryUsage = process.memoryUsage();
+	if (memoryUsage.heapTotal && memoryUsage.heapUsed && memoryUsage.heapTotal > 0) {
+		memoryUsage.heapPercent = (memoryUsage.heapUsed / memoryUsage.heapTotal) * 100;
+	}
+	res.status(200).send({"status": "ok", "memoryUsage": memoryUsage});
 });
 
 app.use(historyApiFallback());
