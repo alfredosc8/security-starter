@@ -1,5 +1,5 @@
 [{
-	"label": "Create Classification Request",
+	"label": "Create Engine Classification (Example)",
 	"headers": [{
 		"key": "content-type",
 		"val": "application/json"
@@ -37,21 +37,25 @@
 			}
 		},
 		"tags": []
-	}]
+}]
 }, {
-	"label": "Get Classifications",
-	"method": "get",
-	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification"
-}, {
-	"label": "Get Specific Classification",
+	"label": "Query Engine Classification (Example)",
 	"method": "get",
 	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification/engine"
 }, {
-	"label": "Delete Specific Classification",
+	"label": "Query Engine Classification With Filter (Example)",
+	"method": "get",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification?filter=name=Engine"
+},   {
+	"label": "Delete Engine Classification (Example)",
 	"method": "delete",
 	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification/engine"
 }, {
-	"label": "Create Model Request",
+	"label": "Query All Classifications",
+	"method": "get",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/classification"
+}, {
+	"label": "Create Engine (Example)",
 	"headers": [{
 		"key": "content-type",
 		"val": "application/json"
@@ -73,12 +77,35 @@
 			"sNo": 55556
 		}
 	}]
+},  {
+	"label": "Query Specific Engine (Example)",
+	"method": "get",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/engine/ENG1.24"
 }, {
-	"label": "Get Engine Models",
+	"label": "Query Engine using Filter (Example)",
+	"method": "get",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/engine?filter=serialNo=12346"
+}, {
+	"label": "Query All Engines",
 	"method": "get",
 	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/engine"
 }, {
-	"label": "Get Specific Engine Model",
+	"label": "Create Your Custom Asset",
+	"headers": [{
+		"key": "content-type",
+		"val": "application/json"
+	}],
+	"method": "post",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/<custom.asset>",
+	"body": [{
+		"uri": "/<custom.asset>/<ID>"		
+	}]
+},  {
+	"label": "Query Your Custom Asset",
 	"method": "get",
-	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/engine/ENG1.24"
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/<custom.asset>/<ID>"
+}, {
+	"label": "Query Your Custom Asset Using Filter",
+	"method": "get",
+	"path": "https://predix-asset.run.aws-usw02-pr.ice.predix.io/<custom.asset>?filter=<custom.field>=<custom.value>"
 }]

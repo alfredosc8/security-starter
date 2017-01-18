@@ -246,7 +246,7 @@
           if (!this.isWebSocketRequest) {
             var urlParser = document.createElement('a');
             urlParser.href = this.apiUrl;
-            url = '/proxy-api' + urlParser.pathname;
+            url = '/proxy-api' + urlParser.pathname + urlParser.search;
           } else {
             url = '/open-ws';
           }
