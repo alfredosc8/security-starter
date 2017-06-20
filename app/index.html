@@ -175,13 +175,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="cloud-download"></iron-icon>
                 <span>Time Series Query</span>
               </a>
-              <a data-route="analyticscatalog" href="/analyticsCatalog" on-click="onDataRouteClick">
-                <iron-icon icon="list"></iron-icon>
-                <span>Analytics Catalog</span>
-              </a>
-              <a data-route="analyticsruntime" href="/analyticsRuntime" on-click="onDataRouteClick">
+              <a data-route="analyticsruntime" href="/analyticsFramework" on-click="onDataRouteClick">
                 <iron-icon icon="trending-up"></iron-icon>
-                <span>Analytics Runtime</span>
+                <span>Analytics Framework</span>
               </a>
               <a data-route="acspolicy" href="/acspolicy" on-click="onDataRouteClick">
                 <iron-icon icon="lock-outline"></iron-icon>
@@ -442,13 +438,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
             </section>
 
-            <section data-route="analyticsruntime">
+            <section data-route="analyticsframework">
               <paper-material elevation="1">
                 Execute analytics from your catalog in the Predix cloud.
               </paper-material>
               <paper-material elevation="1">
                 <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}"
-                  request-file-path="/requests/analytics-runtime.json" current-route="{{route}}" route="analyticsruntime"></api-form>
+                  request-file-path="/requests/analytics-framework.json" current-route="{{route}}" route="analyticsframework"></api-form>
               </paper-material>
             </section>
 

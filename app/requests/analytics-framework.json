@@ -1,15 +1,36 @@
 [
   {
-      "label":"Get the list of analytics",
-      "description":"This request returns the list of analytic entries from your analytics catalog.",
+      "label":"Create analytic taxonomy",
+      "description": "This request creates analytic taxonomy. ",
       "headers":[
          {
             "key":"content-type",
             "val":"application/json"
          }
       ],
-      "method":"get",
-      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics"
+      "method":"post",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/taxonomy",
+      "body":{
+	"node_name": "Analytics",
+	    "child_nodes": [
+	        {
+	            "node_name": "Diagnostic",
+	            "child_nodes": []
+	        },
+	        {
+	            "node_name": "Descriptive",
+	            "child_nodes": []
+	        },
+	        {
+	            "node_name": "Predictive",
+	            "child_nodes": []
+	        },
+	        {
+	            "node_name": "Prescriptive",
+	            "child_nodes": []
+	        }
+	    ]
+      }
   },
   {
       "label":"Create an analytic catalog entry",
@@ -32,6 +53,18 @@
     "description": "This analytic does simple math",
     "customMetadata": "{\"assetid\":\"abc\"}"
       }
+  },
+  {
+    "label":"Get analytic catalog details",
+    "description":"This request gets the catalog entry details.",
+      "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"get",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>"
   },
   {
     "label":"Upload analytic",
@@ -153,5 +186,45 @@
         "number1":2,
         "number2":4
       }
+  },
+  {
+    "label":"Get analytic logs",
+    "description":"This request returns logs.",
+      "headers":[
+         {
+            "key":"content-type",
+            "val":"text/plain"
+         }
+      ],
+      "method":"get",
+      "path":"https://predix-analytics-catalog-release.run.aws-usw02-pr.ice.predix.io/api/v1/catalog/analytics/<analyticCatalogEntryId-goes-here>/logs"
+  },
+    {
+      "label":"Execute analytic",
+      "description":"This request executes an analytic or set of analytics as described in BPMN xml in the request body below. Enter the name of the analytic in the request below by combining your analytic catalog entry id, name and version. For instance: 7f5dd8d5-54c3-4d81-af9e-155319b4557c::My analytic::v1",
+      "headers":[
+         {
+            "key":"content-type",
+            "val":"application/json"
+         }
+      ],
+      "method":"post",
+      "path":"https://predix-analytics-execution-release.run.aws-usw02-pr.ice.predix.io/api/v1/execution",
+      "body":{
+	"id": "sid-33430087-7a44-4be3-8517-914faf923288",
+	"name": "Demo SimpleMath Orchestration",
+	"bpmnXml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <definitions xmlns=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" expressionLanguage=\"http://www.w3.org/1999/XPath\" id=\"sid-81430087-7a44-4be3-8517-914faf923256\" targetNamespace=\"DSP-PM\" typeLanguage=\"http://www.w3.org/2001/XMLSchema\" xsi:schemaLocation=\"http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd\" xmlns:activiti=\"http://activiti.org/bpmn\"> <process id=\"DemoAdderWorklow\" isExecutable=\"true\"> <startEvent id=\"sid-start\" name=\"\"> <outgoing>sid-flow1</outgoing> </startEvent> <serviceTask completionQuantity=\"1\" id=\"sid-10001\" isForCompensation=\"false\" name=\"7f5dd8d5-54c3-4d81-af9e-155319b4557c::My analytic::v1\" startQuantity=\"1\" activiti:delegateExpression=\"${javaDelegate}\" xmlns:activiti=\"http://activiti.org/bpmn\"> <incoming>sid-flow1</incoming> <outgoing>sid-flow2</outgoing> </serviceTask> <serviceTask completionQuantity=\"1\" id=\"sid-10002\" isForCompensation=\"false\" name=\"7f5dd8d5-54c3-4d81-af9e-155319b4557c::My analytic::v1\" startQuantity=\"1\" activiti:delegateExpression=\"${javaDelegate}\" xmlns:activiti=\"http://activiti.org/bpmn\"> <incoming>sid-flow2</incoming> <outgoing>sid-flow3</outgoing> </serviceTask> <endEvent id=\"sid-end\" name=\"\"> <incoming>sid-flow3</incoming> </endEvent> <sequenceFlow id=\"sid-flow1\" name=\"\" sourceRef=\"sid-start\" targetRef=\"sid-10001\"/> <sequenceFlow id=\"sid-flow2\" name=\"\" sourceRef=\"sid-10001\" targetRef=\"sid-10002\"/> <sequenceFlow id=\"sid-flow3\" name=\"\" sourceRef=\"sid-10002\" targetRef=\"sid-end\"/> </process> </definitions>",
+	"analyticInputData": 
+	[
+	{
+		"analyticStepId": "sid-10001",
+		"data": "{ \"number1\": 21, \"number2\": 4 }"
+	}, 
+	{
+		"analyticStepId": "sid-10002",
+		"data": "{ \"number1\": 25, \"number2\": 4 }"
+	}
+	]
+}
   }
 ]
