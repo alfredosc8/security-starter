@@ -237,7 +237,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 <p>
                   First, set up the basics to create a secure microservice, including a Client ID and User.
-                  Next, set up authorities or groups and scopes, so your microservice can work with Predix platform services.
+                  Next, set up authorities or groups and scopes, so you can access Predix platform services.
                   Authorities are used with the "client_credentials" grant type.  Groups and scopes are used with "password" or "authorization_code" grant type.
                   Now you're ready to make API calls to your live instances of Predix services on the API Explorer tab.
                 </p>
@@ -252,8 +252,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   <i>Note:</i> Make sure you're using the right instance of this utility. If not, you'll get errors.
                 </p>
                 <ul>
-                  <li><a href="https://predix-toolkit.run.aws-usw02-pr.ice.predix.io/">Predix US West</a> (formerly Predix Basic)</li>
-                  <li><a href="https://predix-toolkit.run.asv-pr.ice.predix.io/">Predix US East</a> (formerly Predix Select)</li>
+                  <li><a href="https://predix-toolkit.run.aws-usw02-pr.ice.predix.io/">Predix Toolkit - US West</a></li>
+                  <li><a href="https://predix-toolkit.run.aws-jp01-pr.ice.predix.io/">Predix Toolkit - Japan 日本</a></li>
                 </ul>
               </paper-material>
             </section>
@@ -424,17 +424,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-material elevation="1">
                 <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}" predix-zone-id="{{tsZone}}"
                   request-file-path="/requests/time-series-query.json" current-route="{{route}}" route="tsquery"></api-form>
-              </paper-material>
-            </section>
-
-            <section data-route="analyticscatalog">
-              <paper-material elevation="1">
-                Manage analytics in your catalog instance.
-              </paper-material>
-              <paper-material elevation="1">
-                <api-form base-url="{{uaaBaseUrl}}" token="{{apiToken}}"
-                  is-web-socket-request="false" request-file-path="/requests/analytics-catalog.json"
-                  current-route="{{route}}" route="analyticscatalog"></api-form>
               </paper-material>
             </section>
 
